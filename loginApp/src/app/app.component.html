@@ -1,27 +1,2 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{title}}
-  </h1>
-</div>
-
-<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-  <div class="imgcontainer">
-    <img src="img_avatar2.png" alt="Avatar" class="avatar">
-  </div>
-
-  <div class="container">
-    <input type="text" placeholder="Enter Username" name="uname" required [(ngModel)]="uname">
-    <p>Username : {{uname}}</p>
-    <input type="password" placeholder="Enter Password" name="psw" required ngModel>
-        
-    <button type="submit">Login</button>
-    <input type="checkbox" checked="checked"> Remember me
-  </div>
-
-  <div class="container">
-    <button type="button" class="cancelbtn">Cancel</button>
-    <span class="psw">Forgot <a href="#">password?</a></span>
-  </div>
-</form>
 <router-outlet></router-outlet>

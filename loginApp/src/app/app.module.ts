@@ -4,12 +4,14 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login.component';
 import { HomeComponent } from './home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     HttpModule,
@@ -17,6 +19,8 @@ import { HomeComponent } from './home.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
+      {path: '', component: LoginComponent},
+      {path: ' /', component: LoginComponent},
       {path: 'home', redirectTo: '/home', pathMatch:'full'},
       {path: 'home', component: HomeComponent},
     ])
