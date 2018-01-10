@@ -1,0 +1,6 @@
+if classsch
+  show schdule class
+else
+   text +:q
+ schdeuled button-> on click show schdeule form -> onsubmit-> hide this show make true schdeuleclass
+
