@@ -1,1 +1,63 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="#">ISKCON YOUTH FORUM</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav navbar-sidenav" id="menu">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="courses">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#courses" data-parent="#menu">
+                <i class="fa fa-fw fa-dashboard" style="color:#FFF;"></i>
+                <span  style="color:#FFF;" class="nav-link-text">COURSES</span>
+              </a>
+              <ul class="sidenav-second-level collapse" id="courses">
+                <li>
+                  <a routerLink="/classSdl" routerActive="/classSdl">OTP</a>
+                </li>
+                <li style="color:#FFF;">
+                  <a href="#">TSSV</a>
+                </li>
+                <li style="color:#FFF;">
+                  <a href="#">ASHRAY 1</a>
+                </li>
+                <li style="color:#FFF;">
+                  <a href="#">ASHRAY 2</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" routerLink="/downloads" routerActive="/downloads">
+                      <i class="fa fa-fw fa-download"></i>
+                      <span class="nav-link-text">Downloads</span>
+                    </a>
+             </li>
+     
+          </ul>
+          <ul class="navbar-nav sidenav-toggler">
+              <li class="nav-item">
+                <a class="nav-link text-center" id="sidenavToggler">
+                  <i class="fa fa-fw fa-angle-left"></i>
+                </a>
+              </li>
+            </ul>
+        </div>
+      </nav>
+    
+    
+        <footer class="sticky-footer">
+            <div class="container">
+              <div class="text-center">
+                <small>Copyright © IYF 2018</small>
+              </div>
+            </div>
+          </footer>
+          <!-- Scroll to Top Button-->
+          <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa fa-angle-up"></i>
+          </a>
+    
+     
+    
 <router-outlet></router-outlet>
