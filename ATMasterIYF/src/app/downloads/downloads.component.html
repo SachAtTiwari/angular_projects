@@ -1,0 +1,38 @@
+<div class="content-wrapper">
+    <div class="container-fluid">  
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#">DOWNLOADS</a>
+                </li>
+              </ol>  
+        <form #download1="ngForm" (ngSubmit)="onSubmit(download1)" class="classSc" style="margin:10px;">
+            <mat-form-field>                                                              
+              <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Choose a date">       
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+              <mat-datepicker #picker></mat-datepicker>                                   
+            </mat-form-field>                                                             
+                                                                                       
+             <mat-form-field>                                                             
+               <mat-select [(ngModel)]="course" name="course" placeholder="Course">                                         
+                 <mat-option *ngFor="let co of courses" [value]="co.value">
+                   {{co.value}}  
+                 </mat-option>                              
+                                             
+               </mat-select>                                                              
+             </mat-form-field>                                                            
+                                                                                       
+             <mat-form-field>                                                             
+               <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor">                                      
+                  
+                 <mat-option *ngFor="let c of counsellors" [value]="c.value">
+                     {{c.value}}  
+                 </mat-option>                              
+                                             
+               </mat-select>                                                              
+             </mat-form-field>                                                             
+                                                                       
+            <button mat-raised-button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-download"></i>Download</button>
+          </form>                                      
+    </div>
+</div>

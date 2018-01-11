@@ -1,0 +1,94 @@
+
+<div class="content-wrapper">
+  <div class="container-fluid">  
+       <!-- Breadcrumbs-->
+       <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">COURSES</a>
+          </li>
+          <li class="breadcrumb-item active">OTP</li>
+        </ol>  
+
+<div *ngIf="!ifClassSdl;">
+      <h3>{{ifNoClassScdlText}} </h3>
+    <button type="submit" (click)="classSdl()" class="btn btn-primary">Schedule Now</button>
+</div>
+
+ <div *ngIf="showForm;">
+    <form #classForm="ngForm" (ngSubmit)="onSubmit(classForm)" class="classSc" style="margin:10px;">
+         <mat-form-field>                                                              
+           <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Choose a date">       
+           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+           <mat-datepicker #picker></mat-datepicker>                                   
+         </mat-form-field>                                                             
+                                                                                    
+          <mat-form-field>                                                             
+            <mat-select [(ngModel)]="speaker" name="speaker" placeholder="Speaker">                                         
+              <mat-option *ngFor="let sp of speakers" [value]="sp.value">
+                {{sp.value}}  
+              </mat-option>                              
+                                          
+            </mat-select>                                                              
+          </mat-form-field>                                                            
+                                                                                    
+          <mat-form-field>                                                             
+            <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor">                                      
+               
+              <mat-option *ngFor="let c of counsellors" [value]="c.value">
+                  {{c.value}}  
+              </mat-option>                              
+                                          
+            </mat-select>                                                              
+          </mat-form-field>                                                            
+          <mat-form-field>                                  
+             <input matInput name="topic" [(ngModel)]="topic"  placeholder="Topic" value="Art of Mind Control">
+                    
+          </mat-form-field>  
+                                                                    
+         <button mat-raised-button type="submit" class="btn btn-primary">Submit</button>
+       </form>                                                                          
+    </div>
+
+    <!-- Example DataTables Card-->
+    <div class="card mb-3" *ngIf="ifClassSdl;">
+      <div class="card-header">
+        <i class="fa fa-table"></i> Scheduled Classes</div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Speaker</th>
+                <th>Counsellor</th>
+                <th>Topic</th>
+                <th>Attendance</th>
+                
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Date</th>
+                <th>Speaker</th>
+                <th>Counsellor</th>
+                <th>Topic</th>
+                <th>Attendance</th>
+              </tr>
+            </tfoot>
+            <tbody>
+                <tr *ngFor="let cl of sdlClasses;">                 
+                <td >{{cl.date}}</td>
+                <td >{{cl.speaker}}</td>
+                <td >{{cl.counsellor}}</td>
+                <td >{{cl.topic}}</td>
+                <td ><a routerLink="/attendance" routerLinkActive="active">Take Attendance</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer small text-muted"></div>
+    </div>
+  </div>
+  <!-- /.container-fluid-->
+  <!-- /.content-wrapper-->

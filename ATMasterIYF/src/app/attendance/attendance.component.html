@@ -1,0 +1,91 @@
+ 
+ <div class="content-wrapper">
+    <div class="container-fluid">  
+             <!-- Breadcrumbs-->
+             <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#">COURSES</a>
+                </li>
+                <li class="breadcrumb-item active">Attendance</li>
+              </ol>  
+      <!-- Add New Devotee-->
+      <form #classForm="ngForm" (ngSubmit)="addDevotee(classForm)">
+          <mat-form-field>                                  
+              <input matInput name="name" [(ngModel)]="name"  placeholder="Name">  
+           </mat-form-field>  
+
+           <mat-form-field>                                  
+              <input matInput name="email" [(ngModel)]="email"  placeholder="Email">  
+           </mat-form-field>  
+        
+          <mat-form-field>                                                              
+            <input matInput name="dob" [(ngModel)]="dob" [matDatepicker]="picker" placeholder="Date of Birth">       
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+            <mat-datepicker #picker></mat-datepicker>                                   
+          </mat-form-field>   
+          
+          <mat-form-field>                                                             
+              <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor">                                      
+                 
+                <mat-option *ngFor="let c of counsellors" [value]="c.value">
+                    {{c.value}}  
+                </mat-option>                              
+                                            
+              </mat-select>                                                              
+            </mat-form-field>  
+                                                                                                                                      
+           <mat-form-field>                                  
+              <input matInput name="course" [(ngModel)]="Course"  placeholder="Course">  
+           </mat-form-field>  
+                                                                     
+          <button mat-raised-button type="submit" class="btn btn-primary">Add Devotee</button>
+        
+        </form>    
+        
+        <!-- Add new devotee End-->
+      <!-- Example DataTables Card-->
+    <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Devotee List
+         <!--button mat-raised-button type="submit" (click)="downloadToEx(devotees);" class="btn btn-primary pull-right"><i class="fa fa-fw fa-download"></i>Download to Excel</button-->
+         
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>DOB</th>
+                  <th>Counsellor</th>
+                  <th>FP</th>
+                  <th>COURSE</th>
+                  <th>Mark Present</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                  <tr *ngFor="let dv of devotees;">
+                  <td >{{dv.name}}</td>
+                  <td >{{dv.email}}</td>
+                  <td >{{dv.dob}}</td>
+                  <td >{{dv.counsellor}}</td>
+                  <td >{{dv.fp}}</td>
+                  <td >{{dv.course}}</td>
+                  <td ><button mat-raised-button type="submit" (click)="markPresent(dv)" class="btn btn-primary">Update</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+        <div class="card-footer small text-muted">
+        </div>
+
+      </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
