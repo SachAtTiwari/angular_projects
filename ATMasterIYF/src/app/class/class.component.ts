@@ -15,6 +15,14 @@ export class ClassComponent implements OnInit {
     this.ifClassSdl = true;
   
   }
+
+  /*
+    Add Contact in place of DOB
+    Add New sdl for new class
+    Time field
+    Check page flow
+
+  */
   title = 'ISKCON YOUTH FORUM';
   ifNoClassScdlText = "No class scheduled for today";
   ifClassSdl = true;
@@ -49,6 +57,5 @@ export class ClassComponent implements OnInit {
     console.log(this.sdlClasses);
                                                                             
   }
-}
 
 }
