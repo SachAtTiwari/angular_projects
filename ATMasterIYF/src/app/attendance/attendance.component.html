@@ -9,9 +9,25 @@
                 <li class="breadcrumb-item active">Attendance</li>
               </ol>  
       <!-- Add New Devotee-->
-      <form #classForm="ngForm" (ngSubmit)="addDevotee(classForm)">
+      <div class="form-container">
+        <mat-card>
+       
+          <mat-toolbar>Add Devotee</mat-toolbar>
+            
+          <mat-card-content>
+        
+        <div *ngIf="formError" style="margin:5px;" class="alert alert-danger alert-dismissable">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>{{formError}}</strong>
+        </div>
+        <form #classForm="ngForm" (ngSubmit)="addDevotee(classForm)" >
           <mat-form-field>                                  
               <input matInput name="name" [(ngModel)]="name"  placeholder="Name" required>  
+           </mat-form-field>  
+
+
+           <mat-form-field>                                  
+              <input matInput name="contact" [(ngModel)]="contact"  placeholder="Contact" required>  
            </mat-form-field>  
 
            <mat-form-field>                                  
@@ -36,12 +52,16 @@
             </mat-form-field>  
                                                                                                                                       
            <mat-form-field>                                  
-              <input matInput name="course" [(ngModel)]="Course"  placeholder="Course" required>  
+              <input matInput name="topic" [(ngModel)]="topic"  placeholder="Topic" required>  
            </mat-form-field>  
                                                                      
           <button mat-raised-button type="submit" class="btn btn-primary">Add Devotee</button>
         
         </form>    
+      
+      </mat-card-content>
+      </mat-card>
+      </div>
         
         <!-- Add new devotee End-->
       <!-- Example DataTables Card-->
@@ -60,10 +80,10 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>DOB</th>
+                  <th>Contact</th>
                   <th>Counsellor</th>
                   <th>FP</th>
-                  <th>COURSE</th>
+                  <th>TOPIC</th>
                   <th>Mark Present</th>
 
                 </tr>
@@ -73,10 +93,10 @@
                   <tr *ngFor="let dv of devotees;">
                   <td >{{dv.name}}</td>
                   <td >{{dv.mail}}</td>
-                  <td >{{dv.dob}}</td>
+                  <td >{{dv.contact}}</td>
                   <td >{{dv.counsellor}}</td>
                   <td >{{dv.fp}}</td>
-                  <td >{{dv.course}}</td>
+                  <td >{{dv.topic}}</td>
                   <td ><button mat-raised-button type="submit" (click)="markPresent(dv)" class="btn btn-primary">Update</button></td>
                 </tr>
               </tbody>

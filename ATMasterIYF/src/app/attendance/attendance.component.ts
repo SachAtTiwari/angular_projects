@@ -16,18 +16,23 @@ export class AttendanceComponent implements OnInit {
   constructor(private _userService: UserService){};
 
   ngOnInit() {
+    this._userService.getAllDevotees()
+      .subscribe(userData => {
+          console.log("user data is ", userData);
+    });
   }
   email = new FormControl('', [Validators.required, Validators.email]);
   
-   getErrorMessage() {
+  
+  getErrorMessage() {
       return this.email.hasError('required') ? 'You must enter a value' :
           this.email.hasError('email') ? 'Not a valid email' :
               '';
   }
 
   devotees = [ 
-    {name:"vivek", mail:"vivek@gmail.com", dob:"20/04/90", counsellor:"SGP", fp:"1/04/2017", course:"OTP"},
-    {name:"Naveen", mail:"naveen@gmail.com", dob:"20/08/90", counsellor:"KVP", fp:"9/04/2017", course:"OTP"},
+    {name:"vivek",contact:"7838138933", mail:"vivek@gmail.com", dob:"20/04/90", counsellor:"SGP", fp:"1/04/2017", topic:"OTP"},
+    {name:"Naveen", contact:"7838131235", mail:"naveen@gmail.com", dob:"20/08/90", counsellor:"KVP", fp:"9/04/2017", topic:"OTP"},
 
   ];  
   
@@ -44,17 +49,25 @@ export class AttendanceComponent implements OnInit {
 
   markPresent(dv){
     console.log("in  update", dv);
+    if(dv.contact){
+      this._userService.markAttendance(dv.contact);
+    }
   
   }
+
+
+
+  formError = "";
   addDevotee(form:NgForm){
     console.log("form is", form.value);
    // this.devotees.push(form.value);
-    this._userService.addDevotee(form.value);
-    /*.subscribe(userData => {
-       console.log("user data is ", userData);
+    if (!form.value.name || !form.value.email || !form.value.contact 
+           || !form.value.dob || !form.value.counsellor || !form.value.topic){
+             this.formError = "All fields are mandatory";
+    }else{
+        this._userService.addDevotee(form.value);
+        form.resetForm();
     
-    });*/
-
   }
 
   

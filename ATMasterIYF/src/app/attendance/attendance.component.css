@@ -1,0 +1,14 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    padding:20px;
+    border:2px solid wheat;
+  }
+  
+  .form-container > * {
+    width: 100%;
+  }
+  
+  mat-form-field{
+      margin: 30px;
+  }

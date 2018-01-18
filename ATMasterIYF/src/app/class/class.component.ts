@@ -12,7 +12,7 @@ export class ClassComponent implements OnInit {
 
    ngOnInit(){
     console.log("in init");
-    this.ifClassSdl = true;
+    this.ifClassSdl = false;
   
   }
 
@@ -41,7 +41,7 @@ export class ClassComponent implements OnInit {
   date = "";
 
   sdlClasses = [
-  {date: "Wed Jan 17 2018", speaker: "KVP", counsellor: "SGP", topic: "Art of Mind"},
+  {date: "Wed Jan 17 2018", speaker: "KVP", counsellor: "SGP", topic: "Art of Mind", time:"5:00"},
   ];
   classSdl(){
     console.log("in click");
@@ -52,7 +52,7 @@ export class ClassComponent implements OnInit {
   //  this.showSdlClass = true;
     this.showForm = false;
    // this.ifClassSdl = true;
-    console.log("sorm is", form.value.date);
+    console.log("form is", form.value.date);
     this.sdlClasses.push(form.value); 
     console.log(this.sdlClasses);
                                                                             
