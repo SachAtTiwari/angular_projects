@@ -16,11 +16,12 @@ export class AttendanceComponent implements OnInit {
   constructor(private _userService: UserService){};
 
   ngOnInit() {
-    this._userService.getAllDevotees()
+   /* this._userService.getAllDevotees()
       .subscribe(userData => {
           console.log("user data is ", userData);
-    });
+    });*/
   }
+
   email = new FormControl('', [Validators.required, Validators.email]);
   
   
@@ -66,11 +67,7 @@ export class AttendanceComponent implements OnInit {
              this.formError = "All fields are mandatory";
     }else{
         this._userService.addDevotee(form.value);
-        form.resetForm();
-    
+        form.reset();
+      }
   }
-
-  
-
-
 }

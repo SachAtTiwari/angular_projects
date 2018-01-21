@@ -24,13 +24,11 @@ export class UserService{
    addDevotee(body){
       
      this._http.post(this._url + "addDevotee", {
-        index: 'devotee',
-        type:'users',
         body: body
        })
         .subscribe(
           res => {
-            console.log(res);
+            console.log("res is", res);
           },
           err => {
             console.log("Error occured");

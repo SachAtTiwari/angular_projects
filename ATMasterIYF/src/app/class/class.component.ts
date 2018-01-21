@@ -12,7 +12,7 @@ export class ClassComponent implements OnInit {
 
    ngOnInit(){
     console.log("in init");
-    this.ifClassSdl = false;
+    this.ifClassSdl = true;
   
   }
 
