@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
 
 
 @Component({
@@ -13,14 +15,21 @@ import { UserService} from '../devotee.service';
 export class AttendanceComponent implements OnInit {
 
 
-  constructor(private _userService: UserService){};
+  constructor(public dialog: MatDialog, private _userService:UserService) {};
+  //constructor(private _userService: UserService){};
 
   ngOnInit() {
+    console.log("in attendance");
    /* this._userService.getAllDevotees()
       .subscribe(userData => {
           console.log("user data is ", userData);
     });*/
   }
+
+  date: string;
+  present: string;
+  topic:string;
+  dStatus = {};
 
   email = new FormControl('', [Validators.required, Validators.email]);
   
@@ -50,6 +59,19 @@ export class AttendanceComponent implements OnInit {
 
   markPresent(dv){
     console.log("in  update", dv);
+    let dialogRef = this.dialog.open(MarkpresentComponent, {
+      width: '300px',
+      data: { date: this.date, present: this.present, topic:this.topic }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      console.log("data, presnt, topice", this.date, this.present, this.topic);
+      this.dStatus["date"] = this.date;
+      this.dStatus["present"] = this.present;
+      this.dStatus["topic"] = this.topic;
+    });
+    
     if(dv.contact){
       this._userService.markAttendance(dv.contact);
     }
@@ -70,4 +92,27 @@ export class AttendanceComponent implements OnInit {
         form.reset();
       }
   }
+}
+
+
+
+
+@Component({
+  selector: 'mark-present',
+  templateUrl: 'mark-present.html',
+})
+export class MarkpresentComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<MarkpresentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  status = [
+      {value:"YES"},
+      {value:"NO"}
+  ];
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }
