@@ -15,15 +15,5 @@ router.put('/getOTPDevotee', function(req, res, next) {
 });
 
 
-/* mark attendance*/
-router.put('/markAttendance', function(req, res, next) {
-  console.log("mark attendance");
-  var client = new elasticsearch.Client({
-    host: 'localhost:9200',
-    log: 'trace'
-  });
-  res.send({status:true});
-});
-
 
 module.exports = router;

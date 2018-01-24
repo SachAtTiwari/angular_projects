@@ -14,32 +14,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 export class AttendanceComponent implements OnInit {
 
-
-  constructor(public dialog: MatDialog, private _userService:UserService) {};
-  //constructor(private _userService: UserService){};
-
-  ngOnInit() {
-    console.log("in attendance");
-   /* this._userService.getAllDevotees()
-      .subscribe(userData => {
-          console.log("user data is ", userData);
-    });*/
-  }
-
-  date: string;
-  present: string;
-  topic:string;
+  
+  contact:string;
   dStatus = {};
-
-  email = new FormControl('', [Validators.required, Validators.email]);
-  
-  
-  getErrorMessage() {
-      return this.email.hasError('required') ? 'You must enter a value' :
-          this.email.hasError('email') ? 'Not a valid email' :
-              '';
-  }
-
   devotees = [ 
     {name:"vivek",contact:"7838138933", mail:"vivek@gmail.com", dob:"20/04/90", counsellor:"SGP", fp:"1/04/2017", topic:"OTP"},
     {name:"Naveen", contact:"7838131235", mail:"naveen@gmail.com", dob:"20/08/90", counsellor:"KVP", fp:"9/04/2017", topic:"OTP"},
@@ -51,30 +28,57 @@ export class AttendanceComponent implements OnInit {
     {value:"KVP"},
     {value:"SGP"}
   ];
+
+
+  constructor(public dialog: MatDialog, private _userService:UserService) {};
+
+  ngOnInit() {
+    console.log("in attendance");
+   /* this._userService.getAllDevotees()
+      .subscribe(userData => {
+          console.log("user data is ", userData);
+    });*/
+  }
+
+
+
+  email = new FormControl('', [Validators.required, Validators.email]);
   
+  
+  getErrorMessage() {
+      return this.email.hasError('required') ? 'You must enter a value' :
+          this.email.hasError('email') ? 'Not a valid email' :
+              '';
+  }
+
+
   downloadToEx(dv){
     console.log("download ", dv);
 
   }
 
   markPresent(dv){
-    console.log("in  update", dv);
+    console.log("in  update", dv.contact);
+    this.contact = dv.contact;
+    
     let dialogRef = this.dialog.open(MarkpresentComponent, {
       width: '300px',
-      data: { date: this.date, present: this.present, topic:this.topic }
+      hasBackdrop: false,
+      data: { contact:this.contact }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-      console.log("data, presnt, topice", this.date, this.present, this.topic);
-      this.dStatus["date"] = this.date;
-      this.dStatus["present"] = this.present;
-      this.dStatus["topic"] = this.topic;
+      console.log('The dialog was closed', result.date, result.present, result.topic);
+      this.dStatus["date"] = result.date;
+      this.dStatus["present"] = result.present;
+      this.dStatus["topic"] = result.topic;
+      console.log("status is", this.dStatus);
+      if(dv.contact){
+        this.dStatus["contact"] =  dv.contact
+        this._userService.markAttendance(this.dStatus);
+      }
     });
-    
-    if(dv.contact){
-      this._userService.markAttendance(dv.contact);
-    }
+
   
   }
 
@@ -111,6 +115,12 @@ export class MarkpresentComponent {
       {value:"YES"},
       {value:"NO"}
   ];
+
+  updateAtt(form:NgForm): void{
+    console.log("update at", form.value);
+    this.dialogRef.close(form.value);
+    
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

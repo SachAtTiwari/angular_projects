@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use('/', index);
 app.use('/addDevotee', index);
-app.use('/markAttendance', users);
+app.use('/markAttendance', index);
 
 
 

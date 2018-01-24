@@ -16,9 +16,35 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/test', function(req, res, next) {
-  res.send({ title: 'Express' });
+router.post('/markAttendance', function(req, res, next) {
+  console.log("im here", req.body);
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    const db = client.db(dbName);
+    db.listCollections().toArray(function(err, collections){     
+      console.log("collection list". collections);
+      if (collections === undefined){
+        res.send({error:"No Collections present in DB"});
+      }else{
+        db.collection("devotees").update({name:'Sachin Tiwari'}, {$push:{attendance:req.body.attendance}},
+          {
+              upsert:false
+          }, 
+          function(err, res) {
+            if (err) throw err;
+            console.log("1 document find", res.result);
+    
+         });
+      }
+    });
+  });
+ res.send({status:"ok"});
+  
+
 });
+
 
 
 /* add Devotee */
@@ -51,7 +77,7 @@ router.post('/addDevotee', function(req, res, next) {
         //db.close();
       //  res.send({status:res.result});
        });
-      db.close();
+      //db.close();
     });
    });
    res.send({status:"ok"});

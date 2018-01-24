@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/map';
+import { attachEmbeddedView } from '@angular/core/src/view/view_attach';
 
 
 
@@ -36,11 +37,10 @@ export class UserService{
         );
    }
 
-   markAttendance(contact){
-
+   markAttendance(attendance){
+    console.log("atten is ", attendance);
      this._http.post(this._url + "markAttendance", {
-            contact:contact,
-            present:true
+            attendance:attendance
        })
         .subscribe(
           res => {
