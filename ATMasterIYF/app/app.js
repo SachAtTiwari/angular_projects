@@ -28,6 +28,8 @@ app.use(cors());
 app.use('/', index);
 app.use('/addDevotee', index);
 app.use('/markAttendance', index);
+app.use('/getOTPDevotees', index);
+app.use('/downloadToExcel', index);
 
 
 

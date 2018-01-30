@@ -1,7 +1,7 @@
 <form #atForm="ngForm"  >
 
         <mat-form-field>                                                              
-            <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Date of Birth" required>       
+            <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Date Of Class" required>       
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
             <mat-datepicker #picker></mat-datepicker>                                   
           </mat-form-field>   
@@ -20,10 +20,7 @@
       <mat-form-field>
         <input matInput [(ngModel)]="topic" name="topic" placeholder="Topic">
       </mat-form-field>
-      <mat-form-field>
-            <input matInput value={{data.contact}} name="contact" placeholder="Contact">
-         </mat-form-field>
-
+    
       <mat-dialog-actions>
         <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
         <button mat-raised-button class="btn btn-primary" mat-dialog-close (click)="updateAtt(atForm)" type="submit">Submit</button>

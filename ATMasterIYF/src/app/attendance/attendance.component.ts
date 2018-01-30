@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -17,11 +18,12 @@ export class AttendanceComponent implements OnInit {
   
   contact:string;
   dStatus = {};
-  devotees = [ 
+ /* devotees = [ 
     {name:"vivek",contact:"7838138933", mail:"vivek@gmail.com", dob:"20/04/90", counsellor:"SGP", fp:"1/04/2017", topic:"OTP"},
     {name:"Naveen", contact:"7838131235", mail:"naveen@gmail.com", dob:"20/08/90", counsellor:"KVP", fp:"9/04/2017", topic:"OTP"},
 
-  ];  
+  ];*/
+  devotees = [];  
   
   
   counsellors = [
@@ -30,14 +32,39 @@ export class AttendanceComponent implements OnInit {
   ];
 
 
-  constructor(public dialog: MatDialog, private _userService:UserService) {};
+  constructor(private route: ActivatedRoute,
+    public dialog: MatDialog, private _userService:UserService) {
+      console.log("in constructor");
+    };
 
   ngOnInit() {
     console.log("in attendance");
-   /* this._userService.getAllDevotees()
-      .subscribe(userData => {
-          console.log("user data is ", userData);
-    });*/
+    this.route.queryParams.subscribe(params => {
+    console.log("param is ", params['course']);
+
+    switch(params['course']){
+      case 1:
+        this._userService.getOTPDevotees()
+         .subscribe(userData => {
+            console.log("user data is ", userData.result[0]);
+        });
+      case 2:
+        console.log("in tssvb8 ");
+      /* this._userService.getTssvb8Devotees()
+         .subscribe(userData => {
+            console.log("user data is ", userData);
+       });*/
+       default:
+         this._userService.getOTPDevotees()
+           .subscribe(userData => {
+              console.log("user data is ", userData.result);
+              this.devotees = userData.result;
+         });
+    }
+    
+
+   });
+    
   }
 
 
@@ -64,7 +91,7 @@ export class AttendanceComponent implements OnInit {
     let dialogRef = this.dialog.open(MarkpresentComponent, {
       width: '300px',
       hasBackdrop: false,
-      data: { contact:this.contact }
+      //data: { contact:this.contact }
     });
 
     dialogRef.afterClosed().subscribe(result => {

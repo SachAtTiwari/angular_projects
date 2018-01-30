@@ -16,16 +16,20 @@
               </a>
               <ul class="sidenav-second-level collapse" id="courses">
                 <li>
-                  <a style="color:black;" routerLink="/attendance" routerActive="/attendance">OTP</a>
+                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 1 }" 
+                      routerActive="/attendance">OTP</a>
                 </li>
                 <li >
-                  <a href="#" style="color:black;">TSSV</a>
+                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 2 }" 
+                  routerActive="/attendance">TSSV</a>
                 </li>
                 <li >
-                  <a style="color:black;" href="#">ASHRAY 1</a>
+                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 3 }" 
+                  routerActive="/attendance">ASHRAY 1</a>
                 </li>
                 <li >
-                  <a style="color:black;" href="#">ASHRAY 2</a>
+                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 4 }" 
+                  routerActive="/attendance">ASHRAY 2</a>
                 </li>
               </ul>
             </li>
