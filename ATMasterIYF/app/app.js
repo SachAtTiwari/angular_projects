@@ -30,6 +30,10 @@ app.use('/addDevotee', index);
 app.use('/markAttendance', index);
 app.use('/getOTPDevotees', index);
 app.use('/downloadToExcel', index);
+app.use('/checkClassSdl', index);
+app.use('/SdlClass', index);
+app.use('/getSdlClasses', index);
+app.use('/delRecord', index);
 
 
 

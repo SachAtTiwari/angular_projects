@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService} from '../devotee.service';
-import * as XLSX from 'xlsx';
+
+import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -36,16 +37,35 @@ export class DownloadsComponent implements OnInit {
     this._userService.downloadToExcel(form.value)
     .subscribe(userData => {
        console.log("user data is ", userData.result[0]);
-       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(userData.result);
-      console.log("1");
-      /* generate workbook and add the worksheet */
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-      console.log("2");
-      
-      /* save to file */
-      const wbout: string = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      saveAs(new Blob([wbout]), 'OTP.xlsx');
+       const result_json = [];
+       const objectToInsert = {};
+       objectToInsert["name"] = userData.result[0].name;
+       objectToInsert["contact"] = userData.result[0].contact;
+       objectToInsert["course"] = userData.result[0].course;
+       objectToInsert["counsellor"] = userData.result[0].counsellor;
+       objectToInsert["date"] = userData.result[0].attendance[0].date;
+       objectToInsert["present"] = userData.result[0].attendance[0].present;
+
+       result_json.push(objectToInsert);
+       console.log("main result", result_json);
+       
+       const ws_name = 'Attendance';
+       const wb: WorkBook = { SheetNames: [], Sheets: {} };
+       const ws: any = utils.json_to_sheet(result_json);
+       wb.SheetNames.push(ws_name);
+       wb.Sheets[ws_name] = ws; 
+       const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' }); 
+   
+       function s2ab(s) {
+         const buf = new ArrayBuffer(s.length);
+         const view = new Uint8Array(buf);
+         for (let i = 0; i !== s.length; ++i) {
+           view[i] = s.charCodeAt(i) & 0xFF;
+         };  
+         return buf;
+       }   
+   
+       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'OTP.xlsx');
    });                                                                         
   }
 }

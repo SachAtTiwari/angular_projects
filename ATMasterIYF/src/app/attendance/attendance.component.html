@@ -20,7 +20,26 @@
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>{{formError}}</strong>
         </div>
+        
+
+
         <form #classForm="ngForm" (ngSubmit)="addDevotee(classForm)" >
+           <div style="margin:5px;" *ngIf="showStatus" class="alert alert-success alert-dismissable">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              Record updated successfully.
+          </div>
+
+            <div style="margin:5px;" *ngIf="showDelStatus" class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 Record deleted successfully.
+            </div>
+            
+            <div style="margin:5px;" *ngIf="showAddStatus" class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 Record added successfully.
+            </div>
+            
+
           <mat-form-field>                                  
               <input matInput name="name" [(ngModel)]="name"  placeholder="Name" required>  
            </mat-form-field>  
@@ -49,11 +68,21 @@
                 </mat-option>                              
                                             
               </mat-select>                                                              
-            </mat-form-field>  
+            </mat-form-field> 
+            
+            <mat-form-field>                                                             
+                <mat-select [(ngModel)]="course" name="course" placeholder="Course" required>                                      
+                   
+                  <mat-option *ngFor="let c of courses" [value]="c.value">
+                      {{c.value}}  
+                  </mat-option>                              
+                                              
+                </mat-select>                                                              
+              </mat-form-field> 
                                                                                                                                       
-           <mat-form-field>                                  
+           <!--mat-form-field>                                  
               <input matInput name="topic" [(ngModel)]="topic"  placeholder="Topic" required>  
-           </mat-form-field>  
+           </mat-form-field-->  
                                                                      
           <button mat-raised-button type="submit" class="btn btn-primary">Add Devotee</button>
         
@@ -79,12 +108,9 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email</th>
                   <th>Contact</th>
                   <th>Counsellor</th>
-                  <th>FP</th>
-                  <th>TOPIC</th>
-                  <th>Mark Present</th>
+                  <th>Actions</th>
 
                 </tr>
               </thead>
@@ -92,12 +118,38 @@
               <tbody>
                   <tr *ngFor="let dv of devotees;">
                   <td >{{dv.name}}</td>
-                  <td >{{dv.email}}</td>
                   <td >{{dv.contact}}</td>
                   <td >{{dv.counsellor}}</td>
-                  <td >{{dv.fp}}</td>
-                  <td >{{dv.topic}}</td>
-                  <td ><button mat-raised-button type="submit" (click)="markPresent(dv)" class="btn btn-primary">Update</button></td>
+                  <td >
+                    <button 
+                       mat-raised-button style="margin:5px;" type="submit" 
+                       (click)="markPresent(dv)" 
+                       class="btn btn-primary">
+                      <i class="fa fa-fw fa-user"></i>
+                      <span matTooltip="Click here to mark present"></span>
+                       
+                       
+                    </button>
+                    <button
+                       mat-raised-button style="margin:5px;" type="submit" 
+                       (click)="delRecord(dv)" 
+                       class="btn btn-danger">
+                      <i class="fa fa-fw fa-trash"></i>
+                      <span matTooltip="Delete Record"></span>
+                      
+                    </button>
+
+                    <button
+                      mat-raised-button style="margin:5px;" type="submit" 
+                      (click)="showDetails(dv)" 
+                      class="btn btn-primary">
+                      <i class="fa fa-address-card"></i>
+                      <span matTooltip="Show Details"></span>
+                   
+                 </button>
+                    
+
+                    </td>
                 </tr>
               </tbody>
             </table>
