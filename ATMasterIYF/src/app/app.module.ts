@@ -59,8 +59,11 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { DownloadsComponent } from './downloads/downloads.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { MarkpresentComponent } from './attendance/attendance.component';
+import { ShowdetailsComponent } from './showdetails/showdetails.component';
+import { AddDevoteeComponent } from './attendance/attendance.component';
 
 const appRoutes: Routes = [  
+  { path: 'showDetails/:id', component: ShowdetailsComponent},  
   { path: 'classSdl', component: ClassComponent},
   { path: 'attendance', component: AttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
@@ -74,10 +77,13 @@ const appRoutes: Routes = [
     AttendanceComponent,
     DownloadsComponent,
     MarkpresentComponent,
+    ShowdetailsComponent,
+    AddDevoteeComponent,
   
   ],
   entryComponents: [
-    MarkpresentComponent
+    MarkpresentComponent,
+    AddDevoteeComponent
   ],
   imports: [
     BrowserModule,

@@ -31,23 +31,33 @@ export class DownloadsComponent implements OnInit {
 
   ];
 
-  onSubmit(form: NgForm){
+  downloadToExcel(form: NgForm){
 
-    //console.log("form is", form.value);
+    form.value.date = this._userService.parseDate(form.value.date);
     this._userService.downloadToExcel(form.value)
     .subscribe(userData => {
-       console.log("user data is ", userData.result[0]);
-       const result_json = [];
-       const objectToInsert = {};
-       objectToInsert["name"] = userData.result[0].name;
-       objectToInsert["contact"] = userData.result[0].contact;
-       objectToInsert["course"] = userData.result[0].course;
-       objectToInsert["counsellor"] = userData.result[0].counsellor;
-       objectToInsert["date"] = userData.result[0].attendance[0].date;
-       objectToInsert["present"] = userData.result[0].attendance[0].present;
+       //console.log("user data is ", userData.result);
+       let result_json = [];
+       for(var i = 0;i < userData.result.length;i++){
+         let objectToInsert = {};
+         
+         objectToInsert["name"] = userData.result[i].name;
+         objectToInsert["contact"] = userData.result[i].contact;
+         objectToInsert["course"] = userData.result[i].course;
+         objectToInsert["counsellor"] = userData.result[i].counsellor;
+         
+         for(var j = 0;j < userData.result[i].attendance.length;j++){
+           if(userData.result[i].attendance[j].date.localeCompare(form.value.date) == 0){
+             objectToInsert["date"] = userData.result[i].attendance[j].date;
+             objectToInsert["present"] = userData.result[i].attendance[j].present;
+             objectToInsert["topic"] = userData.result[i].attendance[j].topic;
+             break;
+           }
 
-       result_json.push(objectToInsert);
-       console.log("main result", result_json);
+        }
+         result_json.push(objectToInsert);
+       }
+       
        
        const ws_name = 'Attendance';
        const wb: WorkBook = { SheetNames: [], Sheets: {} };
@@ -65,7 +75,8 @@ export class DownloadsComponent implements OnInit {
          return buf;
        }   
    
-       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'OTP.xlsx');
+       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
+           form.value.date + '_' + form.value.course  + '.xlsx');
    });                                                                         
   }
 }

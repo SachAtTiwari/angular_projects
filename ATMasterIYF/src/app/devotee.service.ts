@@ -25,40 +25,45 @@ export class UserService{
        )
      }
 
+    getDetails(id): Observable<any> {
+    //  console.log("options", id);
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');    
+      let searchParams = new URLSearchParams();
+      searchParams.append('id', id);
+      let options = new RequestOptions({ headers: headers, params: searchParams });
+      
+     return this._http.get(this._url + "getDetails", options)
+       .map((response: Response) => {
+          // console.log("mock data 1 " , response.json());
+           return response.json();
+          }
+        )
+      }
+
    getSdlClasses(){
-      return this._http.get(this._url + "getSdlClasses")  //, options)
+      
+      return this._http.get(this._url + "getSdlClasses")
         .map((response: Response) => {
-           // console.log("mock data" , response);
             console.log("mock data 1 " , response.json());
             return response.json();
            }
          )
     }
    
-   checkIfClassSdlForCourse(ckStatus): Observable<any> {
+   checkIfClassSdlForCourse(course, date): Observable<any> {
       //console.log("Checking class sdl");
       //console.log("atten is ", ckStatus.course);
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
-      if(ckStatus.course === "1"){
-        searchParams.append('course', "OTP");
-      }else if(ckStatus.course === "2"){
-        searchParams.append('course', "TSSV");
-      }
+      searchParams.append('course', course);
+      searchParams.append('date', date);
       let options = new RequestOptions({ headers: headers, params: searchParams });
-      /*return this._http.get(this._url + "checkClassSdl", options)
-       .flatMap((response: Response) => response.json().result)
-       .flatMap((otp: any) =>
-        this._http.get(this._url + "getOTPDevotees", options), 
-             (_, resp) => resp.json())*/
-         
-    
       return this._http.get(this._url + "checkClassSdl", options)
           .map((response: Response) => {
             //console.log("mock data 1 " , response.json());
             return response.json();
-            //return {result :{"course":"OTP"}};
          }
        )
    }
@@ -103,6 +108,14 @@ export class UserService{
         );
    }
 
+   parseDate(date): string{
+
+    var temp_datetime_obj = new Date(date);
+    let month = temp_datetime_obj.getMonth() + 1
+    date =  temp_datetime_obj.getDate() + '-' + month + '-' + temp_datetime_obj.getFullYear();
+    //console.log("final date ", date); 
+    return date;
+   }
 
    SdlClass(body){
     console.log("body is", body)  
@@ -138,7 +151,7 @@ export class UserService{
 
 
    downloadToExcel(dTe){
-      console.log("atten is ", dTe.date);
+      //console.log("atten is ", dTe);
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
@@ -149,7 +162,6 @@ export class UserService{
 
       return this._http.get(this._url + "downloadToExcel", options)
           .map((response: Response) => {
-             // console.log("mock data" , response);
             //console.log("mock data 1 " , response.json());
             return response.json();
          }

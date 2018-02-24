@@ -17,7 +17,7 @@
 <h3>{{ifNoClassScdlText}} </h3>
 
  <div *ngIf="showForm;">
-    <form #classForm="ngForm" (ngSubmit)="onSubmit(classForm)" class="classSc" style="margin:10px;">
+    <form #classForm="ngForm" (ngSubmit)="sdlClass(classForm)" class="classSc" style="margin:10px;">
          <mat-form-field>                                                              
            <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Choose a date">       
            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    

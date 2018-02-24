@@ -1,0 +1,42 @@
+<div class="content-wrapper" style="background:#CCC;">
+    <div class="container-fluid">  
+             <!-- Breadcrumbs-->
+             <ol class="breadcrumb" style="margin-top:30px;">
+                <li class="breadcrumb-item">
+                  <a href="#">COURSES</a>
+                </li>
+                <li class="breadcrumb-item active">Attendance</li>
+              </ol>  
+
+              <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
+                  <div class="card-header">
+                    <i class="fa fa-table"></i> Devotee Attendance
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered"
+                       id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Present</th>
+                            <th>Topic</th>
+                          </tr>
+                        </thead>
+          
+                        <tbody>
+                            <tr *ngFor="let dv of devotees;">
+                            <td >{{dv.name}}</td>
+                            <td >{{dv.contact}}</td>
+                            <td >{{dv.counsellor}}</td>
+                            
+                          </tr>
+                        </tbody>
+                      </table>
+          
+                    </div>
+                  </div>
+                  <div class="card-footer small text-muted">
+                  </div>
+    </div>
+</div>

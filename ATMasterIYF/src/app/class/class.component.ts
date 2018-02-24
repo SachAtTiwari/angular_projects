@@ -5,6 +5,8 @@ import {FormControl, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Body } from '@angular/http/src/body';
+//import { window } from 'rxjs/operator/window';
+import swal from 'sweetalert2';
 
 
 @Component({
@@ -25,7 +27,7 @@ export class ClassComponent implements OnInit {
     //this.ifClassSdl = true;
     this._userService.getSdlClasses()
       .subscribe(classInfo => {
-         console.log("class data is ", classInfo.result);
+         //console.log("class data is ", classInfo.result);
          this.sdlClasses = classInfo.result;
     });
   }
@@ -70,18 +72,23 @@ export class ClassComponent implements OnInit {
     this.showForm = true;
   }
 
-  onSubmit(form: NgForm){
+  sdlClass(form: NgForm){
   //  this.showSdlClass = true;
-    this.showForm = true;
    // this.ifClassSdl = true;
-    console.log("form is", form.value);
+   form.value.date = this._userService.parseDate(form.value.date);
+   console.log("form is", form.value);
     if (!form.value.date || !form.value.speaker || !form.value.course 
       || !form.value.time || !form.value.topic){
         //this.formError = "All fields are mandatory";
         console.log("All fields are required")
+        swal("All fields are required to Schedule a class", "Hari Bol..", 'warning');
+
     }else{
        this._userService.SdlClass(form.value);
        form.reset();
+       window.location.reload()
+       swal("Class Scheduled ", "Hari Bol..", 'success');
+       
       }
     }                                                                            
 

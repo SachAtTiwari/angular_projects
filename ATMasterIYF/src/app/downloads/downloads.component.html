@@ -6,7 +6,7 @@
                   <a href="#">DOWNLOADS</a>
                 </li>
               </ol>  
-        <form #download1="ngForm" (ngSubmit)="onSubmit(download1)" class="classSc" style="margin:10px;">
+        <form #download1="ngForm" (ngSubmit)="downloadToExcel(download1)" class="classSc" style="margin:10px;">
             <mat-form-field >                                                              
               <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Choose a date" required>       
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
@@ -22,7 +22,7 @@
                </mat-select>                                                              
              </mat-form-field>                                                            
                                                                                        
-             <mat-form-field>                                                             
+             <!--mat-form-field>                                                             
                <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor" required>                                      
                   
                  <mat-option *ngFor="let c of counsellors" [value]="c.value">
@@ -30,7 +30,7 @@
                  </mat-option>                              
                                              
                </mat-select>                                                              
-             </mat-form-field>                                                             
+             </mat-form-field-->                                                             
                                                                        
             <button mat-raised-button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-download"></i>Download</button>
           </form>                                      
