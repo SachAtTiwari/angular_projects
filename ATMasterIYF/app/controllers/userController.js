@@ -11,6 +11,16 @@ const dbName = 'users';
 
 exports.addDevotee = function(req, res, next) {
     console.log("im here", req.body.body);
+    let all = false    
+    if(req.body.body.course && req.body.body.counsellor){
+      all = true;
+    }
+
+    let date = new Date();
+    let month = date.getMonth() + 1
+    date =  date.getDate() + '-' + month + '-' + date.getFullYear();
+    console.log("date is", date);
+
     dbClient.connect(url, function(err, client) {
         const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
@@ -21,31 +31,64 @@ exports.addDevotee = function(req, res, next) {
              });
           }
   
-          const db = client.db("entity");
+          //const db = client.db("entity");
           db.listCollections().toArray(function(err, collections){
              if (collections === undefined){
                 res.send({error:"No Classes Sdl for OTP"});
              }else{
+              if(all){
+                db.collection("devotees").find({contact:req.body.body.contact})
+                .toArray(function(err, result) {
+                   if (err) throw err;
+                   if (result.length === 0){
+                     db.collection("devotees")
+                     .insertOne(req.body.body, function(err, createRes) {
+                       if (err) throw err;
+                       res.send({result:"ok"});
+                     });
+                   }else{
+                     res.send({result:"notok"});            
+                  }
+                 }); 
+
+              }else{
                //Find Sdl classes for today for given course to fetch counsellor details
-                db.collection("entity").find({course:"OTP"}).toArray(function(err, sdlResult) {
+                db.collection("entity").find({course:"OTP", date:date})
+                .toArray(function(err, sdlResult) {
                   if (err) throw err;
                   req.body.body.fp = new Date();
                   req.body.body.course = sdlResult[0].course;
                   req.body.body.counsellor = sdlResult[0].speaker;
-                  const db = client.db(dbName);
-          
-                  db.collection("devotees").find({contact:req.body.body.contact}).toArray(function(err, result) {
+
+                  db.collection("devotees").find({contact:req.body.body.contact})
+                  .toArray(function(err, result) {
                      if (err) throw err;
                      if (result.length === 0){
-                       db.collection("devotees").insertOne(req.body.body, function(err, createRes) {
+                       db.collection("devotees")
+                       .insertOne(req.body.body, function(err, createRes) {
                          if (err) throw err;
-                         res.send({result:"ok"});
-                       });
+                        let attendance = {
+                          date:date, 
+                          speaker:sdlResult[0].speaker,
+                          topic:sdlResult[0].topic,
+                          present:"YES"
+                        }
+                        db.collection("devotees").update(
+                          {contact:req.body.body.contact}, 
+                          {$push:{attendance:attendance}},
+                          {upsert:false}, 
+                          function(err, resatt) {
+                            if (err) throw err;
+                           // console.log("1 document find", res.result);
+                            res.send({result:"ok"});
+                           });
+                      });
                      }else{
                        res.send({result:"notok"});            
                     }
-                }); 
-            });
+                   }); 
+                });
+              }
           }
         });
       });
@@ -77,41 +120,64 @@ exports.addDevotee = function(req, res, next) {
    res.send({result:"ok"});
 };
 
-exports.getOTPDevotees = function(req, res, next) {
-    //console.log("i m here", req.body.body);
+exports.getDevotees = function(req, res, next) {
+    console.log("i m here", req.query.course);
+    let course = req.query.course;
+    let date = new Date();
+    let month = date.getMonth() + 1
+    date =  date.getDate() + '-' + month + '-' + date.getFullYear();
+    console.log("date is", date);
+    
+
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
-        //check sdl classes for OTP
-        const db = client.db("entity");
-        db.listCollections().toArray(function(err, collections){
+        //check sdl classes for provided course
+        const db = client.db(dbName);
+        if(course){
+         db.listCollections().toArray(function(err, collections){
            if (collections === undefined){
               res.send({error:"No Classes Sdl for OTP"});
            }else{
-              db.collection("entity").find({course:"OTP"}).toArray(function(err, sdlResult) {
-              if (err) throw err;
-         //     console.log("class found ", sdlResult);
-  
-              //GET OTP devotees 
-             if (sdlResult){
-                const db = client.db(dbName);      
-                db.listCollections().toArray(function(err, usrCollections){
-                    if (usrCollections === undefined){
-                      res.send({error:"No Collections present in DB"});
-                    }else{
-                       db.collection("devotees").find({course:'OTP'}).toArray(function(err, result) {
-                       if (err) throw err;
-           //             console.log(result);
-                        res.send({result:result, sdlResult:sdlResult});
-                     });
-                   }
-              });
-            }//OTP fetch finish
-          });//Entity end
-        }//else end
+              db.collection("entity").find({course:course, date:date})
+              .toArray(function(err, sdlResult) {
+               if (err) throw err;
+               //console.log("sdl result ",sdlResult);
+                //GET OTP devotees 
+                if (sdlResult){
+                  //const db = client.db(dbName);      
+                  db.listCollections().toArray(function(err, usrCollections){
+                      if (usrCollections === undefined){
+                        res.send({error:"No Collections present in DB"});
+                      }else{
+                         db.collection("devotees").find({course:course})
+                         .toArray(function(err, result) {
+                             if (err) throw err;
+                             //console.log("devotee result", result);
+                             res.send({result:result, sdlResult:sdlResult});
+                          });
+                      }
+                   });
+                }//OTP fetch finish
+            });//Entity end
+         }//else end
       });//list collection end
-     });
+    }else{
+      const db = client.db(dbName);      
+      db.listCollections().toArray(function(err, usrCollections){
+          if (usrCollections === undefined){
+             res.send({error:"No Collections present in DB"});
+          }else{
+              db.collection("devotees").find()
+              .toArray(function(err, result) {
+               if (err) throw err;
+               //console.log(result);
+               res.send({result:result});
+           });
+          }
+        });
+    }
+  });
   };
-
 
   exports.getDevoteeDetail = function(req, res, next) {
    // console.log("im here", req.query.id);

@@ -1,11 +1,14 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit,Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as $ from 'jquery';
 import swal from 'sweetalert2';
+import {MatTableDataSource, MatPaginator} from '@angular/material';
+import 'datatables.net';
 
 
 @Component({
@@ -16,26 +19,34 @@ import swal from 'sweetalert2';
     UserService,
   ]
 })
+
 export class AttendanceComponent implements OnInit {
+  displayedColumns = ['name', 'contact', 'counsellor', 'actions'];
+  ELEMENT_DATA: Element[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
 
   
   contact:string;
   launchModal = false;
-  showStatus = false;
-  showDelStatus =  false;
-  showAddStatus = false;
-  showAddMessage = "";
-  showAttMessage = "";
+  showAddDevotee = false;
   formError = "";
   topic = "";
   
 
   dStatus = {};
- /* devotees = [ 
-    {name:"vivek",contact:"7838138933", mail:"vivek@gmail.com", dob:"20/04/90", counsellor:"SGP", fp:"1/04/2017", topic:"OTP"},
-    {name:"Naveen", contact:"7838131235", mail:"naveen@gmail.com", dob:"20/08/90", counsellor:"KVP", fp:"9/04/2017", topic:"OTP"},
-
-  ];*/
   devotees = [];  
   getOTPData = false;  
   
@@ -60,35 +71,31 @@ export class AttendanceComponent implements OnInit {
       console.log("in constructor");
     };
 
-
+    
   
 
   ngOnInit() {
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
-   // console.log("param is ", params['course']);
+        console.log("param is ", params['course']);
 
-    if(params['course'] === "1"){
-       
-        if (this.getOTPData == false){
-         this._userService.getOTPDevotees()
-            .subscribe(userData => {
-             console.log("user data is 2", userData);
-             if (userData.sdlResult.length > 0){
-               this.devotees = userData.result;
-             }else{
-               this.router.navigateByUrl('/classSdl');
-             }
-          });
+        if(params['course'] === "1"){
+          this.showAddDevotee = true;
+          this._getDevotees(params);
+        }else if(params["course"] === "2"){
+          console.log("in tssvb8 ");
+          this.showAddDevotee = false; 
+          this._getDevotees(params);
+        }else if (params["course"] === "3"){
+          this.showAddDevotee = false;  
+          this._getDevotees(params);      
+        }else if(params["course"] === "4"){
+          this.showAddDevotee = false;        
+          this._getDevotees(params);        
+        }else if(params["course"] === "5"){
+          this.showAddDevotee = true;    
+          this._getDevotees(params);    
         }
-
-        
-    }else if(params["course"] === "2"){
-        console.log("in tssvb8 ");
-
-    }else{
-
-    }
    });
     
   }
@@ -100,6 +107,21 @@ export class AttendanceComponent implements OnInit {
     return this.email.hasError('required') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
             '';
+  }
+
+  _getDevotees(params){
+    this._userService.getDevotees(params["course"])
+    .subscribe(userData => {
+//        console.log("user data is 2", userData);
+        if(userData.sdlResult && userData.sdlResult.length > 0){
+          this.dataSource.data = userData.result;
+        }else if (!userData.sdlResult && userData.result.length > 0 && params["course"] == "5"){
+            this.dataSource.data = userData.result;
+            
+        }else{
+          this.router.navigateByUrl('/classSdl');
+        }
+     });
   }
 
   updateOTPDevotees(){
@@ -124,7 +146,7 @@ export class AttendanceComponent implements OnInit {
     dialogRef = this.dialog.open(MarkpresentComponent, {
         width: '300px',
         hasBackdrop: false,
-     //   data: { topic:this.topic, selected:"YES"}
+        //data: {all:true}
      });
 
      dialogRef.afterClosed().subscribe(result => {
@@ -138,18 +160,14 @@ export class AttendanceComponent implements OnInit {
                 this.dStatus["date"] = userData.result[0].date;
                 this.dStatus["present"] = "YES";
                 this.dStatus["topic"] = userData.result[0].topic;
+                this.dStatus["speaker"] = userData.result[0].speaker;
                 if(dv.contact){
                   this.dStatus["contact"] =  dv.contact
                   this._userService.markAttendance(this.dStatus)
                     .subscribe(userData => {
                       if(userData["result"] === "ok"){
-                        this.showStatus =  true;
-                        this.showAttMessage = "Attendance updated successfully";
                         swal("Attendance updated successfully" , "Hari Bol!!", 'success');
-                        
                       }else{
-                        this.showStatus =  true;            
-                        this.showAttMessage = "Attendance already updated";
                         swal("Attendance already updated", "Hari Bol :)", 'warning');
                       }
                     });
@@ -157,8 +175,6 @@ export class AttendanceComponent implements OnInit {
             }else{
               console.log("No class sdl for selected date");
               swal("No class sdl for selected date", "Hari Bol..", 'error')
-              this.showStatus =  true;            
-              this.showAttMessage = "No Class Scheduled for the selected date";
             }
           });
 
@@ -190,48 +206,15 @@ export class AttendanceComponent implements OnInit {
          console.log("Add record is ", userData);
          if(userData["result"] === "ok"){
           console.log("in add record", userData);
-          this.showAddStatus =  true;
-          this.showAddMessage = "Record added successfully";
           window.location.reload(); 
-          
           swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
-          
          }else{
-            this.showAddStatus = true;
-            this.showAddMessage = "Record already present";
-            swal("Hare Krishna, We already have this record" , "Hari Bol!!", 'warning');
-            
+            swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
           }
          });
        }
     });
   }
-
-  addDevotee(form:NgForm){
-    console.log("form is", form.value);
-    if (!form.value.name || !form.value.email || !form.value.contact 
-           || !form.value.dob || !form.value.counsellor || !form.value.course){
-             this.formError = "All fields are mandatory";
-    }else{
-        this._userService.addDevotee(form.value)
-        .subscribe(userData => {
-          console.log("Add record is ", userData);
-          if(userData["result"] === "ok"){
-            console.log("in add record", userData);
-            this.showAddStatus =  true;
-            this.showAddMessage = "Record added successfully";
-            swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
-            
-           }else{
-             this.showAddStatus = true;
-             this.showAddMessage = "Record already present";
-            swal("Hare Krishna, We already have this record" , "Hari Bol!!", 'warning');
-             
-           }
-        });
-        form.reset();
-      }
-    }
 
   delRecord(dv){
       console.log("contact", dv.contact);
@@ -240,7 +223,6 @@ export class AttendanceComponent implements OnInit {
         console.log("del record is ", userData);
         if(userData["result"] === "ok"){
           console.log("in del record", userData);
-          this.showDelStatus =  true;
          }
       });
         
@@ -283,6 +265,17 @@ export class MarkpresentComponent {
 })
 export class AddDevoteeComponent {
 
+  all = false;
+  ngOnInit() {
+    console.log("in add devotee");
+    this.route.queryParams.subscribe(params => {
+      console.log("param is ", params['course']);
+
+      if(params['course'] === "5"){
+        this.all = true;
+      };
+    });
+  }
   email = new FormControl('', [Validators.required, Validators.email]);
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :

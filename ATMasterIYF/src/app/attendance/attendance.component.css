@@ -11,4 +11,9 @@
   
   mat-form-field{
       margin: 30px;
+      width: 900px;
+  }
+
+  .mat-form-field-infix{
+    width: 900px;
   }

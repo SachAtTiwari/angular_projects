@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {FormControl, Validators} from '@angular/forms';
@@ -6,7 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Body } from '@angular/http/src/body';
 //import { window } from 'rxjs/operator/window';
+import {MatTableDataSource, MatPaginator} from '@angular/material';
 import swal from 'sweetalert2';
+
+
 
 
 @Component({
@@ -18,7 +21,22 @@ import swal from 'sweetalert2';
 })
 export class ClassComponent implements OnInit {
 
+  displayedColumns = ['Date', 'Speaker', 'Course', 'Topic'];
+  ELEMENT_DATA: Element[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   sdlClasses = [];
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
 
   constructor(private _userService:UserService) { }
 
@@ -28,7 +46,9 @@ export class ClassComponent implements OnInit {
     this._userService.getSdlClasses()
       .subscribe(classInfo => {
          //console.log("class data is ", classInfo.result);
-         this.sdlClasses = classInfo.result;
+         this.dataSource.data = classInfo.result;
+         //console.log("class data is ", this.dataSource.data);
+         
     });
   }
 

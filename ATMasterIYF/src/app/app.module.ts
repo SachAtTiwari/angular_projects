@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { DataTablesModule } from 'angular-datatables';
+
 
 import { RouterModule, Routes } from '@angular/router';
 import {
@@ -86,6 +88,7 @@ const appRoutes: Routes = [
     AddDevoteeComponent
   ],
   imports: [
+    DataTablesModule,
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,

@@ -46,7 +46,7 @@ exports.markAttendance = function(req, res, next) {
 exports.checkClassSdl = function(req, res, next) {
     console.log("im here", req.query.date);
     dbClient.connect(url, function(err, client) {
-        const db = client.db("entity");
+        const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
@@ -70,7 +70,7 @@ exports.checkClassSdl = function(req, res, next) {
     console.log("im here", req.body.body);
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
-        const db = client.db("entity");
+        const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
           console.log("collection list". collections);
           if (collections === undefined){
@@ -82,7 +82,7 @@ exports.checkClassSdl = function(req, res, next) {
   
           db.collection("entity").insertOne(req.body.body, function(err, res) {
             if (err) throw err;
-           console.log("1 document inserted", res.result);
+            console.log("1 document inserted", res.result);
          });
       });
      });
@@ -93,7 +93,7 @@ exports.checkClassSdl = function(req, res, next) {
     console.log("i m here in sdl classes");
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
-        const db = client.db("entity");
+        const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});

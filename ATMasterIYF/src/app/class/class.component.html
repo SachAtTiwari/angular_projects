@@ -70,15 +70,54 @@
       <div class="card-header">
         <i class="fa fa-table"></i> Scheduled Classes</div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <div class="table-responsive">          
+          <mat-form-field class="search">
+              <input matInput  (keyup)="applyFilter($event.target.value)" placeholder="Search">
+          </mat-form-field>
+          <mat-table #table [dataSource]="dataSource">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="Date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+              </ng-container>
+          
+              <!-- Name Column -->
+              <ng-container matColumnDef="Speaker">
+                <mat-header-cell *matHeaderCellDef> Speaker </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.speaker}} </mat-cell>
+              </ng-container>
+          
+              <!-- Weight Column -->
+              <ng-container matColumnDef="Course">
+                <mat-header-cell *matHeaderCellDef> Course </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.course}} </mat-cell>
+              </ng-container>
+          
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Topic">
+                <mat-header-cell *matHeaderCellDef> Topic </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.topic}} </mat-cell>
+              </ng-container>
+          
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          
+            </mat-table>
+            <mat-paginator #paginator
+             [pageSize]="10"
+             [pageSizeOptions]="[5, 10, 20]"
+             >
+         </mat-paginator>
+
+
+          <!--table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Speaker</th>
                 <th>Course</th>
                 <th>Topic</th>
-                <!--th>Attendance</th-->
                 
               </tr>
             </thead>
@@ -88,11 +127,11 @@
                 <td >{{cl.speaker}}</td>
                 <td >{{cl.course}}</td>
                 <td >{{cl.topic}}</td>
-                <!--td ><a routerLink="/attendance" routerLinkActive="active">Take Attendance</a></td-->
               </tr>
             </tbody>
-          </table>
+          </table-->
         </div>
+
       </div>
       <div class="card-footer small text-muted"></div>
     </div>

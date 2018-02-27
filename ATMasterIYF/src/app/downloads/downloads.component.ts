@@ -22,8 +22,8 @@ export class DownloadsComponent implements OnInit {
   courses = [
     {value:"OTP"},
     {value:"TSSV"},
-    {value:"ASHRAY 1"},
-    {value:"ASHRAY 2"}
+    {value:"ASHRAY1"},
+    {value:"ASHRAY2"}
   ];
   counsellors = [
     {value:"KVP"},
@@ -51,6 +51,7 @@ export class DownloadsComponent implements OnInit {
              objectToInsert["date"] = userData.result[i].attendance[j].date;
              objectToInsert["present"] = userData.result[i].attendance[j].present;
              objectToInsert["topic"] = userData.result[i].attendance[j].topic;
+             objectToInsert["speaker"] = userData.result[i].attendance[j].speaker;
              break;
            }
 
@@ -63,6 +64,7 @@ export class DownloadsComponent implements OnInit {
        const wb: WorkBook = { SheetNames: [], Sheets: {} };
        const ws: any = utils.json_to_sheet(result_json);
        wb.SheetNames.push(ws_name);
+       wb['!autofilter'] = { ref: "C4" };
        wb.Sheets[ws_name] = ws; 
        const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' }); 
    

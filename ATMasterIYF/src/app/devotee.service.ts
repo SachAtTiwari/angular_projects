@@ -15,15 +15,39 @@ export class UserService{
 
   
    getOTPDevotees(){
-     //console.log("options", options);
     return this._http.get(this._url + "getOTPDevotees")  //, options)
       .map((response: Response) => {
-         // console.log("mock data" , response);
           //console.log("mock data 1 " , response.json());
           return response.json();
          }
        )
      }
+
+     getDevotees(course): Observable<any>{
+      //console.log("in devotees", course);
+      let courseName = "";
+      if(course == "1"){
+        courseName = "OTP";
+      }else if(course == "2"){
+        courseName = "TSSV";        
+      }else if(course == "3"){
+        courseName = "ASHRAY1";                
+      }else if(course == "4"){
+        courseName = "ASHRAY2";                       
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');    
+      let searchParams = new URLSearchParams();
+      searchParams.append('course', courseName);
+      let options = new RequestOptions({ headers: headers, params: searchParams });
+
+      return this._http.get(this._url + "getDevotees", options)
+        .map((response: Response) => {
+            //console.log("mock data 1 " , response.json());
+            return response.json();
+           }
+         )
+       }
 
     getDetails(id): Observable<any> {
     //  console.log("options", id);

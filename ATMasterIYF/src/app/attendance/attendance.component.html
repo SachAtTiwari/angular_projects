@@ -16,7 +16,8 @@
     <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
         <div class="card-header">
           <i class="fa fa-table"></i> Devotee List
-          <button 
+
+          <button *ngIf="showAddDevotee" 
           mat-raised-button
           (click)="handleDevoteeDialog()" 
           class="btn btn-primary pull-right">
@@ -27,8 +28,64 @@
 
         <div class="card-body">
           <div class="table-responsive">
+              <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+              <mat-table #table [dataSource]="dataSource">
 
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- Contact Column -->
+                  <ng-container matColumnDef="contact">
+                    <mat-header-cell *matHeaderCellDef> Contact </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.contact}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- counsellor Column -->
+                  <ng-container matColumnDef="counsellor">
+                    <mat-header-cell *matHeaderCellDef> Counsellor </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.counsellor}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <button 
+                        mat-raised-button style="margin:5px;" type="submit" 
+                        (click)="markPresent(element)" 
+                        class="btn btn-primary">
+                       <i class="fa fa-fw fa-user"></i>
+                       <span matTooltip="Click here to mark present"></span>
+                     </button>  
+                    
+                     <button
+                      mat-raised-button style="margin:5px;" type="submit" 
+                      (click)="showDetails(element)" 
+                      class="btn btn-primary">
+                      <i class="fa fa-address-card"></i>
+                      <span matTooltip="Show Details"></span>
+                   
+                     </button>
+
+                    
+                    </mat-cell>
+                  </ng-container>
+              
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              
+                </mat-table>
+                <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 >
+             </mat-paginator>
+            <!--table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -54,14 +111,14 @@
                        
                        
                     </button>
-                    <!--button
+                    <button
                        mat-raised-button style="margin:5px;" type="submit" 
                        (click)="delRecord(dv)" 
                        class="btn btn-danger">
                       <i class="fa fa-fw fa-trash"></i>
                       <span matTooltip="Delete Record"></span>
                       
-                    </button-->
+                    </button>
 
                     <button
                       mat-raised-button style="margin:5px;" type="submit" 
@@ -76,7 +133,7 @@
                     </td>
                 </tr>
               </tbody>
-            </table>
+            </table-->
 
           </div>
         </div>
