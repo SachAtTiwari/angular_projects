@@ -23,12 +23,16 @@ export class DownloadsComponent implements OnInit {
     {value:"OTP"},
     {value:"TSSV"},
     {value:"ASHRAY1"},
-    {value:"ASHRAY2"}
+    {value:"ASHRAY2"},
   ];
-  counsellors = [
-    {value:"KVP"},
-    {value:"SGP"}
 
+  counsellors = [
+    {value:"HG Shyam Gopal Prabhuji"},
+    {value:"HG Kalpvraksha Prabhuji"},
+    {value:"HG Vaidant Chaitnya Prabhuji"},
+    {value:"HG Pundrik Vidhyanidhi Prabhuji"},
+    {value:"HG Jagdanand Pandit Prabhuji"},
+    
   ];
 
   downloadToExcel(form: NgForm){

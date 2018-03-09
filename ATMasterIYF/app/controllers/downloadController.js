@@ -2,10 +2,12 @@ const dbClient = require('mongodb').MongoClient;
 const assert = require('assert');
  
 // Connection URL
-const url = 'mongodb://localhost:27017';
+//const url = 'mongodb://localhost:27017';
+const url = 'mongodb://iyfuser:h2so4na2co#@ds253918.mlab.com:53918/iyfdb';
+
  
 // Database Name
-const dbName = 'users';
+const dbName = 'iyfdb';
 
 
 exports.downloadToExcel =  function(req, res, next) {

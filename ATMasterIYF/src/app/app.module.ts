@@ -128,7 +128,8 @@ const appRoutes: Routes = [
     Ng2SmartTableModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true},
+      { enableTracing: true,  useHash: true },
+      
     )
   ],
   exports: [
