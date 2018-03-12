@@ -46,6 +46,9 @@ router.get('/getDevotees', userController.getDevotees);
 /* update Devotee */
 router.put('/updateDevotee', userController.updateDevotee);
 
+/* Searched Devotee */
+router.get('/getSearchedDevotee', userController.getSearchedDevotee);
+
 
 
 ///CLASS ROUTES

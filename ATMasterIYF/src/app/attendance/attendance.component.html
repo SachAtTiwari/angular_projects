@@ -28,6 +28,12 @@
 
         <div class="card-body">
           <div class="table-responsive">
+              <mat-form-field>                                  
+                  <input matInput (keyup)="onKeyUp($event)" name="con" [(ngModel)]="con"  placeholder="Contact" required>  
+               </mat-form-field>  
+               <p>{{values}}</p>
+               
+      
               <mat-form-field>
                   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>

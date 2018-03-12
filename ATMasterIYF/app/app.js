@@ -37,6 +37,7 @@ app.use('/getSdlClasses', index);
 app.use('/delRecord', index);
 app.use('/getDetails', index);
 app.use('/getAllDevotees', index);
+app.use('/getSearchedDevotee', index);
 
 
 

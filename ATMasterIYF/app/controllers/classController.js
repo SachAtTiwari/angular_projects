@@ -25,9 +25,9 @@ exports.markAttendance = function(req, res, next) {
               }
             ).toArray(function(err, result) {
               if (err) {
-			console.log("err is ", err);
+			          console.log("err is ", err);
                 	res.send({error:500});
-	      }else{
+	            }else{
               if(result.length === 0){
                 db.collection("devotees").update(
                   {contact:req.body.attendance.contact}, 
@@ -35,8 +35,8 @@ exports.markAttendance = function(req, res, next) {
                   {upsert:false}, 
                   function(err, resatt) {
                     if (err) {
-			console.log("err is ", err);
-                        res.send({result:"notok"});
+			                console.log("err is ", err);
+                      res.send({result:"notok"});
 		    }
                    // console.log("1 document find", res.result);
                     res.send({result:"ok"});

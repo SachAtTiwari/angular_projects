@@ -44,7 +44,27 @@ export class AttendanceComponent implements OnInit {
   showAddDevotee = false;
   formError = "";
   topic = "";
+
+
+  con = "";
+  values = '';
+
+  onKeyUp(event: any) { // without type info
+    console.log("event is ", event.target.value);
+    this.values = event.target.value ;
+    this.getSearchedDevotee(this.values);
+    
+    /*if(this.values.length == 10){
+      this.getSearchedDevotee(this.values);
+    }*/
+  }
   
+  getSearchedDevotee(contact){
+    this._userService.getSearchedDevotee(contact)
+    .subscribe(userData => {
+          console.log("user data is", userData);
+     });
+  }
 
   dStatus = {};
   devotees = [];  
@@ -123,12 +143,13 @@ export class AttendanceComponent implements OnInit {
           this.dataSource.data = userData.result;
         }else if (!userData.sdlResult && userData.result.length > 0 && params["course"] == "5"){
             this.dataSource.data = userData.result;
-            
         }else{
           this.router.navigateByUrl('/classSdl');
         }
      });
   }
+
+  
 
   updateOTPDevotees(){
     console.log("OTP devotess");

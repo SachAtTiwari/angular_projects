@@ -30,7 +30,7 @@ exports.addDevotee = function(req, res, next) {
             db.createCollection("devotees", function(err, resCol) {
               if (err) {
                 res.send({error:500});
-	      }
+	            }
               console.log("Collection created!");
              });
           }
@@ -44,20 +44,20 @@ exports.addDevotee = function(req, res, next) {
                 db.collection("devotees").find({contact:req.body.body.contact})
                 .toArray(function(err, result) {
                    if (err) {
-                	res.send({error:500});
-		   }else{
-                   if (result.length === 0){
+                  	res.send({error:500});
+		               }else{
+                    if (result.length === 0){
                      db.collection("devotees")
                      .insertOne(req.body.body, function(err, createRes) {
                        if (err) {
-                	  res.send({error:500});
-			}
+                	        res.send({error:500});
+			                  }
                        res.send({result:"ok"});
                      });
                    }else{
                      res.send({result:"notok"});            
                   }
-		}
+		            }
                }); 
 
               }else{
@@ -65,10 +65,10 @@ exports.addDevotee = function(req, res, next) {
                 db.collection("entity").find({course:"OTP", date:date})
                 .toArray(function(err, sdlResult) {
                   if (err){
-			console.log("err is ", err);
-                	res.send({error:500});
+			              console.log("err is ", err);
+                	  res.send({error:500});
 		
-		  }else{
+	            	  }else{
                   req.body.body.fp = new Date();
                   req.body.body.course = sdlResult[0].course;
                   req.body.body.counsellor = sdlResult[0].speaker;
@@ -76,15 +76,15 @@ exports.addDevotee = function(req, res, next) {
                   db.collection("devotees").find({contact:req.body.body.contact})
                   .toArray(function(err, result) {
                      if (err) {
-			console.log("err is ", err);
-                	res.send({error:500});
-		     }
+			                console.log("err is ", err);
+                	    res.send({error:500});
+		                }
                      if (result.length === 0){
                        db.collection("devotees")
                        .insertOne(req.body.body, function(err, createRes) {
-                         if (err) {
-				console.log("err ", err)
-                     		res.send({error:500});            
+                        if (err) {
+				                  console.log("err ", err)
+                     		  res.send({error:500});            
 			}
                         let attendance = {
                           date:date, 
@@ -97,20 +97,20 @@ exports.addDevotee = function(req, res, next) {
                           {$push:{attendance:attendance}},
                           {upsert:false}, 
                           function(err, resatt) {
-                            if (err) {
-				console.log("err ", err)
-                     		res.send({error:500});            
-			    }else{
+                          if (err) {
+				                    console.log("err ", err)
+                     		    res.send({error:500});            
+			                    }else{
                            // console.log("1 document find", res.result);
                             res.send({result:"ok"});
-			    }
-                           });
+			                    }
+                          });
                       });
                      }else{
                        res.send({result:"notok"});            
                     }
                    }); 
-		}
+		              }
                 });
               }
           }
@@ -135,9 +135,9 @@ exports.delRecord = function(req, res, next) {
     
             function(err, res) {
               if (err) {
-		 console.log("err ", err)
+		            console.log("err ", err)
                  res.send({error:500});            
-	      }
+	            }
               //console.log("1 document deleted", res.result);
       
            });
@@ -157,8 +157,8 @@ exports.getDevotees = function(req, res, next) {
     
 
     dbClient.connect(url, function(err, client) {
-	console.log("err ", err)
-        assert.equal(null, err);
+	      console.log("err ", err)
+        assert.equal(null, err);  
         //check sdl classes for provided course
         const db = client.db(dbName);
         if(course){
@@ -169,9 +169,9 @@ exports.getDevotees = function(req, res, next) {
               db.collection("entity").find({course:course, date:date})
               .toArray(function(err, sdlResult) {
                if (err) {
-		 console.log("err ", err)
+		            console.log("err ", err)
                  res.send({error:500});            
-		}else{
+		            }else{
                 console.log("sdl result ",sdlResult);
                 //GET OTP devotees 
                 if (sdlResult){
@@ -182,13 +182,13 @@ exports.getDevotees = function(req, res, next) {
                       }else{
                          db.collection("devotees").find({course:course})
                          .toArray(function(err, result) {
-                             if (err) {
-				console.log("err is ", err);
-                		res.send({error:500});
-			     }
+                         if (err) {
+				                  console.log("err is ", err);
+                		      res.send({error:500});
+			                  }
                              //console.log("devotee result", result);
-                             res.send({result:result, sdlResult:sdlResult});
-                          });
+                        res.send({result:result, sdlResult:sdlResult});
+                      });
                       }
                    });
                 }//OTP fetch finish
@@ -205,12 +205,12 @@ exports.getDevotees = function(req, res, next) {
               db.collection("devotees").find()
               .toArray(function(err, result) {
                if (err) {
-			console.log("err is ", err);
+			            console.log("err is ", err);
                 	res.send({error:500});
-		}else{
+	            	}else{
                 //console.log(result);
                	res.send({result:result});
-		}
+	          	}
            });
           }
         });
@@ -233,12 +233,12 @@ exports.getDevoteeDetail = function(req, res, next) {
               }
            ).toArray(function(err, result) {
               if (err) {
-			console.log("err is ", err);
+		            	console.log("err is ", err);
                 	res.send({error:500});
-	      }else{
-              //console.log(result);
-              res.send({result:result});
-	     }
+	            }else{
+                //console.log(result);
+                res.send({result:result});
+	            }
           });
         }
       });
@@ -293,5 +293,36 @@ exports.updateDevotee = function(req, res, next) {
          }
        });
       });
+};
+
+
+
+exports.getSearchedDevotee = function(req, res, next) {
+  console.log("i m insearched devotee", req.query.contact);
+  //console.log("value to update", valuesToUpdate);
+  dbClient.connect(url, function(err, client) {
+       assert.equal(null, err);
+       const db = client.db(dbName);
+       db.listCollections().toArray(function(err, collections){
+         if (collections === undefined){
+           res.send({error:"No Collections present in DB"});
+         }else{
+          var regexp = new RegExp("^"+ req.query.contact);
+          db.collection("devotees").find(
+            { 
+              contact: regexp,
+            }
+         ).toArray(function(err, result) {
+            if (err) {
+                console.log("err is ", err);
+                res.send({error:500});
+            }else{
+              //console.log(result);
+              res.send({result:result});
+            }
+          });
+       }
+     });
+    });
 };
 

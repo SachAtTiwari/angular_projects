@@ -10,8 +10,8 @@ import { Body } from '@angular/http/src/body';
 
 @Injectable()
 export class UserService{
-   //private _url : string = "http://localhost:3000/";
-   private _url : string = "/";
+   private _url : string = "http://localhost:3000/";
+   //private _url : string = "/";
    
    constructor(private _http: Http){}
 
@@ -24,9 +24,23 @@ export class UserService{
          }
        )
      }
+  
+    getSearchedDevotee(contact){
+      console.log("in searched", contact);
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');    
+      let searchParams = new URLSearchParams();
+      searchParams.append('contact', contact);
+      let options = new RequestOptions({ headers: headers, params: searchParams });
+
+      return this._http.get(this._url + "getSearchedDevotee", options)
+        .map((response: Response) => {
+            return response.json();
+           }
+         )
+    }
 
      getDevotees(course): Observable<any>{
-      //console.log("in devotees", course);
       let courseName = "";
       if(course == "1"){
         courseName = "OTP";
