@@ -50,6 +50,7 @@ export class AttendanceComponent implements OnInit {
   devotees = [];  
   getOTPData = false;  
   
+  
   counsellors = [
     {value:"HG Shyam Gopal Prabhuji"},
     {value:"HG Kalpvraksha Prabhuji"},
@@ -89,13 +90,13 @@ export class AttendanceComponent implements OnInit {
           this._getDevotees(params);
         }else if(params["course"] === "2"){
           console.log("in tssvb8 ");
-          this.showAddDevotee = false; 
+          //this.showAddDevotee = false; 
           this._getDevotees(params);
         }else if (params["course"] === "3"){
-          this.showAddDevotee = false;  
+          //this.showAddDevotee = false;  
           this._getDevotees(params);      
         }else if(params["course"] === "4"){
-          this.showAddDevotee = false;        
+          //this.showAddDevotee = false;        
           this._getDevotees(params);        
         }else if(params["course"] === "5"){
           this.showAddDevotee = true;    
@@ -221,6 +222,34 @@ export class AttendanceComponent implements OnInit {
     });
   }
 
+
+  editDevoteeDialog(dv){
+    console.log("id devotee",dv._id);
+    let dialogRef = this.dialog.open(EditDevoteeComponent, {
+      width: '400px',
+      hasBackdrop: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result.dob){
+        result.dob = this._userService.parseDate(result.dob);
+        console.log("date is ", result.dob);
+      }else{
+       result.id = dv._id
+       this._userService.editDevotee(result)
+       .subscribe(userData => {
+         console.log("Edit record is ", userData);
+         if(userData["result"] === "ok"){
+          swal("Record updated successfully" , "Hari Bol!!", 'success');          
+          window.location.reload(); 
+         }
+        });
+       }
+    });
+  }
+
+
   delRecord(dv){
       console.log("contact", dv.contact);
       this._userService.delRecord(dv.contact)
@@ -253,6 +282,61 @@ export class MarkpresentComponent {
   ];
 
   updateAtt(form:NgForm): void{
+    console.log("update at", form.value);
+    this.dialogRef.close(form.value);
+    
+  }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+
+@Component({
+  selector: 'edit-devotee',
+  templateUrl: 'edit-devotee.html',
+  styleUrls: ['./edit.devotee.css'],
+  
+})
+export class EditDevoteeComponent {
+  all = true;
+
+  ngOnInit() {
+    console.log("in edit devotee");
+    
+  }
+
+  email = new FormControl('', [Validators.required, Validators.email]);
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'You must enter a value' :
+        this.email.hasError('email') ? 'Not a valid email' :
+            '';
+  }
+
+  counsellors = [
+    {value:"HG Shyam Gopal Prabhuji"},
+    {value:"HG Kalpvraksha Prabhuji"},
+    {value:"HG Vaidant Chaitnya Prabhuji"},
+    {value:"HG Pundrik Vidhyanidhi Prabhuji"},
+    {value:"HG Jagdanand Pandit Prabhuji"},
+    
+  ];
+
+  courses = [
+    {value: "OTP"},
+    {value: "TSSV"},
+    {value: "ASHRAY1"},
+    {value: "ASHRAY2"},
+    {value: "OTHER"},
+  ];
+
+  constructor(
+    public dialogRef: MatDialogRef<MarkpresentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  
+  updateDevotee(form:NgForm): void{
     console.log("update at", form.value);
     this.dialogRef.close(form.value);
     

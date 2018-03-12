@@ -3,7 +3,7 @@ const assert = require('assert');
  
 // Connection URL
 //const url = 'mongodb://localhost:27017';
-const url = 'mongodb://iyfuser:h2so4na2co#@ds253918.mlab.com:53918/iyfdb';
+const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb?authMode=scram-sha1';
 
  
 // Database Name
@@ -24,20 +24,27 @@ exports.markAttendance = function(req, res, next) {
                 "attendance.date":req.body.attendance.date,  
               }
             ).toArray(function(err, result) {
-              if (err) throw err;
+              if (err) {
+			console.log("err is ", err);
+                	res.send({error:500});
+	      }else{
               if(result.length === 0){
                 db.collection("devotees").update(
                   {contact:req.body.attendance.contact}, 
                   {$push:{attendance:req.body.attendance}},
                   {upsert:false}, 
                   function(err, resatt) {
-                    if (err) throw err;
+                    if (err) {
+			console.log("err is ", err);
+                        res.send({result:"notok"});
+		    }
                    // console.log("1 document find", res.result);
                     res.send({result:"ok"});
                  });
               }else{
                 res.send({result:"notok"});
               }
+	     }
             });
           }
         });
@@ -59,16 +66,20 @@ exports.checkClassSdl = function(req, res, next) {
               date:req.query.date
             }
           ).toArray(function(err, result) {
-            if (err) throw err;
+            if (err) {
+			console.log("err is ", err);
+                	res.send({error:500});
+	    }else{
             console.log(result);
             res.send({result:result});
+	    }
           });
         }
       });
      });
   }
 
-  exports.sdlClass = function(req, res, next) {
+exports.sdlClass = function(req, res, next) {
     console.log("im here", req.body.body);
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -77,23 +88,31 @@ exports.checkClassSdl = function(req, res, next) {
           console.log("collection list". collections);
           if (collections === undefined){
             db.createCollection("entity", function(err, res) {
-              if (err) throw err;
-                console.log("Collection created!");
+              if (err) {
+			console.log("err is ", err);
+                	res.send({error:500});
+	      }
+              console.log("Collection created!");
              });
           }
   
-          db.collection("entity").insertOne(req.body.body, function(err, res) {
-            if (err) throw err;
-            console.log("1 document inserted", res.result);
+          db.collection("entity").insertOne(req.body.body, function(err, sdResult) {
+            if (err) {
+		console.log("err is ", err);
+                res.send({result:"notok"});
+	    }else{
+          	  //console.log("1 document inserted", sdResult);
+     	  	  res.send({result:"ok"});
+	    }
          });
       });
      });
-     res.send({status:"ok"});
   }
 
-  exports.getSdlClasses = function(req, res, next) {
+exports.getSdlClasses = function(req, res, next) {
     console.log("i m here in sdl classes");
-    dbClient.connect(url, function(err, client) {
+      dbClient.connect(url, function(err, client) {
+//	console.log("errr in sdl", err)
         assert.equal(null, err);
         const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
@@ -101,12 +120,16 @@ exports.checkClassSdl = function(req, res, next) {
             res.send({error:"No Collections present in DB"});
          }else{
             db.collection("entity").find().toArray(function(err, result) {
-              if (err) throw err;
+              if (err) {
+		console.log("err is ", err);
+                res.send({result:"notok"});
+	      }else{
               console.log(result);
               res.send({result:result});
+              }
             });
           }
-      });
+        });
      });
   };
 

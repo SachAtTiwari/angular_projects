@@ -1,0 +1,65 @@
+<div class="form-container">
+       
+        <mat-toolbar>Update Devotee Details</mat-toolbar>
+          
+      
+      <div *ngIf="formError" style="margin:5px;" class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{formError}}</strong>
+      </div>
+      
+
+
+      <form #classForm="ngForm" (ngSubmit)="updateDevotee(classForm)" >
+                 
+
+        <mat-form-field>                                  
+            <input matInput name="name" [(ngModel)]="name"  placeholder="Name" required>  
+         </mat-form-field>  
+
+
+         <mat-form-field>                                  
+            <input matInput name="contact" [(ngModel)]="contact"  placeholder="Contact" required>  
+         </mat-form-field>  
+
+
+         <mat-form-field>                                  
+            <input matInput name="age" [(ngModel)]="age"  placeholder="Age" required>  
+         </mat-form-field> 
+
+         <mat-form-field>                                  
+            <input matInput name="email" [(ngModel)]="mail"  placeholder="Email" required>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>  
+         </mat-form-field>  
+      
+        <mat-form-field>                                                              
+          <input matInput name="dob" [(ngModel)]="dob" [matDatepicker]="picker" placeholder="Date of Birth" required>       
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+          <mat-datepicker #picker></mat-datepicker>                                   
+        </mat-form-field>   
+
+             
+        <mat-form-field *ngIf="all">                                                             
+            <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor" required>                                      
+               
+              <mat-option *ngFor="let c of counsellors" [value]="c.value">
+                  {{c.value}}  
+              </mat-option>                              
+                                          
+            </mat-select>                                                              
+          </mat-form-field> 
+          
+          <mat-form-field *ngIf="all">                                                             
+              <mat-select [(ngModel)]="course" name="course" placeholder="Course" required>                                      
+                 
+                <mat-option *ngFor="let c of courses" [value]="c.value">
+                    {{c.value}}  
+                </mat-option>                              
+                                            
+              </mat-select>                                                              
+            </mat-form-field>
+        <button mat-raised-button type="submit" class="btn btn-primary">Update Devotee</button>
+      </form>    
+    </div>
+      
+      <!-- Add new devotee End-->

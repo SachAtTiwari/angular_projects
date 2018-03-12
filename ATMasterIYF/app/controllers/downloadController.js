@@ -3,7 +3,7 @@ const assert = require('assert');
  
 // Connection URL
 //const url = 'mongodb://localhost:27017';
-const url = 'mongodb://iyfuser:h2so4na2co#@ds253918.mlab.com:53918/iyfdb';
+const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb';
 
  
 // Database Name
@@ -25,9 +25,13 @@ exports.downloadToExcel =  function(req, res, next) {
                 "attendance.date":req.query.date,  
               }
               ).toArray(function(err, result) {
-                if (err) throw err;
+                if (err) {
+			console.log("err is ", err);
+                	res.send({erroe:500});
+		}else{
                 console.log("result is ",result);
                 res.send({result:result});
+		}
               });
           }
         });

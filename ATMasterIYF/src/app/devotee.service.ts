@@ -4,11 +4,13 @@ import 'rxjs/add/operator/map';
 import { attachEmbeddedView } from '@angular/core/src/view/view_attach';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/mergeMap';
+import { Body } from '@angular/http/src/body';
 
 
 
 @Injectable()
 export class UserService{
+   //private _url : string = "http://localhost:3000/";
    private _url : string = "/";
    
    constructor(private _http: Http){}
@@ -131,6 +133,23 @@ export class UserService{
           }
         );
    }
+
+  editDevotee(body): Observable<Response>{
+    console.log("edit devotee", body);
+    return this._http.put(this._url + "updateDevotee", {
+       body: body
+      })
+       .map(
+         res => {
+           console.log("res is", res);
+           return res.json();
+         },
+         err => {
+           console.log("Error occured");
+           return err.json();
+         }
+       );
+  }
 
    parseDate(date): string{
 

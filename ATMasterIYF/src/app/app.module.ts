@@ -63,6 +63,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { MarkpresentComponent } from './attendance/attendance.component';
 import { ShowdetailsComponent } from './showdetails/showdetails.component';
 import { AddDevoteeComponent } from './attendance/attendance.component';
+import { EditDevoteeComponent } from './attendance/attendance.component';
 
 const appRoutes: Routes = [  
   { path: 'showDetails/:id', component: ShowdetailsComponent},  
@@ -81,11 +82,15 @@ const appRoutes: Routes = [
     MarkpresentComponent,
     ShowdetailsComponent,
     AddDevoteeComponent,
+    EditDevoteeComponent,
+    
   
   ],
   entryComponents: [
     MarkpresentComponent,
-    AddDevoteeComponent
+    AddDevoteeComponent,
+    EditDevoteeComponent,
+    
   ],
   imports: [
     DataTablesModule,
