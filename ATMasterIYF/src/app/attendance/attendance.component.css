@@ -1,23 +1,28 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    padding:20px;
-    border:2px solid wheat;
-  }
-  
-  .form-container > * {
-    width: 100%;
-  }
-  
-  mat-form-field{
-      margin: 30px;
-      width: 900px;
-  }
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	border: 2px solid wheat;
+}
 
-  .mat-form-field-infix{
-    width: 900px;
-  }
+.form-container>* {
+	width: 100%;
+}
 
-.mat-cell:nth-child(4), .mat-header-cell:nth-child(4){
- flex: 0 0 35%;
+mat-form-field {
+	margin: 30px;
+	width: 900px;
+}
+
+.mat-form-field-infix {
+	width: 900px;
+}
+
+.mat-cell:nth-child(4), .mat-header-cell:nth-child(4) {
+	flex: 0 0 35%;
+}
+
+.formClass {
+	width: 50%;
+	overflow: hidden;
 }

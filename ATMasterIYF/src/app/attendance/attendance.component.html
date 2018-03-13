@@ -27,37 +27,55 @@
         </div>
 
         <div class="card-body">
-          <div class="table-responsive">
-              <mat-form-field>                                  
-                  <input matInput (keyup)="onKeyUp($event)" name="con" [(ngModel)]="con"  placeholder="Contact" required>  
-               </mat-form-field>  
-               <p>{{values}}</p>
-               
-      
-              <mat-form-field>
+          <div class="table-responsive formClass">
+
+					<form>
+					<mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
+					
+						<mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
+							 name="con" [(ngModel)]="devoteeData.contact"
+							placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
+						<mat-form-field> <input matInput
+							 name="name" [(ngModel)]="devoteeData.name"
+							placeholder="Name" > </mat-form-field>	
+						<mat-form-field> <input matInput
+							 name="age" [(ngModel)]="devoteeData.age"
+							placeholder="Age" > </mat-form-field>	
+							
+						<mat-form-field> <input type="email" matInput
+							 name="email" [(ngModel)]="devoteeData.email"
+							placeholder="Email" > </mat-form-field>
+							
+						<mat-form-field> <input  matInput
+							 name="course" [(ngModel)]="devoteeData.course"
+							placeholder="course" > </mat-form-field>		
+					</form>
+
+
+					<!-- <mat-form-field>
                   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
 
-                  <!-- Name Column -->
+                  Name Column
                   <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                   </ng-container>
               
-                  <!-- Contact Column -->
+                  Contact Column
                   <ng-container matColumnDef="contact">
                     <mat-header-cell *matHeaderCellDef> Contact </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.contact}} </mat-cell>
                   </ng-container>
               
-                  <!-- counsellor Column -->
+                  counsellor Column
                   <ng-container matColumnDef="counsellor">
                     <mat-header-cell *matHeaderCellDef> Counsellor </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.counsellor}} </mat-cell>
                   </ng-container>
               
-                  <!-- Actions Column -->
+                  Actions Column
                   <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                     <mat-cell *matCellDef="let element">
@@ -99,7 +117,7 @@
                  [pageSize]="10"
                  [pageSizeOptions]="[5, 10, 20]"
                  >
-             </mat-paginator>
+             </mat-paginator> -->
             <!--table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>

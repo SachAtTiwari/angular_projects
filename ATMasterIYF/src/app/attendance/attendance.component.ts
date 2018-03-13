@@ -44,8 +44,8 @@ export class AttendanceComponent implements OnInit {
   showAddDevotee = false;
   formError = "";
   topic = "";
-
-
+  devoteeData = {};
+  loading = false;
   con = "";
   values = '';
 
@@ -60,10 +60,26 @@ export class AttendanceComponent implements OnInit {
   }
   
   getSearchedDevotee(contact){
+    this.loading = true;
+    if(contact.length != 10){
+        alert('invalid mobile no');
+    }else {
+       
     this._userService.getSearchedDevotee(contact)
     .subscribe(userData => {
-          console.log("user data is", userData);
+          console.log(userData);
+        if(userData.result.length == 0){
+            alert('No Data Found, Please add details');
+            this.loading = false;
+            this.devoteeData = {};
+        }else{
+           this.devoteeData = userData.result[0];
+           this.loading = false; 
+        }
+        
      });
+    }
+    
   }
 
   dStatus = {};
