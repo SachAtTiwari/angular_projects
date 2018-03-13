@@ -61,9 +61,10 @@ export class AttendanceComponent implements OnInit {
   
   getSearchedDevotee(contact){
     this.loading = true;
-    if(contact.length != 10){
+    if(contact.length != 10 ){
         alert('invalid mobile no');
-    }else {
+         this.loading = false;
+    }else if(contact.length == 10 && contact != ""){
        
     this._userService.getSearchedDevotee(contact)
     .subscribe(userData => {
@@ -71,7 +72,7 @@ export class AttendanceComponent implements OnInit {
         if(userData.result.length == 0){
             alert('No Data Found, Please add details');
             this.loading = false;
-            this.devoteeData = {};
+            this.devoteeData = {contact:contact};
         }else{
            this.devoteeData = userData.result[0];
            this.loading = false; 
