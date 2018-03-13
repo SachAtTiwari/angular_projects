@@ -26,19 +26,6 @@ export class AttendanceComponent implements OnInit {
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-  
-
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
-
-  
   contact:string;
   launchModal = false;
   showAddDevotee = false;
@@ -48,44 +35,11 @@ export class AttendanceComponent implements OnInit {
   loading = false;
   con = "";
   values = '';
-
-  onKeyUp(event: any) { // without type info
-    console.log("event is ", event.target.value);
-    this.values = event.target.value ;
-    this.getSearchedDevotee(this.values);
-    
-    /*if(this.values.length == 10){
-      this.getSearchedDevotee(this.values);
-    }*/
-  }
-  
-  getSearchedDevotee(contact){
-    this.loading = true;
-    if(contact.length != 10 && contact != undefined){
-        alert('invalid mobile no');
-         this.loading = false;
-    }else if(contact.length == 10 && contact != ""){
-       
-    this._userService.getSearchedDevotee(contact)
-    .subscribe(userData => {
-          console.log(userData);
-        if(userData.result.length == 0){
-            alert('No Data Found, Please add details');
-            this.loading = false;
-            this.devoteeData = {contact:contact};
-        }else{
-           this.devoteeData = userData.result[0];
-           this.loading = false; 
-        }
-        
-     });
-    }
-    
-  }
-
   dStatus = {};
   devotees = [];  
   getOTPData = false;  
+  email = new FormControl('', [Validators.required, Validators.email]);
+  
   
   
   counsellors = [
@@ -105,6 +59,19 @@ export class AttendanceComponent implements OnInit {
     {value: "OTHER"},
   ];
 
+ 
+
+ 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog, 
@@ -145,7 +112,6 @@ export class AttendanceComponent implements OnInit {
 
 
 
-  email = new FormControl('', [Validators.required, Validators.email]);
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
@@ -156,7 +122,9 @@ export class AttendanceComponent implements OnInit {
     this._userService.getDevotees(params["course"])
     .subscribe(userData => {
 //        console.log("user data is 2", userData);
-        if(userData.sdlResult && userData.sdlResult.length > 0){
+        if(userData.sdlResult && userData.sdlResult.length > 0 && params["course"] == "1"){
+          this.router.navigateByUrl('/otpAttendance');
+        }else if(userData.sdlResult && userData.sdlResult.length > 0){
           this.dataSource.data = userData.result;
         }else if (!userData.sdlResult && userData.result.length > 0 && params["course"] == "5"){
             this.dataSource.data = userData.result;
@@ -327,6 +295,56 @@ export class MarkpresentComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+}
+
+
+@Component({
+  selector: 'main-attendance',
+  templateUrl: 'main-attendance.html',
+  styleUrls: ['./main-attendance.css'],
+  providers: [
+    UserService,
+  ]
+
+})
+export class MainAttendanceComponent {
+  contact:string;
+  devoteeData = {};
+  loading = false;
+
+  constructor(private route: ActivatedRoute,
+    public dialog: MatDialog, 
+    private _userService:UserService,
+    private router: Router,
+    public snackBar: MatSnackBar) {
+      console.log("in constructor");
+    };
+
+
+    getSearchedDevotee(contact){
+      this.loading = true;
+      if(contact.length != 10 && contact != undefined){
+          swal("Invalid mobile no" , "Hari Bol", 'error');          
+           this.loading = false;
+      }else if(contact.length == 10 && contact != ""){
+         
+      this._userService.getSearchedDevotee(contact)
+      .subscribe(userData => {
+            console.log(userData);
+          if(userData.result.length == 0){
+              swal('No Data Found, Please add details', "Hari Bol!", "error");
+              this.loading = false;
+              this.devoteeData = {contact:contact};
+          }else{
+             this.devoteeData = userData.result[0];
+             this.loading = false; 
+          }
+          
+       });
+      }
+      
+    }
 
 }
 

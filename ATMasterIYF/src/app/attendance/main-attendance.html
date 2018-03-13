@@ -1,0 +1,52 @@
+<div class="content-wrapper" style="background:#CCC;">
+        <div class="container-fluid">  
+                 <!-- Breadcrumbs-->
+                 <ol class="breadcrumb" style="margin-top:30px;">
+                    <li class="breadcrumb-item">
+                      <a href="#">COURSES</a>
+                    </li>
+                    <li class="breadcrumb-item active">Attendance</li>
+                  </ol>  
+          <!-- Add New Devotee-->
+         
+            
+            <!-- Add new devotee End-->
+          <!-- Example DataTables Card-->
+        <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
+            <div class="card-header">
+              <i class="fa fa-table"></i> Devotee List
+            </div>
+    
+            <div class="card-body">
+              <div class="table-responsive formClass">
+    
+                        <form>
+                        <mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
+                        
+                            <mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
+                                 name="con" [(ngModel)]="devoteeData.contact"
+                                placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
+                            <mat-form-field> <input matInput
+                                 name="name" [(ngModel)]="devoteeData.name"
+                                placeholder="Name" > </mat-form-field>	
+                            <mat-form-field> <input matInput
+                                 name="age" [(ngModel)]="devoteeData.counsellor"
+                                placeholder="Age" > </mat-form-field>	
+                                
+                            <mat-form-field> <input type="email" matInput
+                                 name="email" [(ngModel)]="devoteeData.email"
+                                placeholder="Email" > </mat-form-field>
+                                
+                            <mat-form-field> <input  matInput
+                                 name="course" [(ngModel)]="devoteeData.course"
+                                placeholder="course" > </mat-form-field>		
+                        </form>
+
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">
+                </div>
+        
+              </div>
+ <!-- /.container-fluid-->
+ <!-- /.content-wrapper-->
