@@ -61,7 +61,7 @@ export class AttendanceComponent implements OnInit {
   
   getSearchedDevotee(contact){
     this.loading = true;
-    if(contact.length != 10 ){
+    if(contact.length != 10 && contact != undefined){
         alert('invalid mobile no');
          this.loading = false;
     }else if(contact.length == 10 && contact != ""){
