@@ -20,27 +20,42 @@
             <div class="card-body">
               <div class="table-responsive formClass">
     
-                        <form>
+                        <form #devoteeForm="ngForm">
                         <mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
                             <mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
                                  name="con" [(ngModel)]="devoteeData.contact"
                                 placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
-                            <mat-form-field> <input matInput
+                            <mat-form-field> <input matInput required
                                  name="name" [(ngModel)]="devoteeData.name"
                                 placeholder="Name" > </mat-form-field>	
-                            <mat-form-field> <input matInput
-                                 name="age" [(ngModel)]="devoteeData.counsellor"
-                                placeholder="Age" > </mat-form-field>	
+                            
                                 
-                            <mat-form-field> <input type="email" matInput
+                            <mat-form-field> <input type="email" matInput required
                                  name="email" [(ngModel)]="devoteeData.email"
                                 placeholder="Email" > </mat-form-field>
-                                
-                            <mat-form-field> <input  matInput
-                                 name="course" [(ngModel)]="devoteeData.course"
-                                placeholder="course" > </mat-form-field>		
-                        </form>
+
+						<mat-form-field>
+						<mat-select name="course" placeholder="Course" required
+							[(ngModel)]="devoteeData.course"> <mat-option
+							value="OTP"> OTP </mat-option> <mat-option value="TSSV">
+						TSSV </mat-option> <mat-option value="ASHRAY1"> ASHRAY1 </mat-option> <mat-option
+							value="ASHRAY2"> ASHRAY2 </mat-option> </mat-select> </mat-form-field>
+
+						<mat-form-field>
+						<mat-select name="counsellor" placeholder="Counsellor" required
+							[(ngModel)]="devoteeData.counsellor"> <mat-option
+							value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
+						<mat-option value="HG Kalpvraksha Prabhuji">
+						HG Kalpvraksha Prabhuji </mat-option> <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> <mat-option
+							value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
+							<mat-option
+							value="HG Jagdanand Pandit Prabhuji"> HG Jagdanand Pandit Prabhuji </mat-option>
+							 </mat-select> </mat-form-field>
+							 
+						<button mat-raised-button color="primary" (click)="addDevotee(devoteeForm)">Add Devotee</button>
+						<button mat-button color="accent" (click)="markAttendance(devoteeForm)">Mark Attendance</button>
+					</form>
 
                     </div>
                 </div>

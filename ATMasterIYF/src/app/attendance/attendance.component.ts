@@ -347,7 +347,7 @@ export class MarkpresentComponent {
 })
 export class MainAttendanceComponent {
   contact:string;
-  devoteeData = {};
+  devoteeData = {contact:''};
   loading = false;
 
   constructor(private route: ActivatedRoute,
@@ -381,6 +381,33 @@ export class MainAttendanceComponent {
        });
       }
       
+    }
+    
+    addDevotee(devoteeForm) {
+        
+      if(devoteeForm.invalid != true) {
+          this.loading = true;
+          this._userService.addDevotee(this.devoteeData)
+       .subscribe(userData => {
+         console.log("Add record is ", userData);
+         if(userData["result"] === "ok"){
+          console.log("in add record", userData);
+          //window.location.reload(); 
+          swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+             this.loading = false;
+         }else{
+            swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
+             this.loading = false;
+          }
+         });  
+      }
+    }
+    
+    markAttendance(form) {
+       if(form.invalid != true) {
+          this.loading = true;
+           
+      } 
     }
 
 }
