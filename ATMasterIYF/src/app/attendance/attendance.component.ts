@@ -349,6 +349,8 @@ export class MainAttendanceComponent {
   contact:string;
   devoteeData = {contact:''};
   loading = false;
+  dStatus = {};
+  
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog, 
@@ -406,6 +408,35 @@ export class MainAttendanceComponent {
     markAttendance(form) {
        if(form.invalid != true) {
           this.loading = true;
+          this._userService.checkIfClassSdlForCourse("OTP", "14-3-2018")
+          .subscribe(userData => {
+            console.log("user data is ", userData.result);
+            if (userData.result.length > 0){
+
+                this.dStatus["date"] = userData.result[0].date;
+                this.dStatus["present"] = "YES";
+                this.dStatus["topic"] = userData.result[0].topic;
+                this.dStatus["speaker"] = userData.result[0].speaker;
+                if(this.devoteeData.contact){
+                  this.dStatus["contact"] =  this.devoteeData.contact
+                  this._userService.markAttendance(this.dStatus)
+                    .subscribe(userData => {
+                      if(userData["result"] === "ok"){
+                        this.loading = false;              
+                        swal("Attendance updated successfully" , "Hari Bol!!", 'success');
+                      }else{
+                        swal("Attendance already updated", "Hari Bol :)", 'warning');
+                        this.loading = false;              
+                        
+                      }
+                    });
+                }
+            }else{
+          this.loading = false;              
+              console.log("No class sdl for selected date");
+              swal("No class sdl for selected date", "Hari Bol..", 'error')
+            }
+          });
            
       } 
     }
