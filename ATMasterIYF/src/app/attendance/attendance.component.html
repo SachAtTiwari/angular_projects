@@ -29,7 +29,7 @@
         <div class="card-body">
           <div class="table-responsive formClass">
 
-					<form>
+					<!--form>
 					<mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
 					
 						<mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
@@ -49,10 +49,10 @@
 						<mat-form-field> <input  matInput
 							 name="course" [(ngModel)]="devoteeData.course"
 							placeholder="course" > </mat-form-field>		
-					</form>
+					</form-->
 
 
-					<!-- <mat-form-field>
+					<mat-form-field>
                   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
@@ -117,7 +117,7 @@
                  [pageSize]="10"
                  [pageSizeOptions]="[5, 10, 20]"
                  >
-             </mat-paginator> -->
+             </mat-paginator> 
             <!--table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
