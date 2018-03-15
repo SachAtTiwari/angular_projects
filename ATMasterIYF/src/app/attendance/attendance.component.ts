@@ -351,7 +351,7 @@ export class MainAttendanceComponent {
   loading = false;
   dStatus = {};
     
-displayedColumns = ['Name', 'Contact', 'counsellor', 'Attendance','Mobile'];
+displayedColumns = ['Name', 'Contact', 'Attendance'];
      dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -414,10 +414,11 @@ displayedColumns = ['Name', 'Contact', 'counsellor', 'Attendance','Mobile'];
       }
     }
     
+    attendanceArray = [];
     markAttendance(form) {
        if(form.invalid != true) {
           this.loading = true;
-          this._userService.checkIfClassSdlForCourse("OTP", "14-3-2018")
+          this._userService.checkIfClassSdlForCourse(this.devoteeData['course'], "14-3-2018")
           .subscribe(userData => {
             console.log("user data is ", userData.result);
             if (userData.result.length > 0){
@@ -433,6 +434,8 @@ displayedColumns = ['Name', 'Contact', 'counsellor', 'Attendance','Mobile'];
                       if(userData["result"] === "ok"){
                         this.loading = false;              
                         swal("Attendance updated successfully" , "Hari Bol!!", 'success');
+                        this.attendanceArray.push({name:this.devoteeData['name'],contact:this.devoteeData['name'],attendance:'Yes'})
+                        this.dataSource.data = this.attendanceArray;
                       }else{
                         swal("Attendance already updated", "Hari Bol :)", 'warning');
                         this.loading = false;              
