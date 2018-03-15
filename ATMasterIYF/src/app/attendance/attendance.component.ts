@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as $ from 'jquery';
 import swal from 'sweetalert2';
-import {MatTableDataSource, MatPaginator} from '@angular/material';
+import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import 'datatables.net';
 
 
@@ -350,8 +350,17 @@ export class MainAttendanceComponent {
   devoteeData = {contact:''};
   loading = false;
   dStatus = {};
-  
+    
+displayedColumns = ['Name', 'Contact', 'counsellor', 'Attendance','Mobile'];
+     dataSource = new MatTableDataSource([]);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+    ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog, 
     private _userService:UserService,
