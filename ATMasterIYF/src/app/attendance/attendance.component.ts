@@ -415,10 +415,13 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
     }
     
     attendanceArray = [];
+    todayDate = new Date();
+    month = this.todayDate.getMonth()+1;
     markAttendance(form) {
        if(form.invalid != true) {
           this.loading = true;
-          this._userService.checkIfClassSdlForCourse(this.devoteeData['course'], "14-3-2018")
+          let date = this.todayDate.getDate() + "-" + this.month + "-" + this.todayDate.getFullYear();
+          this._userService.checkIfClassSdlForCourse(this.devoteeData['course'], date)
           .subscribe(userData => {
             console.log("user data is ", userData.result);
             if (userData.result.length > 0){
@@ -431,16 +434,30 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
                   this.dStatus["contact"] =  this.devoteeData.contact
                   this._userService.markAttendance(this.dStatus)
                     .subscribe(userData => {
+                        
                       if(userData["result"] === "ok"){
                         this.loading = false;              
                         swal("Attendance updated successfully" , "Hari Bol!!", 'success');
-                        this.attendanceArray.push({name:this.devoteeData['name'],contact:this.devoteeData['name'],attendance:'Yes'})
-                        this.dataSource.data = this.attendanceArray;
+                          if(this.attendanceArray.length == 0){
+                            this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
+                            }
+                         this.dataSource.data = this.attendanceArray;
                       }else{
-                        swal("Attendance already updated", "Hari Bol :)", 'warning');
+                          if (this.attendanceArray.length == 0) {
+                              this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
+                          }          
+                           swal("Attendance already updated", "Hari Bol :)", 'warning');
+                          this.dataSource.data = this.attendanceArray;
                         this.loading = false;              
                         
                       }
+                      for (let i=0 ; i<this.attendanceArray.length; i++) {
+
+                            if (this.attendanceArray[i].contact != this.devoteeData['contact']) {
+                                this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
+                            }
+                        }
+                      this.dataSource.data = this.attendanceArray;
                     });
                 }
             }else{
