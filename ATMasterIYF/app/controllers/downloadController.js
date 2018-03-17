@@ -26,12 +26,12 @@ exports.downloadToExcel =  function(req, res, next) {
               }
               ).toArray(function(err, result) {
                 if (err) {
-			console.log("err is ", err);
+            			console.log("err is ", err);
                 	res.send({erroe:500});
-		}else{
+	            	}else{
                 console.log("result is ",result);
                 res.send({result:result});
-		}
+	            	}
               });
           }
         });

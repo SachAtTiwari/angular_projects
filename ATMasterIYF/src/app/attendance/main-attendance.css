@@ -1,5 +1,10 @@
 
 .formClass {
-	width: 50%;
+	height: 320px;
 	overflow: hidden;
+}
+
+mat-form-field {
+	margin: 10px;
+	width: 400px;
 }

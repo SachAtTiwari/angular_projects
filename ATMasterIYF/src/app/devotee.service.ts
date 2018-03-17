@@ -31,6 +31,7 @@ export class UserService{
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
       searchParams.append('contact', contact);
+      searchParams.append('course', "OTP");
       let options = new RequestOptions({ headers: headers, params: searchParams });
 
       return this._http.get(this._url + "getSearchedDevotee", options)
@@ -224,4 +225,19 @@ export class UserService{
          }
        )
    }
+
+   getTodayAttendance(course){
+    //console.log("atten is ", dTe);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');    
+    let searchParams = new URLSearchParams();
+    searchParams.append('course', course);
+    let options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + "getTodayAttendance", options)
+        .map((response: Response) => {
+          return response.json();
+       }
+     )
+ }
 }

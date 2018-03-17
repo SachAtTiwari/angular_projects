@@ -13,111 +13,92 @@ const dbName = 'iyfdb';
 
 exports.addDevotee = function(req, res, next) {
     console.log("im here", req.body.body);
-    let all = false    
-    if(req.body.body.course && req.body.body.counsellor){
-      all = true;
-    }
-
     let date = new Date();
-    let month = date.getMonth() + 1
+    let month = date.getMonth() + 1;
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
-    console.log("date is", date);
 
+    console.log("date is ", date);
+    
+    //Find Sdl classes for today for given course to fetch counsellor details
     dbClient.connect(url, function(err, client) {
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
-          if (collections === undefined){
-            db.createCollection("devotees", function(err, resCol) {
-              if (err) {
-                res.send({error:500});
-	            }
-              console.log("Collection created!");
-             });
-          }
-  
-          //const db = client.db("entity");
-          db.listCollections().toArray(function(err, collections){
-             if (collections === undefined){
-                res.send({error:"No Classes Sdl for OTP"});
-             }else{
-              if(all){
-                db.collection("devotees").find({contact:req.body.body.contact})
-                .toArray(function(err, result) {
-                   if (err) {
-                  	res.send({error:500});
-		               }else{
-                    if (result.length === 0){
-                     db.collection("devotees")
-                     .insertOne(req.body.body, function(err, createRes) {
-                       if (err) {
-                	        res.send({error:500});
-			                  }
-                       res.send({result:"ok"});
-                     });
-                   }else{
-                     res.send({result:"notok"});            
-                  }
-		            }
-               }); 
+      assert.equal(null, err);
+      console.log("Connected successfully to server");
+      const db = client.db(dbName);
+      
+     db.collection("entity").find({course:req.body.body.course, date:date})
+     .toArray(function(err, sdlResult) {
+      if (err){
+        console.log("err is ", err);
+        res.send({result:"notok"});
 
-              }else{
-               //Find Sdl classes for today for given course to fetch counsellor details
-                db.collection("entity").find({course:"OTP", date:date})
-                .toArray(function(err, sdlResult) {
-                  if (err){
-			              console.log("err is ", err);
-                	  res.send({error:500});
-		
-	            	  }else{
-                  req.body.body.fp = new Date();
-                  req.body.body.course = sdlResult[0].course;
-                  req.body.body.counsellor = sdlResult[0].speaker;
-
-                  db.collection("devotees").find({contact:req.body.body.contact})
-                  .toArray(function(err, result) {
-                     if (err) {
-			                console.log("err is ", err);
-                	    res.send({error:500});
-		                }
-                     if (result.length === 0){
-                       db.collection("devotees")
-                       .insertOne(req.body.body, function(err, createRes) {
-                        if (err) {
-				                  console.log("err ", err)
-                     		  res.send({error:500});            
-			}
-                        let attendance = {
-                          date:date, 
-                          speaker:sdlResult[0].speaker,
-                          topic:sdlResult[0].topic,
-                          present:"YES"
-                        }
-                        db.collection("devotees").update(
-                          {contact:req.body.body.contact}, 
-                          {$push:{attendance:attendance}},
-                          {upsert:false}, 
-                          function(err, resatt) {
-                          if (err) {
-				                    console.log("err ", err)
-                     		    res.send({error:500});            
-			                    }else{
-                           // console.log("1 document find", res.result);
-                            res.send({result:"ok"});
-			                    }
-                          });
-                      });
-                     }else{
-                       res.send({result:"notok"});            
-                    }
-                   }); 
-		              }
-                });
+      }else{
+        console.log("in else ", sdlResult);
+       
+        db.collection("devotees").find(
+          {contact:req.body.body.contact})
+        .toArray(function(err, dvData) {
+          if (err) {
+           console.log("err is ", err);
+           res.send({result:"notok"});
+           //if devotee not found add one with attendance
+          }else{
+           
+            console.log("res is",dvData);
+            if (dvData.length === 0){
+                
+              req.body.body.fp = new Date();
+              if (!req.body.body.course){
+                 req.body.body.course = sdlResult[0].course;
               }
+              if(!req.body.body.counsellor){ 
+                req.body.body.counsellor = sdlResult[0].speaker;
+              }
+              let attendance = {
+                  date:date, 
+                  speaker:sdlResult[0].speaker,
+                  topic:sdlResult[0].topic,
+                  present:"YES"
+              }
+              req.body.body.attendance = [];
+              req.body.body.attendance.push(attendance);
+              db.collection("devotees")
+              .insertOne(req.body.body, function(err, createRes) {
+                if (err) {
+                   res.send({result:"notok"});
+                 }
+                res.send({result:"ok"});
+              });
+              //if devotee found update it with whatever details it have without attendance
+            }else{
+              valuesToUpdate = {
+                name:req.body.body.name,
+                contact:req.body.body.contact,
+                course:req.body.body.course,
+                counsellor:req.body.body.counsellor,
+                email:req.body.body.email,
+                dob:req.body.body.dob
+              }
+              console.log("in update", valuesToUpdate);
+              var query = {_id: new mongo.ObjectID(req.body.body._id)};
+              var newvalues = { $set: valuesToUpdate };
+              db.collection("devotees").update(
+                query, newvalues, 
+                function(err, resUp) {
+                  if (err) {
+                    res.send({result:"notok"})
+                  }else{
+                    console.log("document updated");
+                    res.send({result:"ok"})
+                  }
+               });
+           }
           }
-        });
-      });
-     });
-  }
+       });
+
+      }
+    });
+  });
+}
 
 exports.delRecord = function(req, res, next) {
     console.log("im here", req.query.contact);
@@ -311,14 +292,35 @@ exports.getSearchedDevotee = function(req, res, next) {
           db.collection("devotees").find(
             { 
               contact: regexp,
+              course:req.query.course
             }
          ).toArray(function(err, result) {
             if (err) {
                 console.log("err is ", err);
-                res.send({error:500});
+                res.send({result:"notok"});
             }else{
               //console.log(result);
-              res.send({result:result});
+              if(result.length == 0){
+                let date = new Date();
+                let month = date.getMonth() + 1;
+                date =  date.getDate() + '-' + month + '-' + date.getFullYear();
+                console.log("date is ", date);
+                db.collection("entity").find({course:req.query.course, date:date})
+                .toArray(function(err, sdlResult) {
+                 if (err){
+                   console.log("err is ", err);
+                   res.send({result:"notok"});
+           
+                 }else{
+                   //console.log("sdl result is",sdlResult[0].speaker);
+                    res.send(
+                      {sdlResult:[{course:sdlResult[0].course,counsellor:sdlResult[0].speaker}]}
+                    )
+                 }
+                })
+              }else{
+                 res.send({result:result});
+              }
             }
           });
        }

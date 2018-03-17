@@ -234,7 +234,7 @@ export class AttendanceComponent implements OnInit {
 
   handleDevoteeDialog(){
     let dialogRef = this.dialog.open(AddDevoteeComponent, {
-      width: '280px',
+      width: '400px',
       hasBackdrop: false,
       //data: { contact:this.contact }
     });
@@ -278,8 +278,8 @@ export class AttendanceComponent implements OnInit {
       if(result.dob){
         result.dob = this._userService.parseDate(result.dob);
         console.log("date is ", result.dob);
-      }else{
-       result.id = dv._id
+      } 
+      result.id = dv._id
        this._userService.editDevotee(result)
        .subscribe(userData => {
          console.log("Edit record is ", userData);
@@ -288,7 +288,6 @@ export class AttendanceComponent implements OnInit {
           window.location.reload(); 
          }
         });
-       }
     });
   }
 
@@ -347,11 +346,11 @@ export class MarkpresentComponent {
 })
 export class MainAttendanceComponent {
   contact:string;
-  devoteeData = {contact:''};
+  devoteeData = {contact:'', counsellor:'',course:''};
   loading = false;
   dStatus = {};
     
-displayedColumns = ['Name', 'Contact', 'Attendance'];
+  displayedColumns = ['Name', 'Contact', 'Attendance'];
      dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -369,6 +368,41 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
       console.log("in constructor");
     };
 
+    ngOnInit()  {
+      console.log("im main attendance");
+      let course = "OTP";
+      let todayDate = new Date();
+      let todayDateNew = this._userService.parseDate(todayDate);
+      this._userService.getTodayAttendance(course)
+      .subscribe(userData => {
+          if(userData.result.length != 0){
+          console.log(userData.result);
+          let result_json = [];
+          for(var i = 0;i < userData.result.length;i++){
+            let objectToShow = {};
+            
+            objectToShow["name"] = userData.result[i].name;
+            objectToShow["contact"] = userData.result[i].contact;
+          console.log("result i ", userData.result[i].attendance, todayDateNew);
+            
+            for(var j = 0;j < userData.result[i].attendance.length;j++){
+              if(userData.result[i].attendance[j].date.localeCompare(todayDateNew) == 0){
+                objectToShow["date"] = userData.result[i].attendance[j].date;
+                objectToShow["attendance"] = userData.result[i].attendance[j].present;
+                objectToShow["topic"] = userData.result[i].attendance[j].topic;
+                objectToShow["speaker"] = userData.result[i].attendance[j].speaker;
+                break;
+              }
+   
+           }
+           console.log("object to show", objectToShow);
+          result_json.push(objectToShow);
+          }
+        this.dataSource.data = result_json;
+          
+        }
+       });
+    }
 
     getSearchedDevotee(contact){
       this.loading = true;
@@ -379,13 +413,17 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
          
       this._userService.getSearchedDevotee(contact)
       .subscribe(userData => {
-            console.log(userData);
-          if(userData.result.length == 0){
+            console.log("i m here",userData);
+          if(!userData.result){
               swal('No Data Found, Please add details', "Hari Bol!", "error");
               this.loading = false;
-              this.devoteeData = {contact:contact};
+              this.devoteeData = {contact:contact, 
+                course:userData.sdlResult[0].course, 
+                counsellor:userData.sdlResult[0].counsellor};
           }else{
              this.devoteeData = userData.result[0];
+             console.log("devotee data", this.devoteeData);
+             
              this.loading = false; 
           }
           
@@ -395,10 +433,15 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
     }
     
     addDevotee(devoteeForm) {
-        
-      if(devoteeForm.invalid != true) {
-          this.loading = true;
-          this._userService.addDevotee(this.devoteeData)
+       console.log("devotee form is", devoteeForm.value);
+       if (!devoteeForm.value.name || !devoteeForm.value.email 
+        || !devoteeForm.value.contact || !devoteeForm.value.dob 
+        || !devoteeForm.value.course || !devoteeForm.value.counsellor){
+          swal("All fields are mandatory", "", "error");
+       }else{
+        console.log("dev data",this.devoteeData) 
+        this.loading = true;
+        this._userService.addDevotee(this.devoteeData)
        .subscribe(userData => {
          console.log("Add record is ", userData);
          if(userData["result"] === "ok"){
@@ -408,7 +451,7 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
              this.loading = false;
          }else{
             swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
-             this.loading = false;
+            this.loading = false;
           }
          });  
       }
@@ -454,7 +497,10 @@ displayedColumns = ['Name', 'Contact', 'Attendance'];
                       for (let i=0 ; i<this.attendanceArray.length; i++) {
 
                             if (this.attendanceArray[i].contact != this.devoteeData['contact']) {
-                                this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
+                                this.attendanceArray.push(
+                                  { name: this.devoteeData['name'], 
+                                  contact: this.devoteeData['contact'], 
+                                  attendance: 'Yes' })
                             }
                         }
                       this.dataSource.data = this.attendanceArray;
@@ -530,6 +576,8 @@ export class EditDevoteeComponent {
 @Component({
   selector: 'add-devotee',
   templateUrl: 'add-devotee.html',
+  styleUrls: ['./edit.devotee.css'],
+  
  
 })
 export class AddDevoteeComponent {

@@ -14,17 +14,17 @@
           <!-- Example DataTables Card-->
         <div class="card mb-2 col-md-offset-2" style="margin-top:15px;">
             <div class="card-header">
-              <i class="fa fa-table"></i> Devotee List
+              <i class="fa fa-table"></i> Devotee Search
             </div>
     
             <div class="card-body">
-              <div class="table-responsive formClass">
+              <div class="table-responsive col-md-offset-6 formClass mat-elevation-z12" >
     
                         <form #devoteeForm="ngForm">
                         <mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
                             <mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
-                                 name="con" [(ngModel)]="devoteeData.contact"
+                                 name="contact" [(ngModel)]="devoteeData.contact"
                                 placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
                             <mat-form-field> <input matInput required
                                  name="name" [(ngModel)]="devoteeData.name"
@@ -34,6 +34,14 @@
                             <mat-form-field> <input type="email" matInput required
                                  name="email" [(ngModel)]="devoteeData.email"
                                 placeholder="Email" > </mat-form-field>
+
+                            
+                        <mat-form-field>                                                              
+                        <input matInput name="dob" [(ngModel)]="devoteeData.dob" 
+                         [matDatepicker]="picker" placeholder="Date of Birth" required>       
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+                        <mat-datepicker #picker></mat-datepicker>                                   
+                      </mat-form-field>   
 
 						<mat-form-field>
 						<mat-select name="course" placeholder="Course" required
@@ -53,13 +61,18 @@
 							value="HG Jagdanand Pandit Prabhuji"> HG Jagdanand Pandit Prabhuji </mat-option>
 							 </mat-select> </mat-form-field>
 							 
-						<button mat-raised-button color="primary" (click)="addDevotee(devoteeForm)">Add Devotee</button>
-						<button mat-button color="accent" (click)="markAttendance(devoteeForm)">Mark Attendance</button>
+            <button mat-raised-button color="primary" style="margin-left:8px;"
+             (click)="addDevotee(devoteeForm)">Add or Update Devotee</button>
+            <button mat-raised-button color="accent"
+             (click)="markAttendance(devoteeForm)">Mark Attendance</button>
 					</form>
 
                     </div>
                 </div>
-                <div class="example-container mat-elevation-z8">
+      <div class="example-container mat-elevation-z12" style="margin:10px;">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i> Today's Attendace
+                      </div>
 
   <mat-table [dataSource]="dataSource" matSort>
 
