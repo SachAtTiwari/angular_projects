@@ -250,7 +250,7 @@ export class AttendanceComponent implements OnInit {
           this.formError = "All fields are mandatory";
       }else{
         
-       this._userService.addDevotee(result)
+       this._userService.addDevoteeGeneric(result)
        .subscribe(userData => {
          console.log("Add record is ", userData);
          if(userData["result"] === "ok"){
@@ -351,7 +351,7 @@ export class MainAttendanceComponent {
   dStatus = {};
   attendanceArray = [];  
   displayedColumns = ['Name', 'Contact', 'Attendance'];
-     dataSource = new MatTableDataSource([]);
+  dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -383,7 +383,7 @@ export class MainAttendanceComponent {
             
             objectToShow["name"] = userData.result[i].name;
             objectToShow["contact"] = userData.result[i].contact;
-          console.log("result i ", userData.result[i].attendance, todayDateNew);
+          //console.log("result i ", userData.result[i].attendance, todayDateNew);
             
             for(var j = 0;j < userData.result[i].attendance.length;j++){
               if(userData.result[i].attendance[j].date.localeCompare(todayDateNew) == 0){
@@ -415,17 +415,20 @@ export class MainAttendanceComponent {
       this._userService.getSearchedDevotee(contact)
       .subscribe(userData => {
             console.log("i m here",userData);
-          if(!userData.result){
+          if(userData.sdlResult){
               swal('No Data Found, Please add details', "Hari Bol!", "error");
               this.loading = false;
               this.devoteeData = {contact:contact, 
                 course:userData.sdlResult[0].course, 
                 counsellor:userData.sdlResult[0].counsellor};
-          }else{
-             this.devoteeData = userData.result[0];
-             console.log("devotee data", this.devoteeData);
-             
+          }else if(userData.result == "notok"){
+  
+             swal('Class not scheduled', "Hari Bol!", "error");
              this.loading = false; 
+          }else{
+            this.devoteeData = userData.result[0];
+            console.log("devotee data", this.devoteeData);
+            this.loading = false; 
           }
           
        });
@@ -447,12 +450,23 @@ export class MainAttendanceComponent {
          console.log("Add record is ", userData);
          if(userData["result"] === "ok"){
           console.log("in add record", userData);
-          //window.location.reload(); 
-          swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+           //window.location.reload(); 
+             swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
              this.loading = false;
-         }else{
-            swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
+             this.attendanceArray.push(
+              { 
+                name: this.devoteeData['name'],
+                contact: this.devoteeData['contact'],
+                attendance: 'YES' 
+              })
+            this.dataSource.data = this.attendanceArray;
+         }else if(userData["result"] == "updated"){
+            swal("Hare Krishna, Devotee details are updated" , "Hari Bol!", 'success');
             this.loading = false;
+          }else{
+            swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
+            this.loading = false;
+
           }
          });  
       }
@@ -482,21 +496,30 @@ export class MainAttendanceComponent {
                       if(userData["result"] === "ok"){
                         this.loading = false;              
                         swal("Attendance updated successfully" , "Hari Bol!!", 'success');
-                          if(this.attendanceArray.length == 0){
-                            this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
-                            }
+                        console.log("attendance array", this.attendanceArray);
+                            this.attendanceArray.push(
+                              { 
+                                name: this.devoteeData['name'],
+                                contact: this.devoteeData['contact'],
+                                attendance: 'YES' 
+                              })
                          this.dataSource.data = this.attendanceArray;
                       }else{
-                          if (this.attendanceArray.length == 0) {
-                              this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
-                          }          
+                         /* if (this.attendanceArray.length == 0) {
+                              this.attendanceArray.push(
+                                { 
+                                  name: this.devoteeData['name'],
+                                  contact: this.devoteeData['contact'], 
+                                  attendance: 'Yes'
+                                 })
+                          }*/          
                            swal("Attendance already updated", "Hari Bol :)", 'warning');
                           this.dataSource.data = this.attendanceArray;
-                        this.loading = false;              
+                          this.loading = false;              
                         
                       }
                       
-                      let obj = {};
+                      /*let obj = {};
                       for (let i in this.attendanceArray) {
                           this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
                           if (!obj[this.attendanceArray[i].contact]) {
@@ -506,7 +529,7 @@ export class MainAttendanceComponent {
                           for (let key in obj) filterArray.push(obj[key]);
                       } 
                         
-                      this.dataSource.data = filterArray;
+                      this.dataSource.data = filterArray;*/
                     });
                 }
             }else{

@@ -11,7 +11,7 @@ import { Body } from '@angular/http/src/body';
 @Injectable()
 export class UserService{
    private _url : string = "http://localhost:3000/";
-   //private _url : string = "/";
+  // private _url : string = "/";
    
    constructor(private _http: Http){}
 
@@ -139,15 +139,30 @@ export class UserService{
        })
         .map(
           res => {
-            console.log("res is", res);
             return res.json();
           },
           err => {
-            console.log("Error occured");
             return err.json();
           }
         );
    }
+
+   addDevoteeGeneric(body): Observable<Response>{
+      
+    return this._http.post(this._url + "addDevoteeGeneric", {
+       body: body
+      })
+       .map(
+         res => {
+           console.log("res is", res);
+           return res.json();
+         },
+         err => {
+           console.log("Error occured");
+           return err.json();
+         }
+       );
+  }
 
   editDevotee(body): Observable<Response>{
     console.log("edit devotee", body);

@@ -34,6 +34,9 @@ router.delete('/delRecord', userController.delRecord);
 /* add Devotee */
 router.post('/addDevotee', userController.addDevotee);
 
+/* add Devotee */
+router.post('/addDevoteeGeneric', userController.addDevoteeGeneric);
+
 /* Get OTP Devotee */
 //router.get('/getOTPDevotees', userController.getOTPDevotees);
 
