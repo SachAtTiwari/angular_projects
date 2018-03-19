@@ -349,7 +349,7 @@ export class MainAttendanceComponent {
   devoteeData = {contact:'', counsellor:'',course:''};
   loading = false;
   dStatus = {};
-    
+  attendanceArray = [];  
   displayedColumns = ['Name', 'Contact', 'Attendance'];
      dataSource = new MatTableDataSource([]);
 
@@ -398,7 +398,8 @@ export class MainAttendanceComponent {
            console.log("object to show", objectToShow);
           result_json.push(objectToShow);
           }
-        this.dataSource.data = result_json;
+        this.attendanceArray = result_json;
+        this.dataSource.data = this.attendanceArray;
           
         }
        });
@@ -457,7 +458,7 @@ export class MainAttendanceComponent {
       }
     }
     
-    attendanceArray = [];
+    
     todayDate = new Date();
     month = this.todayDate.getMonth()+1;
     markAttendance(form) {
@@ -494,16 +495,18 @@ export class MainAttendanceComponent {
                         this.loading = false;              
                         
                       }
-                      for (let i=0 ; i<this.attendanceArray.length; i++) {
-
-                            if (this.attendanceArray[i].contact != this.devoteeData['contact']) {
-                                this.attendanceArray.push(
-                                  { name: this.devoteeData['name'], 
-                                  contact: this.devoteeData['contact'], 
-                                  attendance: 'Yes' })
-                            }
-                        }
-                      this.dataSource.data = this.attendanceArray;
+                      
+                      let obj = {};
+                      for (let i in this.attendanceArray) {
+                          this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
+                          if (!obj[this.attendanceArray[i].contact]) {
+                              obj[this.attendanceArray[i].contact] = this.attendanceArray[i]
+                          }
+                          var filterArray = [];
+                          for (let key in obj) filterArray.push(obj[key]);
+                      } 
+                        
+                      this.dataSource.data = filterArray;
                     });
                 }
             }else{
