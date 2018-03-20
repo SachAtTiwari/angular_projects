@@ -31,7 +31,8 @@
                                 placeholder="Name" > </mat-form-field>	
                             
                                 
-                            <mat-form-field> <input type="email" matInput required
+                            <mat-form-field> <input type="email" matInput
+                              (blur)="getSearchedDevotee(devoteeData.email)" required
                                  name="email" [(ngModel)]="devoteeData.email"
                                 placeholder="Email" > </mat-form-field>
 

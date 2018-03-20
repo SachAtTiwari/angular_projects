@@ -27,10 +27,19 @@ export class UserService{
   
     getSearchedDevotee(contact){
       console.log("in searched", contact);
+      let isContact = false;
+      if(!isNaN(parseInt(contact))){
+         isContact = true;
+      }
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
-      searchParams.append('contact', contact);
+      if(isContact == true){
+        searchParams.append('contact', contact);
+      }else{
+        searchParams.append('email', contact);
+        
+      }
       searchParams.append('course', "OTP");
       let options = new RequestOptions({ headers: headers, params: searchParams });
 

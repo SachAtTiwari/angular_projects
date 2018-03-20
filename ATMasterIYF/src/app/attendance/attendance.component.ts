@@ -242,11 +242,12 @@ export class AttendanceComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
 
-      result.dob = this._userService.parseDate(result.dob);
-      console.log("date is ", result.dob);
+      //result.dob = this._userService.parseDate(result.dob);
+      //console.log("date is ", result.dob);
 
       if (!result.name || !result.email 
-        || !result.contact || !result.dob ){
+        || !result.contact || !result.dob
+        || !result.counsellor || !result.course){
           this.formError = "All fields are mandatory";
       }else{
         
@@ -346,7 +347,7 @@ export class MarkpresentComponent {
 })
 export class MainAttendanceComponent {
   contact:string;
-  devoteeData = {contact:'', counsellor:'',course:''};
+  devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
   loading = false;
   dStatus = {};
   attendanceArray = [];  
@@ -405,34 +406,54 @@ export class MainAttendanceComponent {
        });
     }
 
-    getSearchedDevotee(contact){
-      this.loading = true;
-      if(contact.length != 10 && contact != undefined){
-          swal("Invalid mobile no" , "Hari Bol", 'error');          
-           this.loading = false;
-      }else if(contact.length == 10 && contact != ""){
-         
+    _searchedDevotee(contact, isContact){
       this._userService.getSearchedDevotee(contact)
       .subscribe(userData => {
             console.log("i m here",userData);
           if(userData.sdlResult){
               swal('No Data Found, Please add details', "Hari Bol!", "error");
               this.loading = false;
-              this.devoteeData = {contact:contact, 
+              if(isContact){
+                this.devoteeData = {contact:contact, 
                 course:userData.sdlResult[0].course, 
-                counsellor:userData.sdlResult[0].counsellor};
+                counsellor:userData.sdlResult[0].counsellor,
+                email:'',dob:'', name:''};
+              }else{
+                this.devoteeData = {email:contact, 
+                course:userData.sdlResult[0].course, 
+                counsellor:userData.sdlResult[0].counsellor,
+                contact:'', dob:'', name:''};
+              }
           }else if(userData.result == "notok"){
   
-             swal('Class not scheduled', "Hari Bol!", "error");
-             this.loading = false; 
+            swal('Class not scheduled for OTP', "Hari Bol!", "error");
+            this.loading = false; 
           }else{
             this.devoteeData = userData.result[0];
             console.log("devotee data", this.devoteeData);
             this.loading = false; 
           }
+      });
+    }
+
+
+    getSearchedDevotee(contact){
+      console.log("contact is", parseInt(contact));
+      this.loading = true;
+      let isContact = false;
+      if(!isNaN(parseInt(contact))){
+          console.log("contact is", contact);
+          if(contact.length != 10 && contact != undefined){
+              swal("Invalid mobile no" , "Hari Bol", 'error');          
+              this.loading = false;
+          }else if(contact.length == 10 && contact != ""){
+              isContact = true;
+              this._searchedDevotee(contact, isContact);           
+          }
+      }else{
+        this._searchedDevotee(contact, isContact);           
           
-       });
-      }
+       }
       
     }
     

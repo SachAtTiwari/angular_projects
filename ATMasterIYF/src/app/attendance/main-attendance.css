@@ -2,6 +2,8 @@
 .formClass {
 	height: 320px;
 	overflow: hidden;
+	border-radius: 20px;
+    padding: 20px; 
 }
 
 mat-form-field {

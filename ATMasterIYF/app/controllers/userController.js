@@ -317,12 +317,18 @@ exports.getSearchedDevotee = function(req, res, next) {
          if (collections === undefined){
            res.send({error:"No Collections present in DB"});
          }else{
-          var regexp = new RegExp("^"+ req.query.contact);
+          var regexp;
+          var query = {};
+          if(req.query.contact){
+             regexp = new RegExp("^"+ req.query.contact);
+             query = {contact:regexp, course:req.query.course}
+          }else{
+             regexp = new RegExp("^"+ req.query.email);
+             query = {email:regexp, course:req.query.course}
+             
+          }
           db.collection("devotees").find(
-            { 
-              contact: regexp,
-              course:req.query.course
-            }
+            query
          ).toArray(function(err, result) {
             if (err) {
                 console.log("err is ", err);
