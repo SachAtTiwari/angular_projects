@@ -1,6 +1,6 @@
 <div class="form-container">
        
-        <mat-toolbar>Add Devotee</mat-toolbar>
+      <mat-toolbar>Add Devotee</mat-toolbar>
           
       
       <div *ngIf="formError" style="margin:5px;" class="alert alert-danger alert-dismissable">
@@ -10,23 +10,8 @@
       
 
 
-      <form #classForm="ngForm" (ngSubmit)="_addDevotee(classForm)" >
-         <div style="margin:5px;" *ngIf="showStatus" class="alert alert-success alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            {{showAttMessage}}
-        </div>
-
-          <div style="margin:5px;" *ngIf="showDelStatus" class="alert alert-danger alert-dismissable">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-               Record deleted successfully.
-          </div>
-
-          <div style="margin:5px;" *ngIf="showAddStatus" class="alert alert-success alert-dismissable">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-               {{showAddMessage}}
-          </div>
-          
-
+      <form #classForm="ngForm" (ngSubmit)="_addDevotee(classForm)" style="margin:auto;">
+     
         <mat-form-field>                                  
             <input matInput name="name" [(ngModel)]="name"  placeholder="Name" required>  
          </mat-form-field>  
@@ -49,7 +34,7 @@
         <mat-form-field>                                                              
           <input matInput name="dob" [(ngModel)]="dob" [matDatepicker]="picker" placeholder="Date of Birth" required>       
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
-          <mat-datepicker #picker></mat-datepicker>                                   
+          <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>                                   
         </mat-form-field>   
 
              

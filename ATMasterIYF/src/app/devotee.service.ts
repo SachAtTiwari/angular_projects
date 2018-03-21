@@ -10,8 +10,8 @@ import { Body } from '@angular/http/src/body';
 
 @Injectable()
 export class UserService{
-   private _url : string = "http://localhost:3000/";
-  // private _url : string = "/";
+  private _url : string = "http://localhost:3000/";
+  //private _url : string = "/";
    
    constructor(private _http: Http){}
 
@@ -95,7 +95,7 @@ export class UserService{
       
       return this._http.get(this._url + "getSdlClasses")
         .map((response: Response) => {
-            console.log("mock data 1 " , response.json());
+          //  console.log("mock data 1 " , response.json());
             return response.json();
            }
          )

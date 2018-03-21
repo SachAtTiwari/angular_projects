@@ -158,15 +158,17 @@ export class AttendanceComponent implements OnInit {
   }
 
   _getDevotees(params){
+    console.log("in get devotees");
     this._userService.getDevotees(params["course"])
     .subscribe(userData => {
-//        console.log("user data is 2", userData);
+       console.log("user data is 2", userData);
        /* if(userData.sdlResult && userData.sdlResult.length > 0 && params["course"] == "1"){
           this.router.navigateByUrl('/otpAttendance');
         }*/
         if(userData.sdlResult && userData.sdlResult.length > 0){
           this.dataSource.data = userData.result;
-        }else if (!userData.sdlResult && userData.result.length > 0 && params["course"] == "5"){
+        }else if (!userData.sdlResult && userData.result.length >= 0 && params["course"] == "5"){
+            console.log("in course 5");
             this.showAllSwitch = false;
             this.dataSource.data = userData.result;
         }else{
@@ -350,6 +352,7 @@ export class MarkpresentComponent {
 
 })
 export class MainAttendanceComponent {
+  startDate = new Date(1987, 0, 1);  
   contact:string;
   devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
   loading = false;
@@ -635,13 +638,14 @@ export class EditDevoteeComponent {
 @Component({
   selector: 'add-devotee',
   templateUrl: 'add-devotee.html',
-  styleUrls: ['./edit.devotee.css'],
+  styleUrls: ['./add-devotee.css'],
   
  
 })
 export class AddDevoteeComponent {
 
   all = false;
+  startDate = new Date(1987, 0, 1);
   ngOnInit() {
     console.log("in add devotee");
     this.route.queryParams.subscribe(params => {

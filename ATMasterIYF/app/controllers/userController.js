@@ -215,6 +215,7 @@ exports.getDevotees = function(req, res, next) {
          }//else end
       });//list collection end
     }else{
+      console.log("empty course");
       const db = client.db(dbName);      
       db.listCollections().toArray(function(err, usrCollections){
           if (usrCollections === undefined){
@@ -226,7 +227,7 @@ exports.getDevotees = function(req, res, next) {
 			            console.log("err is ", err);
                 	res.send({error:500});
 	            	}else{
-                //console.log(result);
+                console.log(result);
                	res.send({result:result});
 	          	}
            });
