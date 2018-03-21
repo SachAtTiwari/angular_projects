@@ -41,6 +41,7 @@ exports.addDevoteeGeneric = function(req, res, next) {
 }
 
 exports.addDevotee = function(req, res, next) {
+  try{
     console.log("im here", req.body.body);
     let date = new Date();
     let month = date.getMonth() + 1;
@@ -127,9 +128,13 @@ exports.addDevotee = function(req, res, next) {
       }
     });
   });
+}catch(err){
+  console.log("something went error", err);
+}
 }
 
 exports.delRecord = function(req, res, next) {
+  try{
     console.log("im here", req.query.contact);
     dbClient.connect(url, function(err, client) {
       assert.equal(null, err);
@@ -155,9 +160,13 @@ exports.delRecord = function(req, res, next) {
       });
     });
    res.send({result:"ok"});
+  }catch(err){
+    console.log("Exception ", err);
+  }
 };
 
 exports.getDevotees = function(req, res, next) {
+  try{
     console.log("i m here", req.query.course);
     let course = req.query.course;
     let date = new Date();
@@ -225,9 +234,13 @@ exports.getDevotees = function(req, res, next) {
         });
     }
   });
+  }catch(err){
+    console.log("Exception :", err);
+  }
  };
 
 exports.getDevoteeDetail = function(req, res, next) {
+  try{
    // console.log("im here", req.query.id);
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -252,10 +265,15 @@ exports.getDevoteeDetail = function(req, res, next) {
         }
       });
      });
+    }catch(err){
+      console.log("Exception :", err);
+
+    }
   };
 
 
 exports.updateDevotee = function(req, res, next) {
+  try{
     console.log("i m in update", req.body.body);
      var valuesToUpdate = {}
      if(req.body.body.contact){
@@ -302,11 +320,15 @@ exports.updateDevotee = function(req, res, next) {
          }
        });
       });
+    }catch(err){
+      console.log("Exception:", err);
+    }
 };
 
 
 
 exports.getSearchedDevotee = function(req, res, next) {
+  try{
   console.log("i m insearched devotee", req.query);
   //console.log("value to update", valuesToUpdate);
   dbClient.connect(url, function(err, client) {
@@ -364,5 +386,9 @@ exports.getSearchedDevotee = function(req, res, next) {
        }
      });
     });
+  }catch(err){
+    console.log("Exception :", err);
+
+  }
 };
 

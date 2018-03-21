@@ -11,6 +11,7 @@ const dbName = 'iyfdb';
 
 
 exports.downloadToExcel =  function(req, res, next) {
+  try{
     console.log("i m here", req.query);
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -36,4 +37,8 @@ exports.downloadToExcel =  function(req, res, next) {
           }
         });
      });
+  }catch(err){
+    console.log("Exception:", err);
+
+  }
 }

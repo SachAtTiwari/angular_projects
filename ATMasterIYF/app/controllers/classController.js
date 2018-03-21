@@ -53,6 +53,7 @@ exports.markAttendance = function(req, res, next) {
 
 //Check if class sdl for given course on selected date
 exports.checkClassSdl = function(req, res, next) {
+  try{
     console.log("im here", req.query.date);
     dbClient.connect(url, function(err, client) {
         const db = client.db(dbName);
@@ -77,9 +78,13 @@ exports.checkClassSdl = function(req, res, next) {
         }
       });
      });
+    }catch(err){
+      console.log("Exception:", err);
+    }
   }
 
 exports.sdlClass = function(req, res, next) {
+  try{
     console.log("im here", req.body.body);
     dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -107,9 +112,14 @@ exports.sdlClass = function(req, res, next) {
          });
       });
      });
+    }catch(err){
+      console.log("Exception:", err);
+
+    }
   }
 
 exports.getSdlClasses = function(req, res, next) {
+  try{
     console.log("i m here in sdl classes");
       dbClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -130,9 +140,14 @@ exports.getSdlClasses = function(req, res, next) {
           }
         });
      });
+    }catch(err){
+      console.log("Exception:", err);
+
+    }
   };
 
-  exports.getTodayAttendance =  function(req, res, next) {
+exports.getTodayAttendance =  function(req, res, next) {
+  try{
     console.log("i m here", req.query);
     let date = new Date();
     let month = date.getMonth() + 1
@@ -161,4 +176,7 @@ exports.getSdlClasses = function(req, res, next) {
           }
         });
      });
+    }catch(err){
+      console.log("Exception:", err);
+    }
 }
