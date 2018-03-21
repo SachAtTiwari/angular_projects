@@ -52,13 +52,7 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  /*
-    Add Contact in place of DOB
-    Add New sdl for new class
-    Time field
-    Check page flow
-
-  */
+ 
   title = 'ISKCON YOUTH FORUM';
   ifNoClassScdlText = "Schedule Class for attendance";
   ifClassSdl = true;
@@ -80,16 +74,9 @@ export class ClassComponent implements OnInit {
     {value: "ASHRAY1"},
     {value: "ASHRAY2"},
   ];
-  /*counsellors = [
-    {value:"KVP"},
-    {value:"SGP"}
-  ];*/
+  
   topic = "";
   date = "";
-
-  /*sdlClasses = [
-  {date: "Wed Jan 17 2018", course: "OTP", speaker: "KVP", counsellor: "SGP", topic: "Art of Mind", time:"5:00"},
-  ];*/
 
 
   classSdl(){

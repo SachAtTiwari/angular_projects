@@ -67,12 +67,12 @@ exports.checkClassSdl = function(req, res, next) {
             }
           ).toArray(function(err, result) {
             if (err) {
-			console.log("err is ", err);
+          			console.log("err is ", err);
                 	res.send({error:500});
-	    }else{
-            console.log(result);
-            res.send({result:result});
-	    }
+	          }else{
+              console.log(result);
+             res.send({result:result});
+	          }
           });
         }
       });
@@ -89,21 +89,21 @@ exports.sdlClass = function(req, res, next) {
           if (collections === undefined){
             db.createCollection("entity", function(err, res) {
               if (err) {
-			console.log("err is ", err);
+                  console.log("err is ", err);
                 	res.send({error:500});
-	      }
-              console.log("Collection created!");
+	            }
+              //console.log("Collection created!");
              });
           }
   
           db.collection("entity").insertOne(req.body.body, function(err, sdResult) {
             if (err) {
-		console.log("err is ", err);
+		            console.log("err is ", err);
                 res.send({result:"notok"});
-	    }else{
+	           }else{
           	  //console.log("1 document inserted", sdResult);
-     	  	  res.send({result:"ok"});
-	    }
+     	  	    res.send({result:"ok"});
+	          }
          });
       });
      });
@@ -112,7 +112,6 @@ exports.sdlClass = function(req, res, next) {
 exports.getSdlClasses = function(req, res, next) {
     console.log("i m here in sdl classes");
       dbClient.connect(url, function(err, client) {
-//	console.log("errr in sdl", err)
         assert.equal(null, err);
         const db = client.db(dbName);
         db.listCollections().toArray(function(err, collections){
@@ -121,11 +120,11 @@ exports.getSdlClasses = function(req, res, next) {
          }else{
             db.collection("entity").find().toArray(function(err, result) {
               if (err) {
-		console.log("err is ", err);
+	            	console.log("err is ", err);
                 res.send({result:"notok"});
-	      }else{
-              console.log(result);
-              res.send({result:result});
+	            }else{
+                //console.log(result);
+                res.send({result:result});
               }
             });
           }

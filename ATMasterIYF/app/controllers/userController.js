@@ -167,7 +167,6 @@ exports.getDevotees = function(req, res, next) {
     
 
     dbClient.connect(url, function(err, client) {
-	      console.log("err ", err)
         assert.equal(null, err);  
         //check sdl classes for provided course
         const db = client.db(dbName);

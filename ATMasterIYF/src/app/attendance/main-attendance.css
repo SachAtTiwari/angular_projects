@@ -1,6 +1,6 @@
 
 .formClass {
-	height: 320px;
+	height: 370px;
 	overflow: hidden;
 	border-radius: 20px;
     padding: 20px; 
@@ -9,4 +9,8 @@
 mat-form-field {
 	margin: 10px;
 	width: 400px;
+}
+mat-progress-spinner{
+  
+  margin: auto;
 }

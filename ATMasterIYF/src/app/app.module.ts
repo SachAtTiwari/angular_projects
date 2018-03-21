@@ -70,7 +70,7 @@ const appRoutes: Routes = [
   { path: 'showDetails/:id', component: ShowdetailsComponent},  
   { path: 'classSdl', component: ClassComponent},
   { path: 'attendance', component: AttendanceComponent},
-  { path: 'otpAttendance', component: MainAttendanceComponent},
+  { path: 'otpattendance', component: MainAttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
   { path: '', redirectTo:'classSdl', pathMatch:"full"}
 ];

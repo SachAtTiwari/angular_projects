@@ -17,11 +17,12 @@
               <i class="fa fa-table"></i> Devotee Search
             </div>
     
-            <div class="card-body">
+            <div class="card-body" >
               <div class="table-responsive col-md-offset-6 formClass mat-elevation-z12" >
     
                         <form #devoteeForm="ngForm">
-                        <mat-progress-spinner mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
+                          <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
+                          mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
                             <mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
                                  name="contact" [(ngModel)]="devoteeData.contact"

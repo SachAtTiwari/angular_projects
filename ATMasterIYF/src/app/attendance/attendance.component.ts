@@ -9,6 +9,7 @@ import * as $ from 'jquery';
 import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import 'datatables.net';
+import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class AttendanceComponent implements OnInit {
   loading = false;
   con = "";
   values = '';
+  showAllSwitch = true;
 
 
   onKeyUp(event: any) { // without type info
@@ -159,11 +161,13 @@ export class AttendanceComponent implements OnInit {
     this._userService.getDevotees(params["course"])
     .subscribe(userData => {
 //        console.log("user data is 2", userData);
-        if(userData.sdlResult && userData.sdlResult.length > 0 && params["course"] == "1"){
+       /* if(userData.sdlResult && userData.sdlResult.length > 0 && params["course"] == "1"){
           this.router.navigateByUrl('/otpAttendance');
-        }else if(userData.sdlResult && userData.sdlResult.length > 0){
+        }*/
+        if(userData.sdlResult && userData.sdlResult.length > 0){
           this.dataSource.data = userData.result;
         }else if (!userData.sdlResult && userData.result.length > 0 && params["course"] == "5"){
+            this.showAllSwitch = false;
             this.dataSource.data = userData.result;
         }else{
           this.router.navigateByUrl('/classSdl');
@@ -374,6 +378,14 @@ export class MainAttendanceComponent {
       let course = "OTP";
       let todayDate = new Date();
       let todayDateNew = this._userService.parseDate(todayDate);
+      this._userService.checkIfClassSdlForCourse(course, todayDateNew)
+      .subscribe(sdlresult => {
+         console.log("sdl result is", sdlresult);
+         if(sdlresult.result.length == 0){
+            this.router.navigateByUrl('/classSdl');
+         }
+      })
+
       this._userService.getTodayAttendance(course)
       .subscribe(userData => {
           if(userData.result.length != 0){
@@ -554,7 +566,7 @@ export class MainAttendanceComponent {
                     });
                 }
             }else{
-          this.loading = false;              
+               this.loading = false;              
               console.log("No class sdl for selected date");
               swal("No class sdl for selected date", "Hari Bol..", 'error')
             }
