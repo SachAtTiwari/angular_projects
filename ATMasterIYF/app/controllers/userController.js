@@ -1,22 +1,12 @@
-const dbClient = require('mongodb').MongoClient;
 const assert = require('assert');
 var mongo = require('mongodb');
 
-// Connection URL
-//const url = 'mongodb://localhost:27017';
-const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb';
-
- 
-// Database Name
-const dbName = 'iyfdb';
 exports.addDevoteeGeneric = function(req, res, next) {
-  dbClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-    const db = client.db(dbName);
-    db.collection("devotees").find(
-      {contact:req.body.body.contact})
-    .toArray(function(err, dvData) {
+  try{
+  let db = req.app.locals.db;
+  db.collection("devotees").find(
+   {contact:req.body.body.contact})
+  .toArray(function(err, dvData) {
       if (err) {
        console.log("err is ", err);
        res.send({result:"notok"});
@@ -35,8 +25,9 @@ exports.addDevoteeGeneric = function(req, res, next) {
         }
       }
     })
-
-  });
+}catch(err){
+  console.log("Exception :", err);
+}
 
 }
 
@@ -48,14 +39,11 @@ exports.addDevotee = function(req, res, next) {
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
 
     console.log("date is ", date);
+    let db = req.app.locals.db;
+    
     
     //Find Sdl classes for today for given course to fetch counsellor details
-    dbClient.connect(url, function(err, client) {
-      assert.equal(null, err);
-      console.log("Connected successfully to server");
-      const db = client.db(dbName);
-      
-     db.collection("entity").find({course:req.body.body.course, date:date})
+    db.collection("entity").find({course:req.body.body.course, date:date})
      .toArray(function(err, sdlResult) {
       if (err){
         console.log("err is ", err);
@@ -127,7 +115,6 @@ exports.addDevotee = function(req, res, next) {
 
       }
     });
-  });
 }catch(err){
   console.log("something went error", err);
 }
@@ -136,12 +123,9 @@ exports.addDevotee = function(req, res, next) {
 exports.delRecord = function(req, res, next) {
   try{
     console.log("im here", req.query.contact);
-    dbClient.connect(url, function(err, client) {
-      assert.equal(null, err);
-      console.log("Connected successfully to server");
-  
-      const db = client.db(dbName);
-      db.listCollections().toArray(function(err, collections){     
+    let db = req.app.locals.db;
+    
+    db.listCollections().toArray(function(err, collections){     
         console.log("collection list". collections);
         if (collections === undefined){
           res.send({error:"No Collections present in DB"});
@@ -157,7 +141,6 @@ exports.delRecord = function(req, res, next) {
       
            });
         }
-      });
     });
    res.send({result:"ok"});
   }catch(err){
@@ -173,13 +156,8 @@ exports.getDevotees = function(req, res, next) {
     let month = date.getMonth() + 1
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
     console.log("date is", date);
-    
-
-    dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);  
-        //check sdl classes for provided course
-        const db = client.db(dbName);
-        if(course){
+    let db = req.app.locals.db;
+    if(course){
          db.listCollections().toArray(function(err, collections){
            if (collections === undefined){
               res.send({error:"No Classes Sdl for OTP"});
@@ -216,7 +194,6 @@ exports.getDevotees = function(req, res, next) {
       });//list collection end
     }else{
       console.log("empty course");
-      const db = client.db(dbName);      
       db.listCollections().toArray(function(err, usrCollections){
           if (usrCollections === undefined){
              res.send({error:"No Collections present in DB"});
@@ -234,7 +211,6 @@ exports.getDevotees = function(req, res, next) {
           }
         });
     }
-  });
   }catch(err){
     console.log("Exception :", err);
   }
@@ -243,10 +219,9 @@ exports.getDevotees = function(req, res, next) {
 exports.getDevoteeDetail = function(req, res, next) {
   try{
    // console.log("im here", req.query.id);
-    dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
+   let db = req.app.locals.db;
+    
+   db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
           }else{
@@ -265,7 +240,6 @@ exports.getDevoteeDetail = function(req, res, next) {
           });
         }
       });
-     });
     }catch(err){
       console.log("Exception :", err);
 
@@ -299,28 +273,26 @@ exports.updateDevotee = function(req, res, next) {
       valuesToUpdate["email"] = req.body.body.email;
     } 
     //console.log("value to update", valuesToUpdate);
-     dbClient.connect(url, function(err, client) {
-         assert.equal(null, err);
-         const db = client.db(dbName);
-         db.listCollections().toArray(function(err, collections){
-           if (collections === undefined){
-             res.send({error:"No Collections present in DB"});
-           }else{
-            var query = {_id: new mongo.ObjectID(req.body.body.id)};
-            var newvalues = { $set: valuesToUpdate };
-            db.collection("devotees").update(
-              query, newvalues, 
-              function(err, resUp) {
-                if (err) {
-                  res.send({result:"notok"})
-                }else{
-                  console.log("document updated");
-                  res.send({result:"ok"})
-                }
-             });
-         }
-       });
-      });
+    let db = req.app.locals.db;
+    
+    db.listCollections().toArray(function(err, collections){
+        if (collections === undefined){
+          res.send({error:"No Collections present in DB"});
+         }else{
+          var query = {_id: new mongo.ObjectID(req.body.body.id)};
+          var newvalues = { $set: valuesToUpdate };
+          db.collection("devotees").update(
+             query, newvalues, 
+             function(err, resUp) {
+               if (err) {
+                 res.send({result:"notok"})
+               }else{
+                 console.log("document updated");
+                 res.send({result:"ok"})
+               }
+           });
+        }
+     });
     }catch(err){
       console.log("Exception:", err);
     }
@@ -330,63 +302,61 @@ exports.updateDevotee = function(req, res, next) {
 
 exports.getSearchedDevotee = function(req, res, next) {
   try{
-  console.log("i m insearched devotee", req.query);
-  //console.log("value to update", valuesToUpdate);
-  dbClient.connect(url, function(err, client) {
-       assert.equal(null, err);
-       const db = client.db(dbName);
-       db.listCollections().toArray(function(err, collections){
-         if (collections === undefined){
-           res.send({error:"No Collections present in DB"});
-         }else{
-          var regexp;
-          var query = {};
-          if(req.query.contact){
-             regexp = new RegExp("^"+ req.query.contact);
-             query = {contact:regexp, course:req.query.course}
-          }else{
-             regexp = new RegExp("^"+ req.query.email);
-             query = {email:regexp, course:req.query.course}
-             
-          }
-          db.collection("devotees").find(
-            query
-         ).toArray(function(err, result) {
-            if (err) {
+    console.log("i m insearched devotee", req.query);
+   // console.log("db url", req.app.locals.db);
+    let db = req.app.locals.db;
+    db.listCollections().toArray(function(err, collections){
+      if (collections === undefined){
+        res.send({error:"No Collections present in DB"});
+      }else{
+      var regexp;
+      var query = {};
+      if(req.query.contact){
+          regexp = new RegExp("^"+ req.query.contact);
+          query = {contact:regexp, course:req.query.course}
+      }else{
+          regexp = new RegExp("^"+ req.query.email);
+          query = {email:regexp, course:req.query.course}
+          
+      }
+      db.collection("devotees").find(
+        query
+      ).toArray(function(err, result) {
+        if (err) {
+            console.log("err is ", err);
+            res.send({result:"notok"});
+        }else{
+          //console.log(result);
+          if(result.length == 0){
+            let date = new Date();
+            let month = date.getMonth() + 1;
+            date =  date.getDate() + '-' + month + '-' + date.getFullYear();
+            console.log("date is ", date);
+            db.collection("entity").find({course:req.query.course, date:date})
+            .toArray(function(err, sdlResult) {
+              if (err){
                 console.log("err is ", err);
                 res.send({result:"notok"});
-            }else{
-              //console.log(result);
-              if(result.length == 0){
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                date =  date.getDate() + '-' + month + '-' + date.getFullYear();
-                console.log("date is ", date);
-                db.collection("entity").find({course:req.query.course, date:date})
-                .toArray(function(err, sdlResult) {
-                 if (err){
-                   console.log("err is ", err);
-                   res.send({result:"notok"});
-           
-                 }else{
-                   //console.log("sdl result is",sdlResult[0].speaker);
-                    if(sdlResult.length > 0){
-                     res.send(
-                      {sdlResult:[{course:req.query.course,counsellor:sdlResult[0].speaker}]}
-                      )
-                    }else{
-                     res.send({result:"notok"});
-                    }
-                 }
-                })
+        
               }else{
-                 res.send({result:result});
+                //console.log("sdl result is",sdlResult[0].speaker);
+                if(sdlResult.length > 0){
+                  res.send(
+                  {sdlResult:[{course:req.query.course,counsellor:sdlResult[0].speaker}]}
+                  )
+                }else{
+                  res.send({result:"notok"});
+                }
               }
-            }
-          });
-       }
-     });
+            })
+          }else{
+              res.send({result:result});
+          }
+        }
+      });
+      }
     });
+  
   }catch(err){
     console.log("Exception :", err);
 

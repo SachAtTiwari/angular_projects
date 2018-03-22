@@ -1,19 +1,10 @@
-const dbClient = require('mongodb').MongoClient;
 const assert = require('assert');
  
-// Connection URL
-//const url = 'mongodb://localhost:27017';
-const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb?authMode=scram-sha1';
-
- 
-// Database Name
-const dbName = 'iyfdb';
 
 exports.markAttendance = function(req, res, next) {
-    dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){     
+  try{
+    let db = req.app.locals.db;
+    db.listCollections().toArray(function(err, collections){     
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
           }else{
@@ -37,27 +28,29 @@ exports.markAttendance = function(req, res, next) {
                     if (err) {
 			                console.log("err is ", err);
                       res.send({result:"notok"});
-		    }
+		                 }
                    // console.log("1 document find", res.result);
                     res.send({result:"ok"});
                  });
               }else{
                 res.send({result:"notok"});
               }
-	     }
+	           }  
             });
           }
         });
-      });
+      }catch(err){
+        console.log("Exception :", err);
+      }
 }
 
 //Check if class sdl for given course on selected date
 exports.checkClassSdl = function(req, res, next) {
   try{
     console.log("im here", req.query.date);
-    dbClient.connect(url, function(err, client) {
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
+    let db = req.app.locals.db;
+    
+    db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
          }else{
@@ -77,7 +70,6 @@ exports.checkClassSdl = function(req, res, next) {
           });
         }
       });
-     });
     }catch(err){
       console.log("Exception:", err);
     }
@@ -86,12 +78,10 @@ exports.checkClassSdl = function(req, res, next) {
 exports.sdlClass = function(req, res, next) {
   try{
     console.log("im here", req.body.body);
-    dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
-          console.log("collection list". collections);
-          if (collections === undefined){
+    let db = req.app.locals.db;
+    db.listCollections().toArray(function(err, collections){
+        console.log("collection list". collections);
+        if (collections === undefined){
             db.createCollection("entity", function(err, res) {
               if (err) {
                   console.log("err is ", err);
@@ -111,20 +101,17 @@ exports.sdlClass = function(req, res, next) {
 	          }
          });
       });
-     });
     }catch(err){
       console.log("Exception:", err);
-
     }
   }
 
 exports.getSdlClasses = function(req, res, next) {
   try{
     console.log("i m here in sdl classes");
-      dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
+    let db = req.app.locals.db;
+    
+    db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
          }else{
@@ -133,13 +120,12 @@ exports.getSdlClasses = function(req, res, next) {
 	            	console.log("err is ", err);
                 res.send({result:"notok"});
 	            }else{
-                //console.log(result);
+                console.log("result",result);
                 res.send({result:result});
               }
             });
           }
-        });
-     });
+      });
     }catch(err){
       console.log("Exception:", err);
 
@@ -152,10 +138,10 @@ exports.getTodayAttendance =  function(req, res, next) {
     let date = new Date();
     let month = date.getMonth() + 1
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
-    dbClient.connect(url, function(err, client) {
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        db.listCollections().toArray(function(err, collections){
+    let db = req.app.locals.db;
+    console.log("db is", db);
+    
+    db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
               res.send({error:"No Collections present in DB"});
            }else{
@@ -174,7 +160,6 @@ exports.getTodayAttendance =  function(req, res, next) {
 	            	}
               });
           }
-        });
      });
     }catch(err){
       console.log("Exception:", err);

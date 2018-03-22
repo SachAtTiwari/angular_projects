@@ -10,30 +10,98 @@
 
               <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
                   <div class="card-header">
-                    <i class="fa fa-table"></i> Devotee Attendance
+                    <i class="fa fa-table"></i> Devotee Details
                   </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-bordered"
-                       id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                          <tr>
-                            <th>Date</th>
-                            <th>Present</th>
-                            <th>Topic</th>
-                          </tr>
-                        </thead>
-          
-                        <tbody>
-                            <tr *ngFor="let dv of devotees;">
-                            <td >{{dv.name}}</td>
-                            <td >{{dv.contact}}</td>
-                            <td >{{dv.counsellor}}</td>
+                  <div class="card-body formClass mat-elevation-z12">
+                      <form #devoteeForm="ngForm">
+                          
+                          <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
+                          mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
+                        
+                            <mat-form-field> <input matInput
+                                 name="contact" [(ngModel)]="devoteeData.contact"
+                                placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
+                            <mat-form-field> <input matInput required
+                                 name="name" [(ngModel)]="devoteeData.name"
+                                placeholder="Name" > </mat-form-field>	
                             
-                          </tr>
-                        </tbody>
-                      </table>
+                                
+                            <mat-form-field> <input type="email" matInput
+                              required
+                                 name="email" [(ngModel)]="devoteeData.email"
+                                placeholder="Email" > </mat-form-field>
+
+                            
+                        <mat-form-field>                                                              
+                        <input matInput name="dob" [(ngModel)]="devoteeData.dob" 
+                         [matDatepicker]="picker" placeholder="Date of Birth" required>       
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>                                   
+                      </mat-form-field>   
+
+                      <mat-form-field>
+                      <mat-select name="course" placeholder="Course" required
+                        [(ngModel)]="devoteeData.course"> <mat-option
+                        value="OTP"> OTP </mat-option> <mat-option value="TSSV">
+                      TSSV </mat-option> <mat-option value="ASHRAY1"> ASHRAY1 </mat-option> <mat-option
+                        value="ASHRAY2"> ASHRAY2 </mat-option> </mat-select> </mat-form-field>
+
+                      <mat-form-field>
+                      <mat-select name="counsellor" placeholder="Counsellor" required
+                        [(ngModel)]="devoteeData.counsellor"> <mat-option
+                        value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
+                      <mat-option value="HG Kalpvraksha Prabhuji">
+                      HG Kalpvraksha Prabhuji </mat-option> <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> <mat-option
+                        value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
+                        <mat-option
+                        value="HG Jagdanand Pandit Prabhuji"> HG Jagdanand Pandit Prabhuji </mat-option>
+                        </mat-select> </mat-form-field>
+                        
+                      <!--button mat-raised-button color="primary" style="margin-left:8px;"
+                      (click)="addDevotee(devoteeForm)">Update Devotee</button-->
+                </form>
           
+
+          <div class="table-responsive" style="margin-top:25px;">
+              <div class="card-header">
+                  <i class="fa fa-table"></i> Programs attended till date
+                </div>
+
+                        <mat-table #table [dataSource]="dataSource">
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="Date">
+                              <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+                            </ng-container>
+                        
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="Speaker">
+                              <mat-header-cell *matHeaderCellDef> Speaker </mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.speaker}} </mat-cell>
+                            </ng-container>
+                        
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="Topic">
+                              <mat-header-cell *matHeaderCellDef> Topic </mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.topic}} </mat-cell>
+                            </ng-container>
+                        
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="Attendance">
+                              <mat-header-cell *matHeaderCellDef> Attendance </mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.present}} </mat-cell>
+                            </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        
+                          </mat-table>
+                          <mat-paginator #paginator
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 20]"
+                           >
+                       </mat-paginator>
                     </div>
                   </div>
                   <div class="card-footer small text-muted">

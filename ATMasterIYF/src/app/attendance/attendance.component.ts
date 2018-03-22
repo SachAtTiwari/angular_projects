@@ -588,6 +588,7 @@ export class MainAttendanceComponent {
   
 })
 export class EditDevoteeComponent {
+  startDate = new Date(1987, 0, 1);   
   all = true;
 
   ngOnInit() {

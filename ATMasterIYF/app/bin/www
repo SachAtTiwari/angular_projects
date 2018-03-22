@@ -8,6 +8,13 @@ var app = require('../app');
 var debug = require('debug')('app:server');
 var http = require('http');
 
+const url = 'mongodb://localhost:27017';
+//const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb';
+
+const dbName = 'iyfdb';
+const dbClient = require('mongodb').MongoClient;
+
+
 /**
  * Get port from environment and store in Express.
  */
@@ -82,9 +89,19 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  dbClient.connect(url, function(err, client) {
+    if (err) {
+      debug("Failed to connect to the database", err);
+    }
+    db = client.db(dbName);
+    db.collection("devotees").createIndex( { contact: 1, course:1, "attendance.date": 1 } )
+
+    app.locals.db = db;
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+  });
+  
 }

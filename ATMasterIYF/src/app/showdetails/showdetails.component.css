@@ -1,0 +1,13 @@
+.formClass {
+	overflow: hidden;
+    padding: 25px;
+}
+
+mat-form-field {
+	margin: 10px;
+	width: 400px;
+}
+mat-progress-spinner{
+  
+  margin: auto;
+}

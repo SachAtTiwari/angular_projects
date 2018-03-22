@@ -35,7 +35,7 @@
         <mat-form-field>                                                              
           <input matInput name="dob" [(ngModel)]="dob" [matDatepicker]="picker" placeholder="Date of Birth" required>       
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
-          <mat-datepicker #picker></mat-datepicker>                                   
+          <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>                                   
         </mat-form-field>   
 
              
