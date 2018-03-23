@@ -1,12 +1,12 @@
 
-<div class="content-wrapper" style="background:#CCC;">
-  <div class="container-fluid">  
+<div class="content-wrapper" style="">
+  <div class="container-fluid" style="margin-top:70px;">  
        <!-- Breadcrumbs-->
        <ol class="breadcrumb" style="margin-top:30px;">
           <li class="breadcrumb-item">
             <a href="#">COURSES</a>
           </li>
-          <li class="breadcrumb-item active">OTP</li>
+          <li class="breadcrumb-item active">Sdl Class</li>
         </ol>  
 
 <!--div *ngIf="ifClassSdl;">
@@ -16,6 +16,10 @@
 
 <h3>{{ifNoClassScdlText}} </h3>
 
+<div class="card mb-3">
+    <div class="card-header" style="background-color:yellow;">
+      <i class="fa fa-table" ></i> Schedule Class</div>
+    <div class="card-body">
  <div *ngIf="showForm;">
     <form #classForm="ngForm" (ngSubmit)="sdlClass(classForm)" class="classSc" style="margin:10px;">
          <mat-form-field>                                                              
@@ -64,10 +68,11 @@
          <button mat-raised-button type="submit" class="btn btn-primary">Submit</button>
        </form>                                                                          
     </div>
-
+    </div>
+    </div>
     <!-- Example DataTables Card-->
     <div class="card mb-3" *ngIf="ifClassSdl;">
-      <div class="card-header">
+      <div class="card-header" style="background-color:yellow;">
         <i class="fa fa-table"></i> Scheduled Classes</div>
       <div class="card-body">
         <div class="table-responsive">          
