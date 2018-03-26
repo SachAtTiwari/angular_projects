@@ -66,6 +66,7 @@ import { AddDevoteeComponent } from './attendance/attendance.component';
 import { EditDevoteeComponent } from './attendance/attendance.component';
 import { EditDevoteeConfirm } from './attendance/attendance.component';
 import { MainAttendanceComponent } from './attendance/attendance.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const appRoutes: Routes = [  
   { path: 'showDetails/:id', component: ShowdetailsComponent},  
@@ -73,6 +74,7 @@ const appRoutes: Routes = [
   { path: 'attendance', component: AttendanceComponent},
   { path: 'otpattendance', component: MainAttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
+  { path: 'adminLogin', component: AdminLoginComponent},
   { path: '', redirectTo:'classSdl', pathMatch:"full"}
 ];
 
@@ -88,6 +90,7 @@ const appRoutes: Routes = [
     EditDevoteeComponent,
     MainAttendanceComponent,
     EditDevoteeConfirm,
+    AdminLoginComponent,
     
   
   ],

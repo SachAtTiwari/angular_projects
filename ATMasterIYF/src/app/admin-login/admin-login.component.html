@@ -1,0 +1,23 @@
+<div class="content-wrapper">
+    <div class="container-fluid " >  
+      <div class="adminForm mat-elevation-z12">
+        <div class="card-header">
+        <h3>Please Enter Admin Details</h3>
+        </div>
+
+        <form #adminForm="ngForm" (ngSubmit)="adminLogin(adminForm)" style="margin:auto;">
+     
+            <mat-form-field>                                  
+                <input matInput name="username" [(ngModel)]="name"  placeholder="Name" required>  
+             </mat-form-field>  
+    
+    
+             <mat-form-field>                                  
+                <input matInput name="password" [(ngModel)]="pass" type="password" placeholder="Password" required>  
+             </mat-form-field>  
+             <button mat-raised-button type="submit" class="btn btn-primary">Login</button>
+
+        </form>
+      </div>
+    </div>
+</div>

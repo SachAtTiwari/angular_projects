@@ -94,7 +94,30 @@ function onListening() {
       debug("Failed to connect to the database", err);
     }
     db = client.db(dbName);
-    db.collection("devotees").createIndex( { contact: 1, course:1, "attendance.date": 1 } )
+    db.collection("devotees").createIndex(
+       { contact: 1, course:1, "attendance.date": 1 } )
+
+    db.collection("devotees").find(
+      {username:'admin', password:'gaurnitai'})
+    .toArray(function(err, dvData) {
+      if (err) {
+       console.log("err is ", err);
+      }else{
+        if(dvData.length == 0){
+        db.collection("devotees")
+        .insertOne({username:'admin', password:'gaurnitai'}, 
+        function(err, createRes) {
+            if (err) {
+               console.log("err is ", err);
+            }else{
+              console.log("Seed data added");
+            }
+        });
+      }else{
+        console.log("already have seed");
+      }
+     }
+    });
 
     app.locals.db = db;
     var addr = server.address();

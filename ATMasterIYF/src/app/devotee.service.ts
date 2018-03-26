@@ -15,6 +15,19 @@ export class UserService{
    
    constructor(private _http: Http){}
 
+   adminLogin(form){
+    return this._http.post(this._url + "adminLogin", {
+      body: form
+     })
+      .map(
+        res => {
+          return res.json();
+        },
+        err => {
+          return err.json();
+        }
+      );
+    }
   
    getOTPDevotees(){
     return this._http.get(this._url + "getOTPDevotees")  //, options)

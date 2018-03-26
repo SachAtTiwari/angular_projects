@@ -31,6 +31,34 @@ exports.addDevoteeGeneric = function(req, res, next) {
 
 }
 
+
+exports.adminLogin = function(req, res, next) {
+  try{
+  console.log("in admin login ", req.body.body)
+  let db = req.app.locals.db;
+  db.collection("devotees").find(
+   {username:req.body.body.username, password:req.body.body.password})
+  .toArray(function(err, dvData) {
+      if (err) {
+       console.log("err is ", err);
+       res.send({result:"notok"});
+       //if devotee not found add one with attendance
+      }else{
+         console.log("result ", dvData);
+         if(dvData.length > 0){
+            res.send({result:"ok"})
+         }else{
+            res.send({result:"notok"});
+         }
+        
+      }
+    })
+  }catch(err){
+    console.log("Exception :", err);
+  }
+
+}
+
 exports.addDevotee = function(req, res, next) {
   try{
     console.log("im here", req.body.body);

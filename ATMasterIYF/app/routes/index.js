@@ -34,6 +34,10 @@ router.delete('/delRecord', userController.delRecord);
 /* add Devotee */
 router.post('/addDevotee', userController.addDevotee);
 
+/* admin Login */
+router.post('/adminLogin', userController.adminLogin);
+
+
 /* add Devotee */
 router.post('/addDevoteeGeneric', userController.addDevoteeGeneric);
 
