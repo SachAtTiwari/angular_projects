@@ -10,6 +10,7 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import 'datatables.net';
 import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 
 
 @Component({
@@ -355,6 +356,7 @@ export class MainAttendanceComponent {
   startDate = new Date(1987, 0, 1);  
   contact:string;
   devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
+  devoteeDataSubmit = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
   loading = false;
   dStatus = {};
   attendanceArray = [];  
@@ -383,7 +385,7 @@ export class MainAttendanceComponent {
       let todayDateNew = this._userService.parseDate(todayDate);
       this._userService.checkIfClassSdlForCourse(course, todayDateNew)
       .subscribe(sdlresult => {
-         console.log("sdl result is", sdlresult);
+         //console.log("sdl result is", sdlresult);
          if(sdlresult.result.length == 0){
             this.router.navigateByUrl('/classSdl');
          }
@@ -392,7 +394,7 @@ export class MainAttendanceComponent {
       this._userService.getTodayAttendance(course)
       .subscribe(userData => {
           if(userData.result.length != 0){
-          console.log(userData.result);
+         // console.log(userData.result);
           let result_json = [];
           for(var i = 0;i < userData.result.length;i++){
             let objectToShow = {};
@@ -411,7 +413,7 @@ export class MainAttendanceComponent {
               }
    
            }
-           console.log("object to show", objectToShow);
+           //console.log("object to show", objectToShow);
           result_json.push(objectToShow);
           }
         this.attendanceArray = result_json;
@@ -424,7 +426,7 @@ export class MainAttendanceComponent {
     _searchedDevotee(contact, isContact){
       this._userService.getSearchedDevotee(contact)
       .subscribe(userData => {
-            console.log("i m here",userData);
+           console.log("searched data is ",userData);
           if(userData.sdlResult){
               swal('No Data Found, Please add details', "Hari Bol!", "error");
               this.loading = false;
@@ -453,17 +455,17 @@ export class MainAttendanceComponent {
 
 
     getSearchedDevotee(contact){
-      console.log("contact is", parseInt(contact));
+     // console.log("contact is", parseInt(contact));
       this.loading = true;
       let isContact = false;
       if(!isNaN(parseInt(contact))){
-          console.log("contact is", contact);
+       //   console.log("contact is", contact);
           if(contact.length != 10 && contact != undefined){
               swal("Invalid mobile no" , "Hari Bol", 'error');          
               this.loading = false;
           }else if(contact.length == 10 && contact != ""){
               isContact = true;
-              this._searchedDevotee(contact, isContact);           
+              this._searchedDevotee(contact, isContact);  
           }
       }else{
         this._searchedDevotee(contact, isContact);           
@@ -479,32 +481,105 @@ export class MainAttendanceComponent {
         || !devoteeForm.value.course || !devoteeForm.value.counsellor){
           swal("All fields are mandatory", "", "error");
        }else{
-        console.log("dev data",this.devoteeData) 
+       console.log("dev data",this.devoteeData) 
+       //console.log("dev data submit",this.devoteeDataSubmit); 
         this.loading = true;
-        this._userService.addDevotee(this.devoteeData)
-       .subscribe(userData => {
-         console.log("Add record is ", userData);
-         if(userData["result"] === "ok"){
-          console.log("in add record", userData);
-           //window.location.reload(); 
-             swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
-             this.loading = false;
-             this.attendanceArray.push(
-              { 
-                name: this.devoteeData['name'],
-                contact: this.devoteeData['contact'],
-                attendance: 'YES' 
-              })
-            this.dataSource.data = this.attendanceArray;
-         }else if(userData["result"] == "updated"){
-            swal("Hare Krishna, Devotee details are updated" , "Hari Bol!", 'success');
-            this.loading = false;
-          }else{
-            swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
-            this.loading = false;
+        this._userService.getSearchedDevotee(this.devoteeData.contact)
+        .subscribe(userData => {
+          console.log("user data is ", userData);
+          
+          let valuesToUpdate = {}
+          let misMatch = false;
+          if(userData.result && userData.result.length !== 0 ){
+            if(userData.result[0].contact !== this.devoteeData.contact){
+                valuesToUpdate["contact"] = this.devoteeData.contact;
+                misMatch = true;
+            }
+            if(userData.result[0].name !== this.devoteeData.name){
+                valuesToUpdate["name"] = this.devoteeData.name;
+                misMatch = true;
 
+            }
+             if(userData.result[0].email !== this.devoteeData.email){
+              valuesToUpdate["email"] = this.devoteeData.email;
+              misMatch = true;
+            }
+            if(userData.result[0].dob !== this.devoteeData.dob){
+              valuesToUpdate["dob"] = this.devoteeData.dob;
+              misMatch = true;
+            }
+            if(userData.result[0].counsellor !== this.devoteeData.counsellor){
+              valuesToUpdate["counsellor"] = this.devoteeData.counsellor;
+              misMatch = true;
+            }
+            if(userData.result[0].course !== this.devoteeData.course){
+              valuesToUpdate["course"] = this.devoteeData.course;
+              misMatch = true;
+            }
+
+            if(misMatch){
+              console.log("mismatch ", valuesToUpdate);
+              let YES = "YES";
+              let NO = "NO";
+              let dialogRef = this.dialog.open(EditDevoteeConfirm, {
+                width: '280px',
+                data: { YES: YES, NO:NO, update:valuesToUpdate}
+              });
+          
+              dialogRef.afterClosed().subscribe(result => {
+               console.log('The dialog was closed', result);
+
+               if (result === "YES"){
+                valuesToUpdate["_id"] = userData.result[0]._id;
+                this._userService.editDevotee(valuesToUpdate)
+                .subscribe(editData => {
+                  console.log("Edit record is ", editData);
+                  if(editData["result"] === "ok"){
+                    swal("Record updated successfully" , "Hari Bol!!", 'success');    
+                    this.loading = false;      
+                    devoteeForm.reset();
+                  }else{
+                    swal("Problem in updating record" , "Hari Bol!!", 'error');   
+                    this.loading = false;      
+                  }
+                  });
+               }else{
+                 this.loading = false;
+               }
+              });
+                
+            }else{
+              this.markAttendance(devoteeForm);
+              
+            }
+          }else{
+              console.log("add devotee");
+              this._userService.addDevotee(this.devoteeData)
+              .subscribe(addData => {
+              console.log("Add record is ", addData);
+                if(addData["result"] === "ok"){
+                  swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+                  this.loading = false;
+                  this.attendanceArray.push(
+                    { 
+                      name: this.devoteeData['name'],
+                      contact: this.devoteeData['contact'],
+                      attendance: 'YES' 
+                    })
+                  this.dataSource.data = this.attendanceArray;
+               }else if(addData["result"] == "updated"){
+                // swal("Hare Krishna, Devotee details are updated" , "Hari Bol!", 'success');
+                  this.loading = false;
+                }else{
+                  swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
+                  this.loading = false;
+
+                }
+              });  
           }
-         });  
+          
+        });
+        
       }
     }
     
@@ -512,12 +587,13 @@ export class MainAttendanceComponent {
     todayDate = new Date();
     month = this.todayDate.getMonth()+1;
     markAttendance(form) {
+       //console.log("mark attendance", form);
        if(form.invalid != true) {
           this.loading = true;
           let date = this.todayDate.getDate() + "-" + this.month + "-" + this.todayDate.getFullYear();
           this._userService.checkIfClassSdlForCourse(this.devoteeData['course'], date)
           .subscribe(userData => {
-            console.log("user data is ", userData.result);
+           // console.log("user data is ", userData.result);
             if (userData.result.length > 0){
 
                 this.dStatus["date"] = userData.result[0].date;
@@ -632,6 +708,38 @@ export class EditDevoteeComponent {
   }
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+}
+
+
+@Component({
+  selector: 'edit-devotee',
+  templateUrl: 'edit-confirm.html',
+  styleUrls: ['./edit-confirm.css'],
+  
+})
+
+export class EditDevoteeConfirm {
+
+  ngOnInit() {
+    console.log("in edit devotee");
+    
+  }
+
+  email = new FormControl('', [Validators.required, Validators.email]);
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'You must enter a value' :
+        this.email.hasError('email') ? 'Not a valid email' :
+            '';
+  }
+
+  constructor(
+    public dialogRef: MatDialogRef<MarkpresentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(no): void {
+    this.dialogRef.close(no);
   }
 
 }

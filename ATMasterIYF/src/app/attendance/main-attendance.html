@@ -24,35 +24,55 @@
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
                           mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
-                            <mat-form-field> <input matInput (blur)="getSearchedDevotee(devoteeData.contact)"
-                                 name="contact" [(ngModel)]="devoteeData.contact"
-                                placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
-                            <mat-form-field> <input matInput required
+                            <mat-form-field> 
+                              <input matInput required 
+                              (blur)="getSearchedDevotee(devoteeData.contact)"
+                              name="contact" [(ngModel)]="devoteeData.contact"
+                              placeholder="Contact"
+                              maxlength="10"
+                              minlength="10">
+                              
+                             </mat-form-field>
+
+                            <mat-form-field> 
+                              
+                              <input matInput required
                                  name="name" [(ngModel)]="devoteeData.name"
-                                placeholder="Name" > </mat-form-field>	
+                                (ngModel)="devoteeDataSubmit.name"
+                                placeholder="Name" > 
+                              
+                              </mat-form-field>	
                             
-                                
-                            <mat-form-field> <input type="email" matInput
+                            <mat-form-field> 
+                              
+                              <input type="email" matInput
                               required
                                  name="email" [(ngModel)]="devoteeData.email"
-                                placeholder="Email" > </mat-form-field>
+                                placeholder="Email" > 
+                              
+                              </mat-form-field>
 
                             
-                        <mat-form-field>                                                              
+                        <mat-form-field>       
+
                         <input matInput name="dob" [(ngModel)]="devoteeData.dob" 
                          [matDatepicker]="picker" placeholder="Date of Birth" required>       
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
                         <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>                                   
+                        
                       </mat-form-field>   
 
 						<mat-form-field>
+              
 						<mat-select name="course" placeholder="Course" required
 							[(ngModel)]="devoteeData.course"> <mat-option
 							value="OTP"> OTP </mat-option> <mat-option value="TSSV">
 						TSSV </mat-option> <mat-option value="ASHRAY1"> ASHRAY1 </mat-option> <mat-option
-							value="ASHRAY2"> ASHRAY2 </mat-option> </mat-select> </mat-form-field>
+              value="ASHRAY2"> ASHRAY2 </mat-option> </mat-select> 
+            </mat-form-field>
 
 						<mat-form-field>
+              
 						<mat-select name="counsellor" placeholder="Counsellor" required
 							[(ngModel)]="devoteeData.counsellor"> <mat-option
 							value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
@@ -61,12 +81,13 @@
 							value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
 							<mat-option
 							value="HG Jagdanand Pandit Prabhuji"> HG Jagdanand Pandit Prabhuji </mat-option>
-							 </mat-select> </mat-form-field>
+               </mat-select>
+               </mat-form-field>
 							 
             <button mat-raised-button color="primary" style="margin-left:8px;"
              (click)="addDevotee(devoteeForm)">Add or Update Devotee</button>
-            <button mat-raised-button color="accent"
-             (click)="markAttendance(devoteeForm)">Mark Attendance</button>
+            <!--button mat-raised-button color="accent"
+             (click)="markAttendance(devoteeForm)">Mark Attendance</button-->
 					</form>
 
                     </div>

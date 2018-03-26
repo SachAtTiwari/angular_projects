@@ -272,19 +272,20 @@ exports.updateDevotee = function(req, res, next) {
      if(req.body.body.email){
       valuesToUpdate["email"] = req.body.body.email;
     } 
-    //console.log("value to update", valuesToUpdate);
+    console.log("value to update", valuesToUpdate);
     let db = req.app.locals.db;
     
     db.listCollections().toArray(function(err, collections){
         if (collections === undefined){
           res.send({error:"No Collections present in DB"});
          }else{
-          var query = {_id: new mongo.ObjectID(req.body.body.id)};
+          var query = {_id: new mongo.ObjectID(req.body.body._id)};
           var newvalues = { $set: valuesToUpdate };
           db.collection("devotees").update(
              query, newvalues, 
              function(err, resUp) {
                if (err) {
+                 console.log("err is", err);
                  res.send({result:"notok"})
                }else{
                  console.log("document updated");

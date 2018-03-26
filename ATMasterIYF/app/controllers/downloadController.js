@@ -10,6 +10,16 @@ exports.downloadToExcel =  function(req, res, next) {
         if (collections === undefined){
               res.send({error:"No Collections present in DB"});
         }else{
+              query = {};
+              if(req.query.course){
+                query["course"] = req.query.course;
+              }
+              if(req.query.date){
+                query["date"] = req.query.date;
+              }
+              if(req.query.counsellor){
+                query["counsellor"] = req.query.counsellor;
+              }
               db.collection("devotees").find(
               { 
                 course:req.query.course, 

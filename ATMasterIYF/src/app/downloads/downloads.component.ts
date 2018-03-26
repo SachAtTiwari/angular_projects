@@ -35,6 +35,10 @@ export class DownloadsComponent implements OnInit {
     
   ];
 
+  downloadExCounsellor(form: NgForm){
+    console.log("in counsellor");
+  }
+
   downloadToExcel(form: NgForm){
 
     form.value.date = this._userService.parseDate(form.value.date);

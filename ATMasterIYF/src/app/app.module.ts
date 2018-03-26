@@ -64,6 +64,7 @@ import { MarkpresentComponent } from './attendance/attendance.component';
 import { ShowdetailsComponent } from './showdetails/showdetails.component';
 import { AddDevoteeComponent } from './attendance/attendance.component';
 import { EditDevoteeComponent } from './attendance/attendance.component';
+import { EditDevoteeConfirm } from './attendance/attendance.component';
 import { MainAttendanceComponent } from './attendance/attendance.component';
 
 const appRoutes: Routes = [  
@@ -86,6 +87,7 @@ const appRoutes: Routes = [
     AddDevoteeComponent,
     EditDevoteeComponent,
     MainAttendanceComponent,
+    EditDevoteeConfirm,
     
   
   ],
@@ -93,6 +95,7 @@ const appRoutes: Routes = [
     MarkpresentComponent,
     AddDevoteeComponent,
     EditDevoteeComponent,
+    EditDevoteeConfirm,
     MainAttendanceComponent,
     
   ],
