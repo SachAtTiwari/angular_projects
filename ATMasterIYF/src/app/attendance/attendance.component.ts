@@ -78,6 +78,7 @@ export class AttendanceComponent implements OnInit {
   dStatus = {};
   devotees = [];  
   getOTPData = false;  
+  isLoggedIn = false;
   email = new FormControl('', [Validators.required, Validators.email]);
   
   
@@ -125,6 +126,10 @@ export class AttendanceComponent implements OnInit {
   
 
   ngOnInit() {
+    let getLoggedIn = localStorage.getItem("isLoggedIn");
+    if(getLoggedIn === "true"){
+        this.isLoggedIn = true;
+    }
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
         console.log("param is ", params['course']);

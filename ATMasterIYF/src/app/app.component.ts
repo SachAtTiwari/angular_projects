@@ -6,6 +6,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/ma
 import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+//import { window } from 'rxjs/operators/window';
 
 
 @Component({
@@ -15,6 +16,19 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 })
 
 export class AppComponent  {
+  isLoggedIn = false;
+  adminLogout(){
+    console.log("in logout  init");
+    localStorage.removeItem("isLoggedIn");
+    window.location.reload();
+  }
 
+  ngOnInit() {
+    //console.log("in login init");
+    let getLoggedIn = localStorage.getItem("isLoggedIn");
+    if(getLoggedIn === "true"){
+        this.isLoggedIn = true;
+    }
+  }
   
 }

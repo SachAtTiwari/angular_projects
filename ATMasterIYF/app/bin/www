@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('app:server');
 var http = require('http');
+var bcrypt =  require('bcrypt');
 
 const url = 'mongodb://localhost:27017';
 //const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb';
@@ -97,15 +98,16 @@ function onListening() {
     db.collection("devotees").createIndex(
        { contact: 1, course:1, "attendance.date": 1 } )
 
+    pass = bcrypt.hashSync('gaurnitai', 10)
     db.collection("devotees").find(
-      {username:'admin', password:'gaurnitai'})
+      {username:'admin'})
     .toArray(function(err, dvData) {
       if (err) {
        console.log("err is ", err);
       }else{
         if(dvData.length == 0){
         db.collection("devotees")
-        .insertOne({username:'admin', password:'gaurnitai'}, 
+        .insertOne({username:'admin', password:pass}, 
         function(err, createRes) {
             if (err) {
                console.log("err is ", err);

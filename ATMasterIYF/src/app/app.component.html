@@ -8,19 +8,30 @@
           <img src="./assets/img/logo.jpeg" style="">
         </a> 
        
-        
+        <a *ngIf="!isLoggedIn" style="margin-top:25px;" class="pull-right"
+            routerLink="/adminLogin" routerActive="/adminLogin">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> Admin Login</a>
+
+            <a *ngIf="isLoggedIn" style="margin:25px;color:blue;" class="pull-right"
+            (click)="adminLogout();" >
+                <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+  
+            <a *ngIf="isLoggedIn" style="margin-top:25px;" class="pull-right">
+            <i class="fa fa-user" aria-hidden="true"></i> Hare Krishna, Admin</a>
+
+            
+
         <a href="#" class="pull-right">
             <img src="./assets/img/lokanathswami.jpg" style="margin:15px;border-radius:50%;"
-             width="54" height="56">
+             width="44" height="46">
           </a> 
           <a href="#" class="pull-right">
               <img src="./assets/img/spp.jpg" style="margin:15px;border-radius:50%;" 
-              width="54" height="56" >
+              width="44" height="46" >
             </a> 
 
-            <a style="margin-top:25px;" class="pull-right"
-            routerLink="/adminLogin" routerActive="/adminLogin">
-            <i class="fa fa-sign-in" aria-hidden="true"></i> Admin Login</a>
+            
+
             <!--marquee style="color:green;">Hare Krishna Hare Krishna Krishna Krishna Hare Hare,
                 Hare Ram Hare Ram Ram Ram Hare Hare!!</marquee-->
         <button 

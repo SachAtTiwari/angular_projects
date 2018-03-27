@@ -27,7 +27,7 @@ export class ShowdetailsComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
   devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;

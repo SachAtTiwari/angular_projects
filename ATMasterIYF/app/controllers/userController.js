@@ -1,5 +1,6 @@
 const assert = require('assert');
 var mongo = require('mongodb');
+var bcrypt = require('bcrypt');
 
 exports.addDevoteeGeneric = function(req, res, next) {
   try{
@@ -35,9 +36,12 @@ exports.addDevoteeGeneric = function(req, res, next) {
 exports.adminLogin = function(req, res, next) {
   try{
   console.log("in admin login ", req.body.body)
+  pass = bcrypt.hashSync(req.body.body.password, 10);
+  console.log("in admin login pass ", pass)
+  
   let db = req.app.locals.db;
   db.collection("devotees").find(
-   {username:req.body.body.username, password:req.body.body.password})
+   {username:req.body.body.username})
   .toArray(function(err, dvData) {
       if (err) {
        console.log("err is ", err);
@@ -45,7 +49,8 @@ exports.adminLogin = function(req, res, next) {
        //if devotee not found add one with attendance
       }else{
          console.log("result ", dvData);
-         if(dvData.length > 0){
+        if(dvData.length > 0 && 
+          bcrypt.compareSync(req.body.body.password, dvData[0].password)){
             res.send({result:"ok"})
          }else{
             res.send({result:"notok"});

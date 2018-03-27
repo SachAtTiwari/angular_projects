@@ -67,7 +67,7 @@
                        <span matTooltip="Click here to mark present"></span>
                      </button>  
                     
-                     <button
+                     <button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 
                       (click)="showDetails(element)" 
                       class="btn btn-primary">
