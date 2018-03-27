@@ -38,7 +38,7 @@ export class ClassComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  constructor(private _userService:UserService) { }
+  constructor(private _userService:UserService,private router: Router) { }
 
    ngOnInit(){
     console.log("in init");
@@ -93,13 +93,34 @@ export class ClassComponent implements OnInit {
       || !form.value.time || !form.value.topic){
         //this.formError = "All fields are mandatory";
         console.log("All fields are required")
-        swal("All fields are required to Schedule a class", "Hari Bol..", 'warning');
+       // swal("All fields are required to Schedule a class", "Hari Bol..", 'warning');
+        swal({
+
+            type: 'warning',
+            title: 'All fields are required to Schedule a class',
+            html: "Hari Bol!!",
+            showConfirmButton: false,
+            timer: 1500
+        })
+        
+
 
     }else{
        this._userService.SdlClass(form.value);
        form.reset();
-       window.location.reload()
-       swal("Class Scheduled ", "Hari Bol..", 'success');
+       //window.location.reload()
+       //swal("Class Scheduled ", "Hari Bol..", 'success');
+      this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
+
+
+        swal({
+
+            type: 'success',
+            title: 'Class Scheduled ',
+            html: "Hari Bol!!",
+            showConfirmButton: false,
+            timer: 1500
+        })
        
       }
     }                                                                            

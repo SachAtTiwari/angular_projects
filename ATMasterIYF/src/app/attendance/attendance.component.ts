@@ -222,15 +222,39 @@ export class AttendanceComponent implements OnInit {
                   this._userService.markAttendance(this.dStatus)
                     .subscribe(userData => {
                       if(userData["result"] === "ok"){
-                        swal("Attendance updated successfully" , "Hari Bol!!", 'success');
+                          swal({
+
+                              type: 'success',
+                              title: 'Attendance updated successfully',
+                              html: "Hari Bol!!",
+                              showConfirmButton: false,
+                              timer: 1500
+                          })
+                        //swal("" , "Hari Bol!!", 'success');
                       }else{
-                        swal("Attendance already updated", "Hari Bol :)", 'warning');
+                          swal({
+
+                              type: 'warning',
+                              title: 'Attendance already updated',
+                              html: "Hari Bol!!",
+                              showConfirmButton: false,
+                              timer: 1500
+                          })
+                        //swal("", "Hari Bol :)", 'warning');
                       }
                     });
                 }
             }else{
               console.log("No class sdl for selected date");
-              swal("No class sdl for selected date", "Hari Bol..", 'error')
+             // swal("", "Hari Bol..", 'error')
+              swal({
+
+                  type: 'error',
+                  title: 'No class sdl for selected date',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+              })
             }
           });
 
@@ -264,9 +288,25 @@ export class AttendanceComponent implements OnInit {
          if(userData["result"] === "ok"){
           console.log("in add record", userData);
           window.location.reload(); 
-          swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+          //swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+          swal({
+
+              type: 'success',
+              title: 'Hare Krishna, We have new devotee in IYF',
+              html: "Hari Bol!!",
+              showConfirmButton: false,
+              timer: 1500
+          }) 
          }else{
-            swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
+            //swal("Hare Krishna, We already have this record" , "Hari Bol!", 'warning');
+            swal({
+
+              type: 'warning',
+              title: 'Hare Krishna, We already have this record',
+              html: "Hari Bol!!",
+              showConfirmButton: false,
+              timer: 1500
+          }) 
           }
          });
        }
@@ -292,7 +332,15 @@ export class AttendanceComponent implements OnInit {
        .subscribe(userData => {
          console.log("Edit record is ", userData);
          if(userData["result"] === "ok"){
-          swal("Record updated successfully" , "Hari Bol!!", 'success');          
+          //swal("Record updated successfully" , "Hari Bol!!", 'success');
+          swal({
+
+              type: 'success',
+              title: 'Record updated successfully',
+              html: "Hari Bol!!",
+              showConfirmButton: false,
+              timer: 1500
+          })          
           window.location.reload(); 
          }
         });
@@ -428,7 +476,15 @@ export class MainAttendanceComponent {
       .subscribe(userData => {
            console.log("searched data is ",userData);
           if(userData.sdlResult){
-              swal('No Data Found, Please add details', "Hari Bol!", "error");
+              //swal('', "Hari Bol!", "error");
+              swal({
+
+                  type: 'error',
+                  title: 'No Data Found, Please add details',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+              })
               this.loading = false;
               if(isContact){
                 this.devoteeData = {contact:contact, 
@@ -443,7 +499,15 @@ export class MainAttendanceComponent {
               }
           }else if(userData.result == "notok"){
   
-            swal('Class not scheduled for OTP', "Hari Bol!", "error");
+            //swal('Class not scheduled for OTP', "Hari Bol!", "error");
+            swal({
+
+                  type: 'error',
+                  title: 'Class not scheduled for OTP',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+              })
             this.loading = false; 
           }else{
             this.devoteeData = userData.result[0];
@@ -461,7 +525,15 @@ export class MainAttendanceComponent {
       if(!isNaN(parseInt(contact))){
        //   console.log("contact is", contact);
           if(contact.length != 10 && contact != undefined){
-              swal("Invalid mobile no" , "Hari Bol", 'error');          
+             // swal("Invalid mobile no" , "Hari Bol", 'error'); 
+              swal({
+
+                  type: 'error',
+                  title: 'Invalid mobile no',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+              })         
               this.loading = false;
           }else if(contact.length == 10 && contact != ""){
               isContact = true;
@@ -479,7 +551,15 @@ export class MainAttendanceComponent {
        if (!devoteeForm.value.name || !devoteeForm.value.email 
         || !devoteeForm.value.contact || !devoteeForm.value.dob 
         || !devoteeForm.value.course || !devoteeForm.value.counsellor){
-          swal("All fields are mandatory", "", "error");
+          //swal("All fields are mandatory", "", "error");
+          swal({
+
+                  type: 'error',
+                  title: 'All fields are mandatory',
+                  html: "",
+                  showConfirmButton: false,
+                  timer: 1500
+              }) 
        }else{
        console.log("dev data",this.devoteeData) 
        //console.log("dev data submit",this.devoteeDataSubmit); 
@@ -535,11 +615,27 @@ export class MainAttendanceComponent {
                 .subscribe(editData => {
                   console.log("Edit record is ", editData);
                   if(editData["result"] === "ok"){
-                    swal("Record updated successfully" , "Hari Bol!!", 'success');    
+                    //swal("" , "Hari Bol!!", 'success');
+                    swal({
+
+                        type: 'success',
+                        title: 'Record updated successfully',
+                        html: "",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })     
                     this.loading = false;      
                     devoteeForm.reset();
                   }else{
-                    swal("Problem in updating record" , "Hari Bol!!", 'error');   
+                    //swal("Problem in updating record" , "Hari Bol!!", 'error'); 
+                    swal({
+
+                        type: 'error',
+                        title: 'Problem in updating record',
+                        html: "Hari Bol!!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })    
                     this.loading = false;      
                   }
                   });
@@ -558,7 +654,15 @@ export class MainAttendanceComponent {
               .subscribe(addData => {
               console.log("Add record is ", addData);
                 if(addData["result"] === "ok"){
-                  swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+                  //swal("Hare Krishna, We have new devotee in IYF" , "Hari Bol!!", 'success');
+                  swal({
+
+                        type: 'success',
+                        title: 'Hare Krishna, We have new devotee in IYF',
+                        html: "Hari Bol!!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }) 
                   this.loading = false;
                   this.attendanceArray.push(
                     { 
@@ -571,8 +675,16 @@ export class MainAttendanceComponent {
                 // swal("Hare Krishna, Devotee details are updated" , "Hari Bol!", 'success');
                   this.loading = false;
                 }else{
-                  swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
-                  this.loading = false;
+                  //swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
+                  swal({
+
+                        type: 'success',
+                        title: 'Hare Krishna, Something went wrong, Please try again',
+                        html: "Hari Bol!!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    this.loading = false;
 
                 }
               });  
@@ -607,7 +719,15 @@ export class MainAttendanceComponent {
                         
                       if(userData["result"] === "ok"){
                         this.loading = false;              
-                        swal("Attendance updated successfully" , "Hari Bol!!", 'success');
+                        //swal("Attendance updated successfully" , "Hari Bol!!", 'success');
+                        swal({
+
+                            type: 'success',
+                            title: 'Attendance updated successfully',
+                            html: "Hari Bol!!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }) 
                         console.log("attendance array", this.attendanceArray);
                             this.attendanceArray.push(
                               { 
@@ -625,7 +745,15 @@ export class MainAttendanceComponent {
                                   attendance: 'Yes'
                                  })
                           }*/          
-                           swal("Attendance already updated", "Hari Bol :)", 'warning');
+                           //swal("Attendance already updated", "Hari Bol :)", 'warning');
+                           swal({
+
+                               type: 'warning',
+                               title: 'Attendance already updated',
+                               html: "Hari Bol!!",
+                               showConfirmButton: false,
+                               timer: 1500
+                           }) 
                           this.dataSource.data = this.attendanceArray;
                           this.loading = false;              
                         
@@ -647,7 +775,15 @@ export class MainAttendanceComponent {
             }else{
                this.loading = false;              
               console.log("No class sdl for selected date");
-              swal("No class sdl for selected date", "Hari Bol..", 'error')
+              //swal("No class sdl for selected date", "Hari Bol..", 'error')
+              swal({
+
+                  type: 'error',
+                  title: 'No class sdl for selected date',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+              }) 
             }
           });
            
