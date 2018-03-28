@@ -37,25 +37,21 @@
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
 
-                  Name Column
                   <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                   </ng-container>
               
-                  Contact Column
                   <ng-container matColumnDef="contact">
                     <mat-header-cell *matHeaderCellDef> Contact </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.contact}} </mat-cell>
                   </ng-container>
               
-                  counsellor Column
                   <ng-container matColumnDef="counsellor">
                     <mat-header-cell *matHeaderCellDef> Counsellor </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.counsellor}} </mat-cell>
                   </ng-container>
               
-                  Actions Column
                   <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                     <mat-cell *matCellDef="let element">
@@ -66,7 +62,7 @@
                        <i class="fa fa-fw fa-user"></i>
                        <span matTooltip="Click here to mark present"></span>
                      </button>  
-                    
+
                      <button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 
                       (click)="showDetails(element)" 
@@ -98,56 +94,7 @@
                  [pageSizeOptions]="[5, 10, 20]"
                  >
              </mat-paginator> 
-            <!--table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Contact</th>
-                  <th>Counsellor</th>
-                  <th>Actions</th>
-
-                </tr>
-              </thead>
-
-              <tbody>
-                  <tr *ngFor="let dv of devotees;">
-                  <td >{{dv.name}}</td>
-                  <td >{{dv.contact}}</td>
-                  <td >{{dv.counsellor}}</td>
-                  <td >
-                    <button 
-                       mat-raised-button style="margin:5px;" type="submit" 
-                       (click)="markPresent(dv)" 
-                       class="btn btn-primary">
-                      <i class="fa fa-fw fa-user"></i>
-                      <span matTooltip="Click here to mark present"></span>
-                       
-                       
-                    </button>
-                    <button
-                       mat-raised-button style="margin:5px;" type="submit" 
-                       (click)="delRecord(dv)" 
-                       class="btn btn-danger">
-                      <i class="fa fa-fw fa-trash"></i>
-                      <span matTooltip="Delete Record"></span>
-                      
-                    </button>
-
-                    <button
-                      mat-raised-button style="margin:5px;" type="submit" 
-                      (click)="showDetails(dv)" 
-                      class="btn btn-primary">
-                      <i class="fa fa-address-card"></i>
-                      <span matTooltip="Show Details"></span>
-                   
-                    </button>
-                    
-
-                    </td>
-                </tr>
-              </tbody>
-            </table-->
-
+            
           </div>
         </div>
         <div class="card-footer small text-muted">

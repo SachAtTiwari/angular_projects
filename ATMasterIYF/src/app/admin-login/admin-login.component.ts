@@ -41,7 +41,9 @@ export class AdminLoginComponent implements OnInit {
       console.log("result is ", data);
       if(data.result == "ok"){
         this.isLoggedIn = true;
-        localStorage.setItem("isLoggedIn", "true");
+        //localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.userId);
         window.location.reload()
 
         this.router.navigate(['/attendance'],

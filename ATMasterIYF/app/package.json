@@ -13,6 +13,7 @@
     "cors": "^2.8.4",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "jsonwebtoken": "^8.2.0",
     "mongodb": "^3.0.1",
     "morgan": "~1.9.0",
     "nodemo": "^1.0.0",

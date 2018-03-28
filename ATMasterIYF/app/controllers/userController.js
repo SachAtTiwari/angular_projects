@@ -1,6 +1,7 @@
 const assert = require('assert');
 var mongo = require('mongodb');
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
 exports.addDevoteeGeneric = function(req, res, next) {
   try{
@@ -51,7 +52,15 @@ exports.adminLogin = function(req, res, next) {
          console.log("result ", dvData);
         if(dvData.length > 0 && 
           bcrypt.compareSync(req.body.body.password, dvData[0].password)){
-            res.send({result:"ok"})
+            let token = jwt.sign({user:dvData}, 'khsandasinasfnasiu2194u19u41142i210',
+            {expiresIn:900});
+
+            res.status(200).json({
+              result:"ok",
+              message:"Logged in Successfully",
+              token:token,
+              userId: dvData._id,
+            })
          }else{
             res.send({result:"notok"});
          }
@@ -252,9 +261,11 @@ exports.getDevotees = function(req, res, next) {
 exports.getDevoteeDetail = function(req, res, next) {
   try{
    // console.log("im here", req.query.id);
+
    let db = req.app.locals.db;
-    
-   db.listCollections().toArray(function(err, collections){
+   var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+   if(decoded.user.length > 0){
+     db.listCollections().toArray(function(err, collections){
           if (collections === undefined){
             res.send({error:"No Collections present in DB"});
           }else{
@@ -273,6 +284,10 @@ exports.getDevoteeDetail = function(req, res, next) {
           });
         }
       });
+    }else{
+        res.send({result:"notok", message:'not authenticated'});
+      
+    }
     }catch(err){
       console.log("Exception :", err);
 

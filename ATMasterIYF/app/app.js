@@ -33,6 +33,7 @@ app.use('/updateDevotee', index);
 app.use('/markAttendance', index);
 app.use('/getOTPDevotees', index);
 app.use('/downloadToExcel', index);
+app.use('/downloadToExCounsellor', index);
 app.use('/checkClassSdl', index);
 app.use('/SdlClass', index);
 app.use('/getSdlClasses', index);

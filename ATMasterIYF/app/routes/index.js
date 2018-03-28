@@ -80,4 +80,7 @@ router.get('/getTodayAttendance', classController.getTodayAttendance);
 /*Download to Excel */
 router.get('/downloadToExcel', downloadController.downloadToExcel);
 
+/*Download to Excel  Counsellor*/
+router.get('/downloadToExCounsellor', downloadController.downloadToExCounsellor);
+
 module.exports = router;

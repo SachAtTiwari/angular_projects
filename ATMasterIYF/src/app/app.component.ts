@@ -18,15 +18,14 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 export class AppComponent  {
   isLoggedIn = false;
   adminLogout(){
-    console.log("in logout  init");
-    localStorage.removeItem("isLoggedIn");
+    localStorage.clear();
     window.location.reload();
   }
 
   ngOnInit() {
     //console.log("in login init");
-    let getLoggedIn = localStorage.getItem("isLoggedIn");
-    if(getLoggedIn === "true"){
+    let getLoggedIn = localStorage.getItem("token");
+    if(getLoggedIn){
         this.isLoggedIn = true;
     }
   }

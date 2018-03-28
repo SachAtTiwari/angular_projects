@@ -39,17 +39,30 @@ export class AttendanceComponent implements OnInit {
   values = '';
   showAllSwitch = true;
 
-
-  onKeyUp(event: any) { // without type info
-    console.log("event is ", event.target.value);
-    this.values = event.target.value ;
-    this.getSearchedDevotee(this.values);
-    
-    /*if(this.values.length == 10){
-      this.getSearchedDevotee(this.values);
-    }*/
-  }
+  dStatus = {};
+  devotees = [];  
+  getOTPData = false;  
+  isLoggedIn = false;
+  email = new FormControl('', [Validators.required, Validators.email]);
   
+  counsellors = [
+    {value:"HG Shyam Gopal Prabhuji"},
+    {value:"HG Kalpvraksha Prabhuji"},
+    {value:"HG Vaidant Chaitnya Prabhuji"},
+    {value:"HG Pundrik Vidhyanidhi Prabhuji"},
+    {value:"HG Jagdanand Pandit Prabhuji"},
+    
+  ];
+
+  courses = [
+    {value:"OTP"},
+    {value: "TSSV"},
+    {value: "ASHRAY1"},
+    {value: "ASHRAY2"},
+    {value: "OTHER"},
+  ];
+
+    
   getSearchedDevotee(contact){
     this.loading = true;
     if(contact != undefined && contact.length != 10){
@@ -73,35 +86,6 @@ export class AttendanceComponent implements OnInit {
     }
     
   }
-
-
-  dStatus = {};
-  devotees = [];  
-  getOTPData = false;  
-  isLoggedIn = false;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  
-  
-  
-  counsellors = [
-    {value:"HG Shyam Gopal Prabhuji"},
-    {value:"HG Kalpvraksha Prabhuji"},
-    {value:"HG Vaidant Chaitnya Prabhuji"},
-    {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
-    
-  ];
-
-  courses = [
-    {value:"OTP"},
-    {value: "TSSV"},
-    {value: "ASHRAY1"},
-    {value: "ASHRAY2"},
-    {value: "OTHER"},
-  ];
-
- 
-
  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -126,13 +110,15 @@ export class AttendanceComponent implements OnInit {
   
 
   ngOnInit() {
-    let getLoggedIn = localStorage.getItem("isLoggedIn");
-    if(getLoggedIn === "true"){
-        this.isLoggedIn = true;
+    let getLoggedIn = localStorage.getItem("token");
+    console.log("token is", getLoggedIn);
+    if(getLoggedIn){
+      console.log("token is 1", getLoggedIn);
+       this.isLoggedIn = true;
     }
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
-        console.log("param is ", params['course']);
+        //console.log("param is ", params['course']);
 
         if(params['course'] === "1"){
           this.showAddDevotee = true;

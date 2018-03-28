@@ -15,7 +15,7 @@ export class UserService{
    
    constructor(private _http: Http){}
 
-   adminLogin(form){
+  adminLogin(form){
     return this._http.post(this._url + "adminLogin", {
       body: form
      })
@@ -29,7 +29,7 @@ export class UserService{
       );
     }
   
-   getOTPDevotees(){
+  getOTPDevotees(){
     return this._http.get(this._url + "getOTPDevotees")  //, options)
       .map((response: Response) => {
           //console.log("mock data 1 " , response.json());
@@ -38,7 +38,7 @@ export class UserService{
        )
      }
   
-    getSearchedDevotee(contact){
+  getSearchedDevotee(contact){
       console.log("in searched", contact);
       let isContact = false;
       if(!isNaN(parseInt(contact))){
@@ -63,7 +63,7 @@ export class UserService{
          )
     }
 
-     getDevotees(course): Observable<any>{
+  getDevotees(course): Observable<any>{
       let courseName = "";
       if(course == "1"){
         courseName = "OTP";
@@ -88,23 +88,24 @@ export class UserService{
          )
        }
 
-    getDetails(id): Observable<any> {
+  getDetails(id): Observable<any> {
     //  console.log("options", id);
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
+      let token = localStorage.getItem('token');
       searchParams.append('id', id);
+      searchParams.append('token', token);
       let options = new RequestOptions({ headers: headers, params: searchParams });
       
      return this._http.get(this._url + "getDetails", options)
        .map((response: Response) => {
-          // console.log("mock data 1 " , response.json());
            return response.json();
           }
         )
       }
 
-   getSdlClasses(){
+  getSdlClasses(){
       
       return this._http.get(this._url + "getSdlClasses")
         .map((response: Response) => {
@@ -114,7 +115,7 @@ export class UserService{
          )
     }
    
-   checkIfClassSdlForCourse(course, date): Observable<any> {
+  checkIfClassSdlForCourse(course, date): Observable<any> {
       //console.log("Checking class sdl");
       //console.log("atten is ", ckStatus.course);
       let headers = new Headers();
@@ -262,6 +263,24 @@ export class UserService{
          }
        )
    }
+
+   downloadToExCounsellor(dTe){
+    //console.log("atten is ", dTe);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');    
+    let searchParams = new URLSearchParams();
+    searchParams.append('date', dTe.date);
+    searchParams.append('course', dTe.course);
+    searchParams.append('counsellor', dTe.counsellor);
+    let options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + "downloadToExCounsellor", options)
+        .map((response: Response) => {
+          //console.log("mock data 1 " , response.json());
+          return response.json();
+       }
+     )
+ }
 
    getTodayAttendance(course){
     //console.log("atten is ", dTe);
