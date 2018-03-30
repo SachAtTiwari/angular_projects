@@ -6,6 +6,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDrawerToggleRe
 import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 //import { window } from 'rxjs/operator/window';
+import swal from 'sweetalert2';
+
 
 
 @Component({
@@ -50,6 +52,15 @@ export class AdminLoginComponent implements OnInit {
          { queryParams: { course: '5'},
 
         });
+      }else{
+        swal({
+
+          type: 'error',
+          title: 'Invalid Login Crdentials',
+          html: "Hari Bol!!",
+          showConfirmButton: false,
+          timer: 1500
+      })   
       }
      });
     

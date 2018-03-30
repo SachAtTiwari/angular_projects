@@ -139,7 +139,7 @@ exports.getTodayAttendance =  function(req, res, next) {
     let month = date.getMonth() + 1
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
     let db = req.app.locals.db;
-    console.log("db is", db);
+  //  console.log("db is", db);
     
     db.listCollections().toArray(function(err, collections){
           if (collections === undefined){

@@ -305,6 +305,9 @@ exports.updateDevotee = function(req, res, next) {
      if(req.body.body.counsellor){
         valuesToUpdate["counsellor"] = req.body.body.counsellor;
      }
+     if(req.body.body.contact2){
+      valuesToUpdate["contact2"] = req.body.body.contact2;
+     }
      if(req.body.body.age){
         valuesToUpdate["age"] = req.body.body.age;
      }
@@ -368,6 +371,24 @@ exports.getSearchedDevotee = function(req, res, next) {
           query = {email:regexp, course:req.query.course}
           
       }
+      query = {
+        course:req.query.course,
+        "$or":[
+           {contact:req.query.contact},
+           {contact2:req.query.contact}
+         ]
+       }
+       console.log("query is", query);
+     /* db.collection("devotees").find(
+        query
+      ).toArray(function(err, dataRes){
+        if(err){
+          console.log("err is", err);
+        }else{
+          console.log("data res", dataRes);
+          res.send({result:dataRes});
+        }
+      });*/
       db.collection("devotees").find(
         query
       ).toArray(function(err, result) {

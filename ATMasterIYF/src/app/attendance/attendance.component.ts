@@ -268,7 +268,7 @@ export class AttendanceComponent implements OnInit {
       //console.log("date is ", result.dob);
 
       if (!result.name || !result.email 
-        || !result.contact || !result.dob
+        || !result.contact || !result.dob || !result.contact2
         || !result.counsellor || !result.course){
           this.formError = "All fields are mandatory";
       }else{
@@ -318,7 +318,7 @@ export class AttendanceComponent implements OnInit {
         result.dob = this._userService.parseDate(result.dob);
         console.log("date is ", result.dob);
       } 
-      result.id = dv._id
+      result._id = dv._id;
        this._userService.editDevotee(result)
        .subscribe(userData => {
          console.log("Edit record is ", userData);
@@ -332,7 +332,7 @@ export class AttendanceComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500
           })          
-          window.location.reload(); 
+         // window.location.reload(); 
          }
         });
     });
@@ -394,8 +394,7 @@ export class MarkpresentComponent {
 export class MainAttendanceComponent {
   startDate = new Date(1987, 0, 1);  
   contact:string;
-  devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
-  devoteeDataSubmit = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
+  devoteeData = {contact:'', contact2:'', counsellor:'',course:'', email:'',dob:'',name:''};
   loading = false;
   dStatus = {};
   attendanceArray = [];  
@@ -478,12 +477,12 @@ export class MainAttendanceComponent {
               })
               this.loading = false;
               if(isContact){
-                this.devoteeData = {contact:contact, 
+                this.devoteeData = {contact:contact,contact2:'',
                 course:userData.sdlResult[0].course, 
                 counsellor:userData.sdlResult[0].counsellor,
                 email:'',dob:'', name:''};
               }else{
-                this.devoteeData = {email:contact, 
+                this.devoteeData = {email:contact,contact2:'', 
                 course:userData.sdlResult[0].course, 
                 counsellor:userData.sdlResult[0].counsellor,
                 contact:'', dob:'', name:''};
@@ -538,7 +537,7 @@ export class MainAttendanceComponent {
     }
     
     addDevotee(devoteeForm) {
-       console.log("devotee form is", devoteeForm.value);
+      // console.log("devotee form is", devoteeForm.value);
        if (!devoteeForm.value.name || !devoteeForm.value.email 
         || !devoteeForm.value.contact || !devoteeForm.value.dob 
         || !devoteeForm.value.course || !devoteeForm.value.counsellor){
@@ -571,7 +570,11 @@ export class MainAttendanceComponent {
                 misMatch = true;
 
             }
-             if(userData.result[0].email !== this.devoteeData.email){
+            if(userData.result[0].contact2 !== this.devoteeData.contact2){
+              valuesToUpdate["contact2"] = this.devoteeData.contact2;
+              misMatch = true;
+            }
+            if(userData.result[0].email !== this.devoteeData.email){
               valuesToUpdate["email"] = this.devoteeData.email;
               misMatch = true;
             }
@@ -636,6 +639,7 @@ export class MainAttendanceComponent {
               });
                 
             }else{
+              console.log("going to mark attendance only no updates", devoteeForm.value);
               this.markAttendance(devoteeForm);
               
             }
