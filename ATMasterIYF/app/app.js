@@ -44,6 +44,7 @@ app.use('/getSearchedDevotee', index);
 app.use('/getTodayAttendance', index);
 app.use('/addDevoteeGeneric', index);
 app.use('/adminLogin', index);
+app.use('/isTokenVerified', index);
 
 
 

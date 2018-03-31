@@ -12,21 +12,36 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [
+    UserService,
+  ]
 })
 
 export class AppComponent  {
+  constructor(private _userService:UserService) { }
+
   isLoggedIn = false;
   adminLogout(){
     localStorage.clear();
     window.location.reload();
   }
 
+  toggleClicked(){
+    console.log("toggle clicked");
+  }
+
   ngOnInit() {
     //console.log("in login init");
     let getLoggedIn = localStorage.getItem("token");
     if(getLoggedIn){
-        this.isLoggedIn = true;
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log(tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
     }
   }
   

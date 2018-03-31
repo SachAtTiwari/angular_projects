@@ -132,6 +132,21 @@ export class UserService{
        )
    }
 
+
+  isTokenVerified(token) {
+    console.log("token in devotee", token);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');    
+    let searchParams = new URLSearchParams();
+    searchParams.append('token', token);
+    let options = new RequestOptions({ headers: headers, params: searchParams });
+    return this._http.get(this._url + "isTokenVerified", options)
+        .map((response: Response) => {
+          return response.json();
+       }
+     )
+ }
+
    delRecord(contact):Observable <Response>{
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');    

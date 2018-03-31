@@ -193,6 +193,14 @@ exports.delRecord = function(req, res, next) {
 exports.getDevotees = function(req, res, next) {
   try{
     console.log("i m here", req.query.course);
+    let skip = 0;
+    let limit = 10;
+    if(req.query.skip){
+      skip = req.query.skip;
+    }
+    if(req.query.limit){
+      limit = req.query.limit;
+    }
     let course = req.query.course;
     let date = new Date();
     let month = date.getMonth() + 1
@@ -218,7 +226,7 @@ exports.getDevotees = function(req, res, next) {
                       if (usrCollections === undefined){
                         res.send({error:"No Collections present in DB"});
                       }else{
-                         db.collection("devotees").find({course:course})
+                         db.collection("devotees").find({course:course}).skip(skip).limit(limit)
                          .toArray(function(err, result) {
                          if (err) {
 				                  console.log("err is ", err);
@@ -236,11 +244,13 @@ exports.getDevotees = function(req, res, next) {
       });//list collection end
     }else{
       console.log("empty course");
+     
+      
       db.listCollections().toArray(function(err, usrCollections){
           if (usrCollections === undefined){
              res.send({error:"No Collections present in DB"});
           }else{
-              db.collection("devotees").find()
+              db.collection("devotees").find().sort({name:1}).skip(skip).limit(limit)
               .toArray(function(err, result) {
                if (err) {
 			            console.log("err is ", err);
@@ -433,3 +443,24 @@ exports.getSearchedDevotee = function(req, res, next) {
   }
 };
 
+exports.isTokenVerified = function(req, res, next) {
+    try{
+        //console.log("token is ", req.query.token);
+        let db = req.app.locals.db;
+        var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+        if(decoded.user.length > 0){
+            res.send(200).json({
+              message:"token Verified",
+              result:"ok"
+            });
+        }else{
+          res.send({result:"notok"})
+
+
+        }
+
+    }catch(err){
+      console.log("Exception :", err);
+      
+    }
+}

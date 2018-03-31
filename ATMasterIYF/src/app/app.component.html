@@ -1,6 +1,6 @@
 <!-- Navigation-->
 <nav class="navbar-header navbar-expand-lg navbar-dark fixed-top"
-       id="mainNav" style="background-color:#e9ecef;">
+       id="mainNav" style="background-color:#343a40;" >
         <!--a class="navbar-brand" href="#">ISKCON YOUTH FORUM</a-->
         
         
@@ -16,7 +16,7 @@
             (click)="adminLogout();" >
                 <i class="fa fa-sign-out" aria-hidden="true"></i></a>
   
-            <a *ngIf="isLoggedIn" style="margin-top:25px;" class="pull-right">
+            <a *ngIf="isLoggedIn" style="margin-top:25px;color:blue;" class="pull-right">
             <i class="fa fa-user" aria-hidden="true"></i> Hare Krishna, Admin</a>
 
             
@@ -34,56 +34,56 @@
 
             <!--marquee style="color:green;">Hare Krishna Hare Krishna Krishna Krishna Hare Hare,
                 Hare Ram Hare Ram Ram Ram Hare Hare!!</marquee-->
-        <button 
+        <!--button 
         class="navbar-toggler navbar-toggler-right" 
         type="button" data-toggle="collapse" 
         data-target="#navbarResponsive" 
         aria-controls="navbarResponsive" 
         aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+          <span class="navbar-toggler-icon">I m here</span>I m heereer
+        </button-->
 
 
-        <div class="collapse navbar-collapse" id="navbarResponsive" >
-          <ul class="navbar-nav navbar-sidenav" id="menu">
+        <div class="collapse navbar-collapse" id="navbarResponsive"  >
+          <ul class="navbar-nav navbar-sidenav " style="background-color:#343a40" >
             <li class="nav-item" style="color:black;" data-toggle="tooltip" data-placement="right" title="courses">
-              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#courses" data-parent="#menu">
+              <a style="color:#FFF;" class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#courses" data-parent="#menu">
                 <i class="fa fa-fw fa-dashboard"></i>
                 <span   class="nav-link-text">COURSES</span>
               </a>
               <ul class="sidenav-second-level collapse" id="courses">
                 <li>
-                  <a style="color:black;" routerLink="/otpattendance" 
+                  <a style="color:#000;" routerLink="/otpattendance" 
                       routerActive="/otpattendance">OTP DEVOTEES</a>
                 </li>
                 <li >
-                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 2 }" 
+                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 2 }" 
                   routerActive="/attendance">TSSV DEVOTEES</a>
                 </li>
                 <li >
-                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 3 }" 
+                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 3 }" 
                   routerActive="/attendance">ASHRAY 1 DEVOTEES</a>
                 </li>
                 <li >
-                  <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 4 }" 
+                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 4 }" 
                   routerActive="/attendance">ASHRAY 2 DEVOTEES</a>
                 </li>
                 <li >
-                    <a style="color:black;" routerLink="/attendance" [queryParams]="{ course: 5 }" 
+                    <a style="color:#000" routerLink="/attendance" [queryParams]="{ course: 5 }" 
                     routerActive="/attendance">ALL DEVOTEES</a>
                 </li>
               </ul>
             </li>
 
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                    <a class="nav-link" routerLink="/downloads" routerActive="/downloads">
+                    <a style="color:#FFF;" class="nav-link" routerLink="/downloads" routerActive="/downloads">
                       <i class="fa fa-fw fa-download"></i>
                       <span class="nav-link-text">Downloads</span>
                     </a>
              </li>
 
              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" routerLink="/classSdl" routerActive="/classSdl">
+                <a style="color:#FFF;" class="nav-link" routerLink="/classSdl" routerActive="/classSdl">
                   <i class="fa fa-calendar"></i>
                   <span class="nav-link-text"> Scheduled Classes</span>
                 </a>
@@ -93,7 +93,7 @@
           </ul>
           <ul class="navbar-nav sidenav-toggler">
               <li class="nav-item">
-                <a class="nav-link text-center" id="sidenavToggler">
+                <a (click)="toggleClicked();" class="nav-link text-center" id="sidenavToggler">
                   <i class="fa fa-fw fa-angle-left"></i>
                 </a>
               </li>

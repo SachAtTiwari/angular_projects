@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/classSdl', function(req, res, next) {
   //res.render('index', { title: 'Express' });
-  res.sendfile('app.component.html');
+  res.sendFile('app.component.html');
 });
 
 //USER ROUTES
@@ -40,6 +40,10 @@ router.post('/adminLogin', userController.adminLogin);
 
 /* add Devotee */
 router.post('/addDevoteeGeneric', userController.addDevoteeGeneric);
+
+
+/* is token Verified */
+router.get('/isTokenVerified', userController.isTokenVerified);
 
 /* Get OTP Devotee */
 //router.get('/getOTPDevotees', userController.getOTPDevotees);

@@ -1,16 +1,15 @@
  
 mat-form-field{
-    margin: 15px;
-    width: 140px;
+    margin: 10px;
+    width: 200px;
 }
 
 .form-container{
-    border-radius: 15px;
-    margin-bottom: 30px;
+    margin:auto;
 
 }
 
-.mat-dialog-container{
+/*.mat-dialog-container{
     border-radius: 15px;
-    margin-bottom: 30px;
-}
+    margin-bottom: 40px;
+}*/

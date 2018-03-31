@@ -28,9 +28,19 @@ export class ShowdetailsComponent implements OnInit {
   devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-
+  isLoggedIn = false;
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    let getLoggedIn = localStorage.getItem("token");
+   // console.log("token is in atte init",getLoggedIn);
+    if(getLoggedIn){
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log("token res", tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
 
     this.route.params.subscribe(params => {
       this.id =  params["id"];
@@ -38,10 +48,13 @@ export class ShowdetailsComponent implements OnInit {
       this._userService.getDetails(this.id)
       .subscribe(userData => {
            console.log("user data is ", userData.result);
-           this.dataSource.data = userData.result[0].attendance;
+           if(userData.result[0].attendance){
+            this.dataSource.data = userData.result[0].attendance;
+           }
            this.devoteeData = userData.result[0];
          });
        });    
   }
+}
 
 }

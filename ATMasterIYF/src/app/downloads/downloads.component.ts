@@ -18,9 +18,16 @@ export class DownloadsComponent implements OnInit {
   isLoggedIn = false;
   ngOnInit() {
     let getLoggedIn = localStorage.getItem("token");
+   // console.log("token is in atte init",getLoggedIn);
     if(getLoggedIn){
-       this.isLoggedIn = true;
-    }
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log("token res", tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
+      }
   }
 
   course = '';
@@ -56,14 +63,18 @@ export class DownloadsComponent implements OnInit {
          objectToInsert["contact"] = userData.result[i].contact;
          objectToInsert["course"] = userData.result[i].course;
          objectToInsert["counsellor"] = userData.result[i].counsellor;
-         
-         for(var j = 0;j < userData.result[i].attendance.length;j++){
-             objectToInsert[userData.result[i].attendance[j].date] = userData.result[i].attendance[j].present;
-            // objectToInsert["present"] = userData.result[i].attendance[j].present;
-            // objectToInsert["topic"] = userData.result[i].attendance[j].topic;
-            // objectToInsert["speaker"] = userData.result[i].attendance[j].speaker;
-
-        }
+         let iterLen = 0;
+//         console.log("att is  ", userData.result[i]);
+         if(userData.result[i].attendance !== undefined){
+          if(userData.result[i].attendance.length >= 8 ){
+            iterLen = 8;
+          }else{
+            iterLen = userData.result[i].attendance.length;
+          }
+         }
+         for(var j = 0;j < iterLen;j++){
+               objectToInsert[userData.result[i].attendance[j].date] = userData.result[i].attendance[j].present;
+          }
          result_json.push(objectToInsert);
        }
        
@@ -106,7 +117,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert["contact"] = userData.result[i].contact;
          objectToInsert["course"] = userData.result[i].course;
          objectToInsert["counsellor"] = userData.result[i].counsellor;
-         
+         if(userData.result[i].attendance !== undefined){
          for(var j = 0;j < userData.result[i].attendance.length;j++){
            if(userData.result[i].attendance[j].date.localeCompare(form.value.date) == 0){
              objectToInsert["date"] = userData.result[i].attendance[j].date;
@@ -115,10 +126,11 @@ export class DownloadsComponent implements OnInit {
              objectToInsert["speaker"] = userData.result[i].attendance[j].speaker;
              break;
            }
-
+          
         }
-         result_json.push(objectToInsert);
-       }
+      }
+      result_json.push(objectToInsert);
+      }
        
        
        const ws_name = 'Attendance';

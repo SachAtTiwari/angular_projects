@@ -40,8 +40,19 @@ export class ClassComponent implements OnInit {
 
   constructor(private _userService:UserService,private router: Router) { }
 
+   isLoggedIn = false;
    ngOnInit(){
     console.log("in init");
+    let getLoggedIn = localStorage.getItem("token");
+   // console.log("token is in atte init",getLoggedIn);
+    if(getLoggedIn){
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log("token res", tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
     //this.ifClassSdl = true;
     this._userService.getSdlClasses()
       .subscribe(classInfo => {
@@ -51,6 +62,7 @@ export class ClassComponent implements OnInit {
          
     });
   }
+}
 
  
   title = 'ISKCON YOUTH FORUM';

@@ -5,10 +5,8 @@ import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import * as $ from 'jquery';
 import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
-import 'datatables.net';
 import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
 import { resetFakeAsyncZone } from '@angular/core/testing';
 
@@ -111,11 +109,15 @@ export class AttendanceComponent implements OnInit {
 
   ngOnInit() {
     let getLoggedIn = localStorage.getItem("token");
-    console.log("token is", getLoggedIn);
+   // console.log("token is in atte init",getLoggedIn);
     if(getLoggedIn){
-      console.log("token is 1", getLoggedIn);
-       this.isLoggedIn = true;
-    }
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log("token res", tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
         //console.log("param is ", params['course']);
@@ -140,6 +142,7 @@ export class AttendanceComponent implements OnInit {
    });
     
   }
+}
 
 
 
@@ -153,7 +156,13 @@ export class AttendanceComponent implements OnInit {
     console.log("in get devotees");
     this._userService.getDevotees(params["course"])
     .subscribe(userData => {
+       if(userData.result){
+         userData.result = userData.result.filter(function(el) {
+            return el.username !== "admin";
+         });
+        }
        console.log("user data is 2", userData);
+        
        /* if(userData.sdlResult && userData.sdlResult.length > 0 && params["course"] == "1"){
           this.router.navigateByUrl('/otpAttendance');
         }*/
@@ -256,7 +265,8 @@ export class AttendanceComponent implements OnInit {
 
   handleDevoteeDialog(){
     let dialogRef = this.dialog.open(AddDevoteeComponent, {
-      width: '400px',
+      width: '500px',
+      height:'100px;',
       hasBackdrop: false,
       //data: { contact:this.contact }
     });
@@ -268,7 +278,7 @@ export class AttendanceComponent implements OnInit {
       //console.log("date is ", result.dob);
 
       if (!result.name || !result.email 
-        || !result.contact || !result.dob || !result.contact2
+        || !result.contact || !result.dob 
         || !result.counsellor || !result.course){
           this.formError = "All fields are mandatory";
       }else{
@@ -415,8 +425,20 @@ export class MainAttendanceComponent {
     public snackBar: MatSnackBar) {
       console.log("in constructor");
     };
+  isLoggedIn = false;
+  ngOnInit()  {
 
-    ngOnInit()  {
+      let getLoggedIn = localStorage.getItem("token");
+   // console.log("token is in atte init",getLoggedIn);
+    if(getLoggedIn){
+        this._userService.isTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+            console.log("token res", tokenRes);
+            if(tokenRes.result == "ok"){
+              this.isLoggedIn = true;
+            }
+        })
+
       console.log("im main attendance");
       let course = "OTP";
       let todayDate = new Date();
@@ -460,6 +482,7 @@ export class MainAttendanceComponent {
         }
        });
     }
+  }
 
     _searchedDevotee(contact, isContact){
       this._userService.getSearchedDevotee(contact)

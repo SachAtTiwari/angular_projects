@@ -3,14 +3,14 @@
       <mat-toolbar>Add Devotee</mat-toolbar>
           
       
-      <div *ngIf="formError" style="margin:5px;" class="alert alert-danger alert-dismissable">
+      <!--div *ngIf="formError" style="margin:5px;" class="alert alert-danger alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>{{formError}}</strong>
-      </div>
+      </div-->
       
 
 
-      <form #classForm="ngForm" (ngSubmit)="_addDevotee(classForm)" style="margin:auto;">
+      <form #classForm="ngForm" (ngSubmit)="_addDevotee(classForm)" >
      
         <mat-form-field>                                  
             <input matInput name="name" [(ngModel)]="name"  placeholder="Name" required>  
