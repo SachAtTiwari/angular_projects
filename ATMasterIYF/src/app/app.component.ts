@@ -29,6 +29,14 @@ export class AppComponent  {
 
   toggleClicked(){
     console.log("toggle clicked");
+    if(document.getElementById('sidebar').style.width == "250px" || document.getElementById('sidebar').style.width == "") {
+        document.getElementById('sidebar').style.width = "52px";
+        document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "52px";
+    }else {
+        document.getElementById('sidebar').style.width = "250px";
+        document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "250px";    
+    }
+    
   }
 
   ngOnInit() {
