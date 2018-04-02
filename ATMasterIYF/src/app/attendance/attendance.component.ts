@@ -60,7 +60,11 @@ export class AttendanceComponent implements OnInit {
     {value: "OTHER"},
   ];
 
-    
+ 
+  getPageDetails(e) {
+    console.log(e.pageSize);
+    this._getDevotees({course:5});  
+  }
   getSearchedDevotee(contact){
     this.loading = true;
     if(contact != undefined && contact.length != 10){
