@@ -53,15 +53,20 @@ export class ClassComponent implements OnInit {
               this.isLoggedIn = true;
             }
         })
-    //this.ifClassSdl = true;
-    this._userService.getSdlClasses()
-      .subscribe(classInfo => {
-         //console.log("class data is ", classInfo.result);
-         this.dataSource.data = classInfo.result;
-         //console.log("class data is ", this.dataSource.data);
-         
-    });
-  }
+        this._userService.getSdlClasses()
+          .subscribe(classInfo => {
+            this.dataSource.data = classInfo.result;
+            //console.log("class data is ", this.dataSource.data);
+            
+        });
+    }else{
+      this._userService.getSdlClasses()
+          .subscribe(classInfo => {
+            this.dataSource.data = classInfo.result;
+            //console.log("class data is ", this.dataSource.data);
+            
+        });
+    }
 }
 
  

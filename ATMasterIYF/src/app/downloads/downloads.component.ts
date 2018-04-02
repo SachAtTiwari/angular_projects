@@ -18,13 +18,17 @@ export class DownloadsComponent implements OnInit {
   isLoggedIn = false;
   ngOnInit() {
     let getLoggedIn = localStorage.getItem("token");
-   // console.log("token is in atte init",getLoggedIn);
+    //console.log("token is in atte init",getLoggedIn);
     if(getLoggedIn){
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
             console.log("token res", tokenRes);
             if(tokenRes.result == "ok"){
               this.isLoggedIn = true;
+            }else{
+              console.log("token res in else", tokenRes);
+              localStorage.clear();
+
             }
         })
       }

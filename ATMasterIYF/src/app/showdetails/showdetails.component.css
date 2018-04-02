@@ -11,3 +11,18 @@ mat-progress-spinner{
   
   margin: auto;
 }
+
+
+.content-wrapper{
+	background:url('../../assets/img/bg.jpg') repeat;
+	background-size: cover;
+}
+
+.container-fluid{
+	z-index: 1;
+	opacity: 0.8;
+	
+}
+mat-cell{
+	font-weight: bold;
+}

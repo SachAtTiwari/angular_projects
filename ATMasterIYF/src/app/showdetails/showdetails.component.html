@@ -1,4 +1,4 @@
-<div class="content-wrapper" style="background:#CCC;">
+<div class="content-wrapper">
     <div class="container-fluid" style="margin-top:70px;">  
              <!-- Breadcrumbs-->
              <ol class="breadcrumb" style="margin-top:30px;">
@@ -9,7 +9,7 @@
               </ol>  
 
               <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
-                  <div class="card-header">
+                  <div class="card-header" style="background-color:yellow;">
                     <i class="fa fa-table"></i> Devotee Details
                   </div>
                   <div class="card-body formClass mat-elevation-z12">
@@ -30,6 +30,11 @@
                               required
                                  name="email" [(ngModel)]="devoteeData.email"
                                 placeholder="Email" > </mat-form-field>
+
+                                <mat-form-field> <input type="text" matInput
+                                  required
+                                     name="area" [(ngModel)]="devoteeData.area"
+                                    placeholder="Location" > </mat-form-field>
 
                             
                         <mat-form-field>                                                              
@@ -56,14 +61,29 @@
                         <mat-option
                         value="HG Jagdanand Pandit Prabhuji"> HG Jagdanand Pandit Prabhuji </mat-option>
                         </mat-select> </mat-form-field>
+
+                        <!--mat-form-field>                                                              
+                            <input matInput name="fp" [(ngModel)]="devoteeData.fp" 
+                             [matDatepicker]="picker" placeholder="First Program" required>       
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+                            <mat-datepicker #picker></mat-datepicker>                                   
+                        </mat-form-field-->  
                         
-                      <!--button mat-raised-button color="primary" style="margin-left:8px;"
-                      (click)="addDevotee(devoteeForm)">Update Devotee</button-->
+                      <mat-form-field>
+                        <mat-select name="course" placeholder="Is BACE Devotee?" required
+                        [(ngModel)]="devoteeData.course"> 
+                        <mat-option value="YES"> YES </mat-option> 
+                        <mat-option value="YES">NO </mat-option> 
+                       </mat-select>
+                       </mat-form-field>
+                        
+                      <button mat-raised-button disabled color="primary" style="margin-left:8px;"
+                      (click)="addDevotee(devoteeForm)">Update Devotee</button>
                 </form>
           
 
-          <div class="table-responsive" style="margin-top:25px;">
-              <div class="card-header">
+          <div class="card mb-3 col-md-offset-2" style="margin-top:25px;">
+              <div class="card-header" style="background-color:yellow;">
                   <i class="fa fa-table"></i> Programs attended till date
                 </div>
 

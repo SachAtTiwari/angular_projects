@@ -63,7 +63,7 @@ export class UserService{
          )
     }
 
-  getDevotees(course): Observable<any>{
+  getDevotees(course, token): Observable<any>{
       let courseName = "";
       if(course == "1"){
         courseName = "OTP";
@@ -78,6 +78,7 @@ export class UserService{
       headers.append('Content-Type', 'application/json');    
       let searchParams = new URLSearchParams();
       searchParams.append('course', courseName);
+      searchParams.append('token', token);
       let options = new RequestOptions({ headers: headers, params: searchParams });
 
       return this._http.get(this._url + "getDevotees", options)

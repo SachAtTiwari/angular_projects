@@ -47,14 +47,14 @@ exports.adminLogin = function(req, res, next) {
       if (err) {
        console.log("err is ", err);
        res.send({result:"notok"});
-       //if devotee not found add one with attendance
       }else{
+        //admin details find verify pass
          console.log("result ", dvData);
         if(dvData.length > 0 && 
           bcrypt.compareSync(req.body.body.password, dvData[0].password)){
             let token = jwt.sign({user:dvData}, 'khsandasinasfnasiu2194u19u41142i210',
             {expiresIn:900});
-
+            console.log("token assigned", token);
             res.status(200).json({
               result:"ok",
               message:"Logged in Successfully",
@@ -64,7 +64,6 @@ exports.adminLogin = function(req, res, next) {
          }else{
             res.send({result:"notok"});
          }
-        
       }
     })
   }catch(err){
@@ -192,7 +191,7 @@ exports.delRecord = function(req, res, next) {
 
 exports.getDevotees = function(req, res, next) {
   try{
-    console.log("i m here", req.query.course);
+    console.log("i m here", req.query);
     let skip = 0;
     let limit = 10;
     if(req.query.skip){
@@ -205,8 +204,18 @@ exports.getDevotees = function(req, res, next) {
     let date = new Date();
     let month = date.getMonth() + 1
     date =  date.getDate() + '-' + month + '-' + date.getFullYear();
-    console.log("date is", date);
+    //console.log("date is", date);
     let db = req.app.locals.db;
+    let isLoggedIn = false;
+
+
+    if(req.query.token){
+      let decoded = jwt.verify(req.query.token,'khsandasinasfnasiu2194u19u41142i210');
+      if (decoded.user.length > 0){
+        isLoggedIn = true;
+      }  
+    }
+  
     if(course){
          db.listCollections().toArray(function(err, collections){
            if (collections === undefined){
@@ -216,7 +225,7 @@ exports.getDevotees = function(req, res, next) {
               .toArray(function(err, sdlResult) {
                if (err) {
 		            console.log("err ", err)
-                 res.send({error:500});            
+                 res.send({error:500, isLoggedIn:isLoggedIn});            
 		            }else{
                 console.log("sdl result ",sdlResult);
                 //GET OTP devotees 
@@ -230,10 +239,10 @@ exports.getDevotees = function(req, res, next) {
                          .toArray(function(err, result) {
                          if (err) {
 				                  console.log("err is ", err);
-                		      res.send({error:500});
+                		      res.send({error:500, isLoggedIn:isLoggedIn});
 			                  }
                              //console.log("devotee result", result);
-                        res.send({result:result, sdlResult:sdlResult});
+                        res.send({result:result, sdlResult:sdlResult, isLoggedIn:isLoggedIn});
                       });
                       }
                    });
@@ -254,10 +263,10 @@ exports.getDevotees = function(req, res, next) {
               .toArray(function(err, result) {
                if (err) {
 			            console.log("err is ", err);
-                	res.send({error:500});
+                	res.send({error:500, isLoggedIn:isLoggedIn});
 	            	}else{
                 console.log(result);
-               	res.send({result:result});
+               	res.send({result:result, isLoggedIn:isLoggedIn});
 	          	}
            });
           }
@@ -445,22 +454,31 @@ exports.getSearchedDevotee = function(req, res, next) {
 
 exports.isTokenVerified = function(req, res, next) {
     try{
-        //console.log("token is ", req.query.token);
+        console.log("token is verified ", req.query.token);
         let db = req.app.locals.db;
-        var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
-        if(decoded.user.length > 0){
-            res.send(200).json({
-              message:"token Verified",
-              result:"ok"
-            });
-        }else{
-          res.send({result:"notok"})
-
-
-        }
+        //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+        jwt.verify(req.query.token,'khsandasinasfnasiu2194u19u41142i210',
+        function(err, decoded){
+          if(err){
+            // respond to request with error
+            console.error("err in verification", err);
+            res.send({result:"notok"})
+            
+          }else{
+            // continue with the request
+            console.log("decoded ", decoded);
+            if(decoded.user.length > 0){
+                res.send({result:"ok"})
+            }else{
+              res.send({result:"notok"})
+            }
+          }
+        });
+        
 
     }catch(err){
       console.log("Exception :", err);
+//      res.send({result:"notok"})
       
-    }
+  }
 }

@@ -112,19 +112,10 @@ export class AttendanceComponent implements OnInit {
   
 
   ngOnInit() {
-    let getLoggedIn = localStorage.getItem("token");
-   // console.log("token is in atte init",getLoggedIn);
-    if(getLoggedIn){
-        this._userService.isTokenVerified(getLoggedIn)
-        .subscribe(tokenRes => {
-            console.log("token res", tokenRes);
-            if(tokenRes.result == "ok"){
-              this.isLoggedIn = true;
-            }
-        })
+  
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
-        //console.log("param is ", params['course']);
+        console.log("param is ", params['course']);
 
         if(params['course'] === "1"){
           this.showAddDevotee = true;
@@ -145,7 +136,6 @@ export class AttendanceComponent implements OnInit {
         }
    });
     
-  }
 }
 
 
@@ -157,9 +147,12 @@ export class AttendanceComponent implements OnInit {
   }
 
   _getDevotees(params){
-    console.log("in get devotees");
-    this._userService.getDevotees(params["course"])
+    let getLoggedIn = localStorage.getItem("token");
+    console.log("token is in atte init",getLoggedIn);
+    this._userService.getDevotees(params["course"], getLoggedIn)
     .subscribe(userData => {
+      console.log("in get devotees", userData);
+      this.isLoggedIn = userData.isLoggedIn;
        if(userData.result){
          userData.result = userData.result.filter(function(el) {
             return el.username !== "admin";
@@ -440,6 +433,8 @@ export class MainAttendanceComponent {
             console.log("token res", tokenRes);
             if(tokenRes.result == "ok"){
               this.isLoggedIn = true;
+            }else{
+              localStorage.clear();
             }
         })
 
