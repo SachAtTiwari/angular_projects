@@ -32,9 +32,14 @@ export class AppComponent  {
     if(document.getElementById('sidebar').style.width == "250px" || document.getElementById('sidebar').style.width == "") {
         document.getElementById('sidebar').style.width = "52px";
         document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "52px";
+        document.getElementById('homefooter').style.width = "calc(100% - 0px)";
+        document.getElementById('sidenavToggler').childNodes[1]['className'] = "fa fa-fw fa-angle-right";
     }else {
         document.getElementById('sidebar').style.width = "250px";
-        document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "250px";    
+        document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "250px";  
+        document.getElementById('homefooter').style.width = "calc(100% - 250px)";
+       document.getElementById('sidenavToggler').childNodes[1]['className'] = "fa fa-fw fa-angle-left";
+  
     }
     
   }

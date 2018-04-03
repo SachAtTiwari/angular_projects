@@ -336,7 +336,8 @@ footer.sticky-footer {
   width: 100%;
   height: 56px;
   background-color: #e9ecef;
-  line-height: 55px; }
+  line-height: 55px;
+  transition:0.5s }
   @media (min-width: 992px) {
     footer.sticky-footer {
       width: calc(100% - 250px); } }
