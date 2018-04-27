@@ -4,6 +4,8 @@ import { UserService} from '../devotee.service';
 
 import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
+import { takeWhile } from 'rxjs/operators';
+import { mergeAnalyzedFiles } from '@angular/compiler';
 
 @Component({
   selector: 'app-downloads',
@@ -49,16 +51,39 @@ export class DownloadsComponent implements OnInit {
     {value:"HG Kalpvraksha Prabhuji"},
     {value:"HG Vaidant Chaitnya Prabhuji"},
     {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
+    {value:"HG Jagadanand Pandit Prabhuji"},
     
   ];
 
+  checkIfDevoteePresntForGivenDate(date, myArray){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].date === date) {
+            console.log("returning", myArray[i]);
+            return myArray[i];
+        }
+    }
+  }
+
   downloadExCounsellor(form: NgForm){
     console.log("in counsellor", form.value, this.counsellor, this.course);
-
+    let classList = [];
+    this._userService.getSdlClasses()
+    .subscribe(sdlClass => {
+       //console.log("sdl class", sdlClass.result);
+       for(var j = 0; j < 8; j++){
+        // console.log("sdl class", sdlClass.result[j]);
+         if(!sdlClass.result[j]){
+           break;
+         }else{
+           classList.push(sdlClass.result[j].date);
+           
+         }
+       }
+      //console.log("class list", classList);
+    });
     this._userService.downloadToExCounsellor(form.value)
     .subscribe(userData => {
-       console.log("user data is ", userData.result);
+       //console.log("user data is ", userData.result);
        let result_json = [];
        for(var i = 0;i < userData.result.length;i++){
          let objectToInsert = {};
@@ -68,18 +93,27 @@ export class DownloadsComponent implements OnInit {
          objectToInsert["course"] = userData.result[i].course;
          objectToInsert["counsellor"] = userData.result[i].counsellor;
          let iterLen = 0;
-//         console.log("att is  ", userData.result[i]);
-         if(userData.result[i].attendance !== undefined){
-          if(userData.result[i].attendance.length >= 8 ){
-            iterLen = 8;
-          }else{
-            iterLen = userData.result[i].attendance.length;
+  
+         //get list of last 8 eight classes
+         //check if devotee present for that day 
+         //search for date in attendance array for given counsellor/course
+         // if yes add present else absent
+        for(let j = 0;j < 8;j++){
+          if (classList[j] && userData.result[i].attendance !== undefined){
+            //console.log("in magic box", classList[j]);
+            let status = {};
+            status = this.checkIfDevoteePresntForGivenDate(
+              classList[j], userData.result[i].attendance)
+            if(status !== undefined){
+              //console.log("status", status);
+              objectToInsert[classList[j]] = status["present"]; 
+            }
+        
           }
-         }
-         for(var j = 0;j < iterLen;j++){
-               objectToInsert[userData.result[i].attendance[j].date] = userData.result[i].attendance[j].present;
-          }
-         result_json.push(objectToInsert);
+        }
+        
+        result_json.push(objectToInsert);
+      //  console.log("object to insert", objectToInsert);
        }
        
        

@@ -120,7 +120,7 @@ exports.getSdlClasses = function(req, res, next) {
 	            	console.log("err is ", err);
                 res.send({result:"notok"});
 	            }else{
-                console.log("result",result);
+                //console.log("result",result);
                 res.send({result:result});
               }
             });
@@ -155,7 +155,7 @@ exports.getTodayAttendance =  function(req, res, next) {
             			console.log("err is ", err);
                 	res.send({erroe:500});
 	            	}else{
-                console.log("result is ",result);
+                //console.log("result is ",result);
                 res.send({result:result});
 	            	}
               });

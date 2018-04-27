@@ -259,13 +259,13 @@ exports.getDevotees = function(req, res, next) {
           if (usrCollections === undefined){
              res.send({error:"No Collections present in DB"});
           }else{
-              db.collection("devotees").find().sort({name:1}).skip(skip).limit(limit)
+              db.collection("devotees").find().sort({name:1})
               .toArray(function(err, result) {
                if (err) {
 			            console.log("err is ", err);
                 	res.send({error:500, isLoggedIn:isLoggedIn});
 	            	}else{
-                console.log(result);
+                //console.log(result);
                	res.send({result:result, isLoggedIn:isLoggedIn});
 	          	}
            });

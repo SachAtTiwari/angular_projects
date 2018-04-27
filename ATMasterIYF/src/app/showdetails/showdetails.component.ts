@@ -25,7 +25,7 @@ export class ShowdetailsComponent implements OnInit {
   id : string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
   dataSource = new MatTableDataSource([]);
-  devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:''};
+  devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:'', bace:''};
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   isLoggedIn = false;
@@ -36,7 +36,7 @@ export class ShowdetailsComponent implements OnInit {
     if(getLoggedIn){
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-            console.log("token res", tokenRes);
+            //console.log("token res", tokenRes);
             if(tokenRes.result == "ok"){
               this.isLoggedIn = true;
             }

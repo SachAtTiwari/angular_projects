@@ -87,4 +87,8 @@ router.get('/downloadToExcel', downloadController.downloadToExcel);
 /*Download to Excel  Counsellor*/
 router.get('/downloadToExCounsellor', downloadController.downloadToExCounsellor);
 
+
+/*Download devottee status for given date*/
+router.get('/checkDevoteeStatusForGivenDate', downloadController.checkDevoteeStatusForGivenDate);
+
 module.exports = router;

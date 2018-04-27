@@ -115,6 +115,23 @@ export class UserService{
            }
          )
     }
+
+    checkIfDevoteePresentForGivenDate(date, counsellor, course){
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');    
+      let searchParams = new URLSearchParams();
+      searchParams.append('course', course);
+      searchParams.append('date', date);
+      searchParams.append('counsellor', counsellor);
+
+      let options = new RequestOptions({ headers: headers, params: searchParams });
+      
+      return this._http.get(this._url + "checkDevoteeStatusForGivenDate")
+        .map((response: Response) => {
+            return response.json();
+           }
+         )
+    }
    
   checkIfClassSdlForCourse(course, date): Observable<any> {
       //console.log("Checking class sdl");
@@ -210,7 +227,7 @@ export class UserService{
       })
        .map(
          res => {
-           console.log("res is", res);
+           //console.log("res is", res);
            return res.json();
          },
          err => {

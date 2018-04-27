@@ -81,7 +81,7 @@ export class ClassComponent implements OnInit {
     {value:"HG Kalpvraksha Prabhuji"},
     {value:"HG Vaidant Chaitnya Prabhuji"},
     {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
+    {value:"HG Jagadanand Pandit Prabhuji"},
     
   ];
 

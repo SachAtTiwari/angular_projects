@@ -48,7 +48,7 @@ export class AttendanceComponent implements OnInit {
     {value:"HG Kalpvraksha Prabhuji"},
     {value:"HG Vaidant Chaitnya Prabhuji"},
     {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
+    {value:"HG Jagadanand Pandit Prabhuji"},
     
   ];
 
@@ -423,11 +423,13 @@ export class MainAttendanceComponent {
       console.log("in constructor");
     };
   isLoggedIn = false;
+
   ngOnInit()  {
 
-      let getLoggedIn = localStorage.getItem("token");
-   // console.log("token is in atte init",getLoggedIn);
+    let getLoggedIn = localStorage.getItem("token");
+    console.log("token is in atte init", getLoggedIn);
     if(getLoggedIn){
+        console.log("checking logged in");
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
             console.log("token res", tokenRes);
@@ -436,15 +438,17 @@ export class MainAttendanceComponent {
             }else{
               localStorage.clear();
             }
-        })
+        });
+      }
 
       console.log("im main attendance");
       let course = "OTP";
       let todayDate = new Date();
       let todayDateNew = this._userService.parseDate(todayDate);
+      //console.log("date today is", todayDateNew);
       this._userService.checkIfClassSdlForCourse(course, todayDateNew)
       .subscribe(sdlresult => {
-         //console.log("sdl result is", sdlresult);
+         console.log("sdl result is", sdlresult);
          if(sdlresult.result.length == 0){
             this.router.navigateByUrl('/classSdl');
          }
@@ -480,7 +484,6 @@ export class MainAttendanceComponent {
           
         }
        });
-    }
   }
 
     _searchedDevotee(contact, isContact){
@@ -573,12 +576,15 @@ export class MainAttendanceComponent {
                   timer: 1500
               }) 
        }else{
-       console.log("dev data",this.devoteeData) 
+       //console.log("dev data",this.devoteeData) 
        //console.log("dev data submit",this.devoteeDataSubmit); 
+        let course = devoteeForm.value.course
+        let contact = devoteeForm.value.contact
+        let name = devoteeForm.value.name
         this.loading = true;
         this._userService.getSearchedDevotee(this.devoteeData.contact)
         .subscribe(userData => {
-          console.log("user data is ", userData);
+          //console.log("user data is ", userData);
           
           let valuesToUpdate = {}
           let misMatch = false;
@@ -623,7 +629,7 @@ export class MainAttendanceComponent {
               });
           
               dialogRef.afterClosed().subscribe(result => {
-               console.log('The dialog was closed', result);
+               //console.log('The dialog was closed', result);
 
                if (result === "YES"){
                 valuesToUpdate["_id"] = userData.result[0]._id;
@@ -640,8 +646,7 @@ export class MainAttendanceComponent {
                         showConfirmButton: false,
                         timer: 1500
                     })     
-                    this.loading = false;      
-                    devoteeForm.reset();
+                    this.loading = false;
                   }else{
                     //swal("Problem in updating record" , "Hari Bol!!", 'error'); 
                     swal({
@@ -655,6 +660,8 @@ export class MainAttendanceComponent {
                     this.loading = false;      
                   }
                   });
+                  devoteeForm.reset();
+                  this.markAttendance(course, contact, name);
                }else{
                  this.loading = false;
                }
@@ -662,7 +669,7 @@ export class MainAttendanceComponent {
                 
             }else{
               console.log("going to mark attendance only no updates", devoteeForm.value);
-              this.markAttendance(devoteeForm);
+              this.markAttendance(course, contact, name);
               
             }
           }else{
@@ -689,7 +696,14 @@ export class MainAttendanceComponent {
                     })
                   this.dataSource.data = this.attendanceArray;
                }else if(addData["result"] == "updated"){
-                // swal("Hare Krishna, Devotee details are updated" , "Hari Bol!", 'success');
+                swal({
+
+                  type: 'success',
+                  title: 'Devotee details updated successfully',
+                  html: "Hari Bol!!",
+                  showConfirmButton: false,
+                  timer: 1500
+                  }) 
                   this.loading = false;
                 }else{
                   //swal("Hare Krishna, Something went wrong, Please try again" , "Hari Bol!", 'success');
@@ -715,28 +729,27 @@ export class MainAttendanceComponent {
     
     todayDate = new Date();
     month = this.todayDate.getMonth()+1;
-    markAttendance(form) {
-       //console.log("mark attendance", form);
-       if(form.invalid != true) {
+    markAttendance(course, contact, name) {
+       console.log("mark attendance", course, this.devoteeData);
+       if(course !== "") {
           this.loading = true;
           let date = this.todayDate.getDate() + "-" + this.month + "-" + this.todayDate.getFullYear();
-          this._userService.checkIfClassSdlForCourse(this.devoteeData['course'], date)
+          this._userService.checkIfClassSdlForCourse(course, date)
           .subscribe(userData => {
-           // console.log("user data is ", userData.result);
+           console.log("user data is ", userData.result);
             if (userData.result.length > 0){
 
                 this.dStatus["date"] = userData.result[0].date;
                 this.dStatus["present"] = "YES";
                 this.dStatus["topic"] = userData.result[0].topic;
                 this.dStatus["speaker"] = userData.result[0].speaker;
-                if(this.devoteeData.contact){
-                  this.dStatus["contact"] =  this.devoteeData.contact
+                //if(this.devoteeData.contact){
+                 this.dStatus["contact"] =  contact
                   this._userService.markAttendance(this.dStatus)
                     .subscribe(userData => {
                         
                       if(userData["result"] === "ok"){
                         this.loading = false;              
-                        //swal("Attendance updated successfully" , "Hari Bol!!", 'success');
                         swal({
 
                             type: 'success',
@@ -746,23 +759,15 @@ export class MainAttendanceComponent {
                             timer: 1500
                         }) 
                         console.log("attendance array", this.attendanceArray);
-                            this.attendanceArray.push(
-                              { 
-                                name: this.devoteeData['name'],
-                                contact: this.devoteeData['contact'],
+                        this.attendanceArray.push(
+                        { 
+                                name: name,
+                                contact: contact,
                                 attendance: 'YES' 
-                              })
-                         this.dataSource.data = this.attendanceArray;
+                        })
+                        this.dataSource.data = this.attendanceArray;
                       }else{
-                         /* if (this.attendanceArray.length == 0) {
-                              this.attendanceArray.push(
-                                { 
-                                  name: this.devoteeData['name'],
-                                  contact: this.devoteeData['contact'], 
-                                  attendance: 'Yes'
-                                 })
-                          }*/          
-                           //swal("Attendance already updated", "Hari Bol :)", 'warning');
+                       
                            swal({
 
                                type: 'warning',
@@ -776,19 +781,9 @@ export class MainAttendanceComponent {
                         
                       }
                       
-                      /*let obj = {};
-                      for (let i in this.attendanceArray) {
-                          this.attendanceArray.push({ name: this.devoteeData['name'], contact: this.devoteeData['contact'], attendance: 'Yes' })
-                          if (!obj[this.attendanceArray[i].contact]) {
-                              obj[this.attendanceArray[i].contact] = this.attendanceArray[i]
-                          }
-                          var filterArray = [];
-                          for (let key in obj) filterArray.push(obj[key]);
-                      } 
-                        
-                      this.dataSource.data = filterArray;*/
+    
                     });
-                }
+                //}
             }else{
                this.loading = false;              
               console.log("No class sdl for selected date");
@@ -837,7 +832,7 @@ export class EditDevoteeComponent {
     {value:"HG Kalpvraksha Prabhuji"},
     {value:"HG Vaidant Chaitnya Prabhuji"},
     {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
+    {value:"HG Jagadanand Pandit Prabhuji"},
     
   ];
 
@@ -930,7 +925,7 @@ export class AddDevoteeComponent {
     {value:"HG Kalpvraksha Prabhuji"},
     {value:"HG Vaidant Chaitnya Prabhuji"},
     {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagdanand Pandit Prabhuji"},
+    {value:"HG Jagadanand Pandit Prabhuji"},
     
   ];
 
