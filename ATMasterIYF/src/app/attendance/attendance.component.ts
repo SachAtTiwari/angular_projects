@@ -57,7 +57,7 @@ export class AttendanceComponent implements OnInit {
     {value: "TSSV"},
     {value: "ASHRAY1"},
     {value: "ASHRAY2"},
-    {value: "OTHER"},
+    {value: "UMANG"},
   ];
 
  
@@ -841,7 +841,7 @@ export class EditDevoteeComponent {
     {value: "TSSV"},
     {value: "ASHRAY1"},
     {value: "ASHRAY2"},
-    {value: "OTHER"},
+    {value: "UMANG"},
   ];
 
   constructor(
@@ -934,7 +934,7 @@ export class AddDevoteeComponent {
     {value: "TSSV"},
     {value: "ASHRAY1"},
     {value: "ASHRAY2"},
-    {value: "OTHER"},
+    {value: "UMANG"},
   ];
 
 

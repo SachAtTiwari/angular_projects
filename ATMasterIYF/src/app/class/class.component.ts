@@ -90,6 +90,7 @@ export class ClassComponent implements OnInit {
     {value: "TSSV"},
     {value: "ASHRAY1"},
     {value: "ASHRAY2"},
+    {value: "UMANG"},
   ];
   
   topic = "";

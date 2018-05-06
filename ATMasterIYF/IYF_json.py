@@ -51,12 +51,12 @@ for row_number in range(worksheet.nrows):
                 row_data[(keys[col_number]).lower()] = cell.value
     row_data['attendance'] = for_date_col
     print row_data
-    #if not devotees.find_one({"contact": row_data["contact"]}):
+    if not devotees.find_one({"contact": row_data["contact"]}):
     #    print "data row", row_data
-    #    devotee_id = devotees.insert_one(row_data).inserted_id
-    #    print "id is", devotee_id
-    #else:
-    #    print "found.."
+        devotee_id = devotees.insert_one(row_data).inserted_id
+        print "id is", devotee_id
+    else:
+        print "found.."
 
     #data.append(row_data)
 

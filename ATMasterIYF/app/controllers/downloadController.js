@@ -20,7 +20,7 @@ exports.downloadToExcel =  function(req, res, next) {
             			console.log("err is ", err);
                 	res.send({erroe:500});
 	            	}else{
-                console.log("result is ",result);
+                //console.log("result is ",result);
                 res.send({result:result});
 	            	}
               });
@@ -52,7 +52,7 @@ exports.downloadToExCounsellor =  function(req, res, next) {
             			console.log("err is ", err);
                 	res.send({erroe:500});
 	            	}else{
-                console.log("result is ",result);
+                //console.log("result is ",result);
                 res.send({result:result});
 	            	}
               });
@@ -83,7 +83,7 @@ exports.checkDevoteeStatusForGivenDate = function(req, res, next){
                 console.log("err is ", err);
                 res.send({erroe:500});
               }else{
-              console.log("result of devotee status ",result);
+              //console.log("result of devotee status ",result);
               res.send({result:result});
               }
             });

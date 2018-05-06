@@ -44,6 +44,7 @@ export class DownloadsComponent implements OnInit {
     {value:"TSSV"},
     {value:"ASHRAY1"},
     {value:"ASHRAY2"},
+    {value:"UMANG"},
   ];
 
   counsellors = [
@@ -97,7 +98,7 @@ export class DownloadsComponent implements OnInit {
          //get list of last 8 eight classes
          //check if devotee present for that day 
          //search for date in attendance array for given counsellor/course
-         // if yes add present else absent
+         // if yes add present else absent 
         for(let j = 0;j < 8;j++){
           if (classList[j] && userData.result[i].attendance !== undefined){
             //console.log("in magic box", classList[j]);
