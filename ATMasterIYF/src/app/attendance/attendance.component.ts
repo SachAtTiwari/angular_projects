@@ -262,8 +262,8 @@ export class AttendanceComponent implements OnInit {
 
   handleDevoteeDialog(){
     let dialogRef = this.dialog.open(AddDevoteeComponent, {
-      width: '500px',
-      height:'100px;',
+      width: '100vh',
+      height:'50vh;',
       hasBackdrop: false,
       //data: { contact:this.contact }
     });
@@ -315,7 +315,8 @@ export class AttendanceComponent implements OnInit {
   editDevoteeDialog(dv){
     console.log("id devotee",dv._id);
     let dialogRef = this.dialog.open(EditDevoteeComponent, {
-      width: '400px',
+      width: '100vh',
+      height:'60vh',
       hasBackdrop: false,
     });
 
@@ -404,7 +405,8 @@ export class MainAttendanceComponent {
   devoteeData = {contact:'', contact2:'', counsellor:'',course:'', email:'',dob:'',name:''};
   loading = false;
   dStatus = {};
-  attendanceArray = [];  
+  attendanceArray = [];
+  topic:string;  
   displayedColumns = ['Name', 'Contact', 'Attendance'];
   dataSource = new MatTableDataSource([]);
 
@@ -451,6 +453,8 @@ export class MainAttendanceComponent {
          console.log("sdl result is", sdlresult);
          if(sdlresult.result.length == 0){
             this.router.navigateByUrl('/classSdl');
+         }else{
+           this.topic = sdlresult.result[0].topic;
          }
       })
 
@@ -562,10 +566,10 @@ export class MainAttendanceComponent {
     }
     
     addDevotee(devoteeForm) {
-      // console.log("devotee form is", devoteeForm.value);
+      console.log("devotee form is", devoteeForm.value);
        if (!devoteeForm.value.name || !devoteeForm.value.email 
         || !devoteeForm.value.contact || !devoteeForm.value.dob 
-        || !devoteeForm.value.course || !devoteeForm.value.counsellor){
+        || !devoteeForm.value.course ){
           //swal("All fields are mandatory", "", "error");
           swal({
 
@@ -610,10 +614,10 @@ export class MainAttendanceComponent {
               valuesToUpdate["dob"] = this.devoteeData.dob;
               misMatch = true;
             }
-            if(userData.result[0].counsellor !== this.devoteeData.counsellor){
+            /*if(userData.result[0].counsellor !== this.devoteeData.counsellor){
               valuesToUpdate["counsellor"] = this.devoteeData.counsellor;
               misMatch = true;
-            }
+            }*/
             if(userData.result[0].course !== this.devoteeData.course){
               valuesToUpdate["course"] = this.devoteeData.course;
               misMatch = true;
@@ -660,7 +664,7 @@ export class MainAttendanceComponent {
                     this.loading = false;      
                   }
                   });
-                  devoteeForm.reset();
+                  //devoteeForm.reset();
                   this.markAttendance(course, contact, name);
                }else{
                  this.loading = false;

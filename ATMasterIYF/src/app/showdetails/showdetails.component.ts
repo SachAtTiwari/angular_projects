@@ -5,6 +5,8 @@ import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
+import swal from 'sweetalert2';
+
 
 
 
@@ -54,7 +56,26 @@ export class ShowdetailsComponent implements OnInit {
            this.devoteeData = userData.result[0];
          });
        });    
-  }
-}
+     }
+    }
+
+    updateDevotee(form:NgForm): void{
+      console.log("update at", this.devoteeData);
+      this._userService.editDevotee(this.devoteeData)
+      .subscribe(userData => {
+        //console.log("Edit record is ", userData);
+        if(userData["result"] === "ok"){
+         swal({
+
+             type: 'success',
+             title: 'Record updated successfully',
+             html: "Hari Bol!!",
+             showConfirmButton: false,
+             timer: 1500
+         })          
+        }
+       });
+      
+    }
 
 }

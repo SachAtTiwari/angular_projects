@@ -1,15 +1,15 @@
  
 mat-form-field{
-    margin: 10px;
-    width: 200px;
+    margin: 25px;
+    width: 140px;
+    z-index: 1000;
 }
 
 .form-container{
-    margin:auto;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    z-index: 10000;
 
 }
 
-/*.mat-dialog-container{
-    border-radius: 15px;
-    margin-bottom: 40px;
-}*/
+

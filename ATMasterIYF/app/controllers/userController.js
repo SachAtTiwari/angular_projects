@@ -317,6 +317,7 @@ exports.getDevoteeDetail = function(req, res, next) {
 exports.updateDevotee = function(req, res, next) {
   try{
     console.log("i m in update", req.body.body);
+    console.log("id is ", req.body.body._id);
      var valuesToUpdate = {}
      if(req.body.body.contact){
         valuesToUpdate["contact"] = req.body.body.contact;
@@ -341,6 +342,12 @@ exports.updateDevotee = function(req, res, next) {
      } 
      if(req.body.body.email){
       valuesToUpdate["email"] = req.body.body.email;
+    } 
+    if(req.body.body.bace){
+      valuesToUpdate["bace"] = req.body.body.bace;
+    } 
+    if(req.body.body.area){
+      valuesToUpdate["area"] = req.body.body.area;
     } 
     console.log("value to update", valuesToUpdate);
     let db = req.app.locals.db;

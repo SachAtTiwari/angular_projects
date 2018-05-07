@@ -77,12 +77,13 @@
 							[(ngModel)]="devoteeData.course"> <mat-option
 							value="OTP"> OTP </mat-option> <mat-option value="TSSV">
 						TSSV </mat-option> <mat-option value="ASHRAY1"> ASHRAY1 </mat-option> <mat-option
-              value="ASHRAY2"> ASHRAY2 </mat-option> </mat-select> 
+              value="ASHRAY2"> ASHRAY2 </mat-option> <mat-option
+              value="UMANG"> UMANG </mat-option></mat-select> 
             </mat-form-field>
 
 						<mat-form-field>
               
-						<mat-select name="counsellor" placeholder="Counsellor" required
+						<mat-select name="counsellor" placeholder="Counsellor" required disabled
 							[(ngModel)]="devoteeData.counsellor"> <mat-option
 							value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
 						<mat-option value="HG Kalpvraksha Prabhuji">
@@ -92,6 +93,16 @@
 							value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji </mat-option>
                </mat-select>
                </mat-form-field>
+
+
+               <mat-form-field> 
+                              
+                <input type="text" matInput
+                required disabled
+                   name="topic" [(ngModel)]="topic"
+                  placeholder="Topic" > 
+                
+                </mat-form-field>
 							 
             <button mat-raised-button color="primary" style="margin-left:8px;"
              (click)="addDevotee(devoteeForm)">Add or Update Devotee</button>
