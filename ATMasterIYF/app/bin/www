@@ -8,13 +8,12 @@ var app = require('../app');
 var debug = require('debug')('app:server');
 var http = require('http');
 var bcrypt =  require('bcrypt');
+const DB_URL = process.env.DB_URL;
 
-const url = 'mongodb://localhost:27017';
-//const url = 'mongodb://iyfuser:h2so4na2co%23@ds253918.mlab.com:53918/iyfdb';
+
 
 const dbName = 'iyfdb';
 const dbClient = require('mongodb').MongoClient;
-
 
 /**
  * Get port from environment and store in Express.
@@ -90,7 +89,7 @@ function onError(error) {
  */
 
 function onListening() {
-  dbClient.connect(url, function(err, client) {
+  dbClient.connect(DB_URL, function(err, client) {
     if (err) {
       debug("Failed to connect to the database", err);
     }
