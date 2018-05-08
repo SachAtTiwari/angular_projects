@@ -124,23 +124,34 @@ export class ClassComponent implements OnInit {
 
 
     }else{
-       this._userService.SdlClass(form.value);
-       form.reset();
-       //window.location.reload()
-       //swal("Class Scheduled ", "Hari Bol..", 'success');
-      this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
-
-
-        swal({
-
+      console.log("sdl result is", form.value);
+      this._userService.checkIfClassSdlForCourse(form.value.course, form.value.date)
+      .subscribe(sdlresult => {
+         console.log("sdl result is", sdlresult);
+         if(sdlresult.result.length == 0){
+            //this._userService.SdlClass(form.value);
+            form.reset();
+            //this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
+            swal({
+     
+                 type: 'success',
+                 title: 'Class Scheduled ',
+                 html: "Hari Bol!!",
+                 showConfirmButton: false,
+                 timer: 1500
+             })
+         }else{
+           swal({
+     
             type: 'success',
-            title: 'Class Scheduled ',
+            title: 'Class already scheduled for given date and course. ',
             html: "Hari Bol!!",
             showConfirmButton: false,
             timer: 1500
-        })
-       
-      }
-    }                                                                            
+          })
+        }
+      })
+    }
+  }                                                                            
 
 }

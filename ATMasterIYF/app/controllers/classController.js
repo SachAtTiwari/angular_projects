@@ -47,7 +47,7 @@ exports.markAttendance = function(req, res, next) {
 //Check if class sdl for given course on selected date
 exports.checkClassSdl = function(req, res, next) {
   try{
-    console.log("im here", req.query.date);
+    console.log("i m here", req.query);
     let db = req.app.locals.db;
     
     db.listCollections().toArray(function(err, collections){
