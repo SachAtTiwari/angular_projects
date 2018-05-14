@@ -1,6 +1,6 @@
 const assert = require('assert');
 var mongo = require('mongodb');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
 exports.addDevoteeGeneric = function(req, res, next) {
