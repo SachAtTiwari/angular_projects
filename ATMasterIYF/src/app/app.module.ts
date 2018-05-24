@@ -68,14 +68,18 @@ import { EditDevoteeConfirm } from './attendance/attendance.component';
 import { MainAttendanceComponent } from './attendance/attendance.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 
-const appRoutes: Routes = [  
-  { path: 'showDetails/:id', component: ShowdetailsComponent},  
+const appRoutes: Routes = [
+  { path: 'showDetails/:id', component: ShowdetailsComponent},
   { path: 'classSdl', component: ClassComponent},
   { path: 'attendance', component: AttendanceComponent},
   { path: 'otpattendance', component: MainAttendanceComponent},
+  { path: 'tssvattendance', component: MainAttendanceComponent},
+  { path: 'bssattendance', component: MainAttendanceComponent},
+  { path: 'umangattendance', component: MainAttendanceComponent},
+  { path: 'ashrayattendance', component: MainAttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
   { path: 'adminLogin', component: AdminLoginComponent},
-  { path: '', redirectTo:'classSdl', pathMatch:"full"}
+  { path: '', redirectTo: 'classSdl', pathMatch: 'full'}
 ];
 
 @NgModule({
@@ -91,8 +95,6 @@ const appRoutes: Routes = [
     MainAttendanceComponent,
     EditDevoteeConfirm,
     AdminLoginComponent,
-    
-  
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -100,7 +102,6 @@ const appRoutes: Routes = [
     EditDevoteeComponent,
     EditDevoteeConfirm,
     MainAttendanceComponent,
-    
   ],
   imports: [
     DataTablesModule,
@@ -144,7 +145,6 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false,  useHash: true },
-      
     )
   ],
   exports: [

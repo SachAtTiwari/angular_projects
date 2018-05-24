@@ -30,21 +30,7 @@
               width="44" height="46" >
             </a> 
 
-            
-
-            <!--marquee style="color:green;">Hare Krishna Hare Krishna Krishna Krishna Hare Hare,
-                Hare Ram Hare Ram Ram Ram Hare Hare!!</marquee-->
-        <!--button 
-        class="navbar-toggler navbar-toggler-right" 
-        type="button" data-toggle="collapse" 
-        data-target="#navbarResponsive" 
-        aria-controls="navbarResponsive" 
-        aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon">I m here</span>I m heereer
-        </button-->
-
-
-        <div class="collapse navbar-collapse" id="navbarResponsive"  >
+         <div class="collapse navbar-collapse" id="navbarResponsive"  >
           <ul class="navbar-nav navbar-sidenav " id="sidebar" style="background-color:#343a40" >
             <li class="nav-item" style="color:black;" data-toggle="tooltip" data-placement="right" title="courses">
               <a style="color:#FFF;" class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#courses" data-parent="#menu">
@@ -53,20 +39,24 @@
               </a>
               <ul class="sidenav-second-level collapse" id="courses">
                 <li>
-                  <a style="color:#000;" routerLink="/otpattendance" 
-                      routerActive="/otpattendance">OTP DEVOTEES</a>
+                  <a style="color:#000;" routerLink="/otpattendance" [queryParams]="{ course: 1 }"
+                      routerActive="/otpattendance">OTP</a>
                 </li>
                 <li >
-                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 2 }" 
-                  routerActive="/attendance">TSSV DEVOTEES</a>
+                  <a style="color:#000;" routerLink="/tssvattendance" [queryParams]="{ course: 2 }" 
+                  routerActive="/tssvattendance">TSSV</a>
                 </li>
                 <li >
-                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 3 }" 
-                  routerActive="/attendance">ASHRAY 1 DEVOTEES</a>
+                  <a style="color:#000;" routerLink="/ashrayattendance" [queryParams]="{ course: 3 }" 
+                  routerActive="/ashrayattendance">ASHRAY</a>
                 </li>
                 <li >
-                  <a style="color:#000;" routerLink="/attendance" [queryParams]="{ course: 4 }" 
-                  routerActive="/attendance">ASHRAY 2 DEVOTEES</a>
+                  <a style="color:#000;" routerLink="/umangattendance" [queryParams]="{ course: 4 }" 
+                  routerActive="/umangattendance">UMANG</a>
+                </li>
+                <li >
+                  <a style="color:#000;" routerLink="/bssattendance" [queryParams]="{ course: 6 }" 
+                  routerActive="/bssattendance">BSS</a>
                 </li>
                 <li >
                     <a style="color:#000" routerLink="/attendance" [queryParams]="{ course: 5 }" 

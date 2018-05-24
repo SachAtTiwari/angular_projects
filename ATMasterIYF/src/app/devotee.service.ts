@@ -38,7 +38,7 @@ export class UserService{
        )
      }
   
-  getSearchedDevotee(contact){
+  getSearchedDevotee(contact, course){
       console.log("in searched", contact);
       let isContact = false;
       if(!isNaN(parseInt(contact))){
@@ -53,7 +53,7 @@ export class UserService{
         searchParams.append('email', contact);
         
       }
-      searchParams.append('course', "OTP");
+      searchParams.append('course', course);
       let options = new RequestOptions({ headers: headers, params: searchParams });
 
       return this._http.get(this._url + "getSearchedDevotee", options)

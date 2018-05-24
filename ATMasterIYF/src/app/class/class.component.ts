@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {FormControl, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Body } from '@angular/http/src/body';
-//import { window } from 'rxjs/operator/window';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
 import swal from 'sweetalert2';
 
@@ -19,7 +18,7 @@ import swal from 'sweetalert2';
   providers: [UserService]
 
 })
-export class ClassComponent implements OnInit {
+export class ClassComponent implements AfterViewInit, OnInit {
 
   displayedColumns = ['Date', 'Speaker', 'Course', 'Topic'];
   ELEMENT_DATA: Element[] = [];
@@ -27,7 +26,29 @@ export class ClassComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   sdlClasses = [];
+  title = 'ISKCON YOUTH FORUM';
+  ifClassSdl = true;
+  showForm = true;
+  showSdlClass = false;
+  speakers = [
+    {value: 'HG Shyam Gopal Prabhuji'},
+    {value: 'HG Kalpvraksha Prabhuji'},
+    {value: 'HG Vaidant Chaitnya Prabhuji'},
+    {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
+    {value: 'HG Jagadanand Pandit Prabhuji'},
+  ];
 
+  courses = [
+    {value: 'OTP'},
+    {value: 'TSSV'},
+    {value: 'ASHRAY1'},
+    {value: 'ASHRAY2'},
+    {value: 'UMANG'},
+  ];
+  topic = '';
+  date = '';
+  isLoggedIn = false;
+  constructor(private _userService: UserService, private router: Router) { }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -38,120 +59,67 @@ export class ClassComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  constructor(private _userService:UserService,private router: Router) { }
 
-   isLoggedIn = false;
-   ngOnInit(){
-    console.log("in init");
-    let getLoggedIn = localStorage.getItem("token");
+   ngOnInit() {
+    const getLoggedIn = localStorage.getItem('token');
    // console.log("token is in atte init",getLoggedIn);
-    if(getLoggedIn){
+    if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-            console.log("token res", tokenRes);
-            if(tokenRes.result == "ok"){
+            if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
             }
-        })
+        });
         this._userService.getSdlClasses()
           .subscribe(classInfo => {
             this.dataSource.data = classInfo.result;
-            //console.log("class data is ", this.dataSource.data);
-            
         });
-    }else{
+    }else {
       this._userService.getSdlClasses()
           .subscribe(classInfo => {
             this.dataSource.data = classInfo.result;
-            //console.log("class data is ", this.dataSource.data);
-            
         });
     }
-}
-
- 
-  title = 'ISKCON YOUTH FORUM';
-  ifNoClassScdlText = "Schedule Class for attendance";
-  ifClassSdl = true;
-  showForm = true;
-  showSdlClass = false;
-  
-  speakers = [
-    {value:"HG Shyam Gopal Prabhuji"},
-    {value:"HG Kalpvraksha Prabhuji"},
-    {value:"HG Vaidant Chaitnya Prabhuji"},
-    {value:"HG Pundrik Vidhyanidhi Prabhuji"},
-    {value:"HG Jagadanand Pandit Prabhuji"},
-    
-  ];
-
-  courses = [
-    {value:"OTP"},
-    {value: "TSSV"},
-    {value: "ASHRAY1"},
-    {value: "ASHRAY2"},
-    {value: "UMANG"},
-  ];
-  
-  topic = "";
-  date = "";
-
-
-  classSdl(){
-    console.log("in click");
-    this.showForm = true;
   }
 
-  sdlClass(form: NgForm){
-  //  this.showSdlClass = true;
-   // this.ifClassSdl = true;
+
+  sdlClass(form: NgForm) {
    form.value.date = this._userService.parseDate(form.value.date);
-   console.log("form is", form.value);
     if (!form.value.date || !form.value.speaker || !form.value.course 
       || !form.value.time || !form.value.topic){
-        //this.formError = "All fields are mandatory";
-        console.log("All fields are required")
-       // swal("All fields are required to Schedule a class", "Hari Bol..", 'warning');
         swal({
 
             type: 'warning',
             title: 'All fields are required to Schedule a class',
-            html: "Hari Bol!!",
+            html: 'Hari Bol!!',
             showConfirmButton: false,
             timer: 1500
-        })
-        
-
-
-    }else{
-      console.log("sdl result is", form.value);
+        });
+    }else {
       this._userService.checkIfClassSdlForCourse(form.value.course, form.value.date)
       .subscribe(sdlresult => {
-         console.log("sdl result is", sdlresult);
-         if(sdlresult.result.length == 0){
-            //this._userService.SdlClass(form.value);
+         if (sdlresult.result.length === 0) {
+             this._userService.SdlClass(form.value);
             form.reset();
-            //this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
+            // this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
             swal({
-     
                  type: 'success',
                  title: 'Class Scheduled ',
-                 html: "Hari Bol!!",
+                 html: 'Hari Bol!!',
                  showConfirmButton: false,
                  timer: 1500
-             })
-         }else{
+             });
+         }else {
            swal({
-     
             type: 'success',
             title: 'Class already scheduled for given date and course. ',
-            html: "Hari Bol!!",
+            html: 'Hari Bol!!',
             showConfirmButton: false,
             timer: 1500
-          })
+          });
         }
-      })
+      });
     }
-  }                                                                            
+  }
 
 }
