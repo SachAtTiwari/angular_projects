@@ -40,10 +40,8 @@ export class ClassComponent implements AfterViewInit, OnInit {
 
   courses = [
     {value: 'OTP'},
-    {value: 'TSSV-B8'},
-    {value: 'TSSV-B9'},
-    {value: 'ASHRAY-1'},
-    {value: 'ASHRAY-2'},
+    {value: 'TSSV-B10'},
+    {value: 'ASHRAY'},
     {value: 'UMANG'},
     {value: 'BSS'},
   ];
