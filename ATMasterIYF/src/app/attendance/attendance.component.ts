@@ -1,4 +1,4 @@
-import { Component, OnInit,Inject, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
@@ -20,34 +20,33 @@ import { resetFakeAsyncZone } from '@angular/core/testing';
   ]
 })
 
-export class AttendanceComponent implements OnInit {
+export class AttendanceComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'contact', 'counsellor', 'actions'];
   ELEMENT_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  contact:string;
+  contact: string;
   launchModal = false;
   showAddDevotee = false;
   formError = '';
   topic = '';
-  devoteeData = {contact:''};
+  devoteeData = {contact: ''};
   loading = false;
   con = '';
   values = '';
   showAllSwitch = true;
-
   dStatus = {};
   devotees = [];
   getOTPData = false;
   isLoggedIn = false;
   email = new FormControl('', [Validators.required, Validators.email]);
   counsellors = [
-    {value:'HG Shyam Gopal Prabhuji'},
-    {value:'HG Kalpvraksha Prabhuji'},
-    {value:'HG Vaidant Chaitnya Prabhuji'},
-    {value:'HG Pundrik Vidhyanidhi Prabhuji'},
-    {value:'HG Jagadanand Pandit Prabhuji'},
+    {value: 'HG Shyam Gopal Prabhuji'},
+    {value: 'HG Kalpvraksha Prabhuji'},
+    {value: 'HG Vaidant Chaitnya Prabhuji'},
+    {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
+    {value: 'HG Jagadanand Pandit Prabhuji'},
   ];
 
   courses = [
@@ -76,14 +75,14 @@ export class AttendanceComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
-    private _userService:UserService,
+    private _userService: UserService,
     private router: Router,
-    public snackBar: MatSnackBar) { };
+    public snackBar: MatSnackBar) { }
 
   ngOnInit() {
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
-        if(params['course'] === '5'){
+        if (params['course'] === '5') {
           this.showAddDevotee = true;
           this._getDevotees(params);
         }
@@ -102,14 +101,14 @@ export class AttendanceComponent implements OnInit {
     .subscribe(userData => {
       console.log('in get devotees', userData);
       this.isLoggedIn = userData.isLoggedIn;
-       if(userData.result) {
+       if (userData.result) {
          userData.result = userData.result.filter(function(el) {
             return el.username !== 'admin';
          });
         }
-        if(userData.sdlResult && userData.sdlResult.length > 0) {
+        if (userData.sdlResult && userData.sdlResult.length > 0) {
           this.dataSource.data = userData.result;
-        }else if (!userData.sdlResult && userData.result.length >= 0 && params['course'] == '5') {
+        }else if (!userData.sdlResult && userData.result.length >= 0 && params['course'] === '5') {
             this.showAllSwitch = false;
             this.dataSource.data = userData.result;
         }else {
@@ -199,7 +198,7 @@ export class AttendanceComponent implements OnInit {
   handleDevoteeDialog(){
     const dialogRef = this.dialog.open(AddDevoteeComponent, {
       width: '100vh',
-      height:'50vh;',
+      height: '50vh;',
       hasBackdrop: false,
     });
 
@@ -211,7 +210,7 @@ export class AttendanceComponent implements OnInit {
       }else {
        this._userService.addDevoteeGeneric(result)
        .subscribe(userData => {
-         if(userData['result'] === 'ok') {
+         if (userData['result'] === 'ok') {
           window.location.reload();
           swal({
 
@@ -220,7 +219,7 @@ export class AttendanceComponent implements OnInit {
               html: 'Hari Bol!!',
               showConfirmButton: false,
               timer: 1500
-          })
+          });
          }else {
             swal({
 
@@ -229,7 +228,7 @@ export class AttendanceComponent implements OnInit {
               html: 'Hari Bol!!',
               showConfirmButton: false,
               timer: 1500
-          })
+          });
           }
          });
        }
@@ -240,18 +239,18 @@ export class AttendanceComponent implements OnInit {
   editDevoteeDialog(dv){
     const dialogRef = this.dialog.open(EditDevoteeComponent, {
       width: '100vh',
-      height:'60vh',
+      height: '60vh',
       hasBackdrop: false,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.dob) {
+      if (result.dob) {
         result.dob = this._userService.parseDate(result.dob);
       }
       result._id = dv._id;
        this._userService.editDevotee(result)
        .subscribe(userData => {
-         if(userData['result'] === 'ok'){
+         if (userData['result'] === 'ok') {
           swal({
 
               type: 'success',
@@ -269,7 +268,7 @@ export class AttendanceComponent implements OnInit {
   delRecord(dv) {
       this._userService.delRecord(dv.contact)
       .subscribe(userData => {
-        if(userData['result'] === 'ok') {
+        if (userData['result'] === 'ok') {
           console.log('in del record', userData);
          }
       });
@@ -290,11 +289,11 @@ export class MarkpresentComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   status = [
-      {value:'YES'},
-      {value:'NO'}
+      {value: 'YES'},
+      {value: 'NO'}
   ];
 
-  updateAtt(form:NgForm): void{
+  updateAtt(form: NgForm): void {
     this.dialogRef.close(form.value);
   }
   onNoClick(): void {
@@ -325,8 +324,6 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource([]);
   isLoggedIn = false;
   todayDate = new Date();
-  
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -349,23 +346,23 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(params => {
         console.log('param is main', params['course']);
 
-        if(params['course'] === '1') {
+        if (params['course'] === '1') {
             course = 'OTP';
-        }else if(params['course'] === '2') {
+        }else if (params['course'] === '2') {
             course = 'TSSV';
         }else if (params['course'] === '3') {
             course = 'ASHRAY';
-        }else if(params['course'] === '4') {
+        }else if (params['course'] === '4') {
             course = 'UMANG';
-        }else if(params['course'] === '6') {
+        }else if (params['course'] === '6') {
             course = 'BSS';
         }
     });
 
-    if(getLoggedIn) {
+    if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-            if(tokenRes.result === 'ok'){
+            if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
             }else {
               localStorage.clear();
@@ -375,25 +372,25 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
 
       this._userService.checkIfClassSdlForCourse(course, todayDateNew)
       .subscribe(sdlresult => {
-         if(sdlresult.result.length === 0) {
+         if (sdlresult.result.length === 0) {
             this.router.navigateByUrl('/classSdl');
          }else {
            this.topic = sdlresult.result[0].topic;
            this.devoteeData.counsellor = sdlresult.result[0].speaker;
            this.devoteeData.course = sdlresult.result[0].course;
          }
-      })
+      });
 
       this._userService.getTodayAttendance(course)
       .subscribe(userData => {
-          if(userData.result.length !== 0) {
+          if (userData.result.length !== 0) {
           const result_json = [];
-          for(let i = 0;i < userData.result.length;i++){
+          for (let i = 0; i < userData.result.length; i++) {
             const objectToShow = {};
             objectToShow['name'] = userData.result[i].name;
             objectToShow['contact'] = userData.result[i].contact;
-            for(let j = 0;j < userData.result[i].attendance.length;j++){
-              if(userData.result[i].attendance[j].date.localeCompare(todayDateNew) == 0){
+            for (let j = 0; j < userData.result[i].attendance.length; j++) {
+              if (userData.result[i].attendance[j].date.localeCompare(todayDateNew) === 0) {
                 objectToShow['date'] = userData.result[i].attendance[j].date;
                 objectToShow['attendance'] = userData.result[i].attendance[j].present;
                 objectToShow['topic'] = userData.result[i].attendance[j].topic;
@@ -412,7 +409,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     _searchedDevotee(contact, isContact, course) {
       this._userService.getSearchedDevotee(contact, course)
       .subscribe(userData => {
-          if(userData.sdlResult){
+          if (userData.sdlResult) {
               swal({
 
                   type: 'error',
@@ -427,13 +424,13 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
                 course: userData.sdlResult[0].course,
                 counsellor: userData.sdlResult[0].counsellor,
                 email: '', dob: '', name: ''};
-              }else {
-                this.devoteeData = {email:contact,contact2:'',
-                course:userData.sdlResult[0].course,
-                counsellor:userData.sdlResult[0].counsellor,
-                contact:'', dob:'', name:''};
+              } else {
+                this.devoteeData = {email: contact, contact2: '',
+                course: userData.sdlResult[0].course,
+                counsellor: userData.sdlResult[0].counsellor,
+                contact: '', dob: '', name: ''};
               }
-          }else if(userData.result === 'notok') {
+          }else if (userData.result === 'notok') {
             swal({
 
                   type: 'error',
@@ -455,8 +452,8 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
       const course = this.devoteeData.course;
       this.loading = true;
       let isContact = false;
-      if(!isNaN(parseInt(contact))) {
-          if(contact.length !== 10 && contact !== undefined) {
+      if (!isNaN(parseInt(contact))) {
+          if (contact.length !== 10 && contact !== undefined) {
               swal({
 
                   type: 'error',
@@ -466,18 +463,18 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
                   timer: 1500
               });
               this.loading = false;
-          }else if(contact.length === 10 && contact !== '') {
+          }else if (contact.length === 10 && contact !== '') {
               isContact = true;
               this._searchedDevotee(contact, isContact, course);
           }
-      }else{
+      }else {
         this._searchedDevotee(contact, isContact, course);
        }
     }
 
     addDevotee(devoteeForm) {
-       if (!devoteeForm.value.name || !devoteeForm.value.email 
-        || !devoteeForm.value.contact || !devoteeForm.value.dob 
+       if (!devoteeForm.value.name || !devoteeForm.value.email
+        || !devoteeForm.value.contact || !devoteeForm.value.dob
         || !devoteeForm.value.course ) {
           swal({
 
@@ -496,25 +493,25 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         .subscribe(userData => {
           const valuesToUpdate = {};
           let misMatch = false;
-          if(userData.result && userData.result.length !== 0 ) {
-            if(userData.result[0].contact !== this.devoteeData.contact) {
+          if (userData.result && userData.result.length !== 0 ) {
+            if (userData.result[0].contact !== this.devoteeData.contact) {
                 valuesToUpdate['contact'] = this.devoteeData.contact;
                 misMatch = true;
             }
-            if(userData.result[0].name !== this.devoteeData.name) {
+            if (userData.result[0].name !== this.devoteeData.name) {
                 valuesToUpdate['name'] = this.devoteeData.name;
                 misMatch = true;
 
             }
-            if(userData.result[0].contact2 !== this.devoteeData.contact2) {
+            if (userData.result[0].contact2 !== this.devoteeData.contact2) {
               valuesToUpdate['contact2'] = this.devoteeData.contact2;
               misMatch = true;
             }
-            if(userData.result[0].email !== this.devoteeData.email) {
+            if (userData.result[0].email !== this.devoteeData.email) {
               valuesToUpdate['email'] = this.devoteeData.email;
               misMatch = true;
             }
-            if(userData.result[0].dob !== this.devoteeData.dob) {
+            if (userData.result[0].dob !== this.devoteeData.dob) {
               valuesToUpdate['dob'] = this.devoteeData.dob;
               misMatch = true;
             }
@@ -522,17 +519,17 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
               valuesToUpdate["counsellor"] = this.devoteeData.counsellor;
               misMatch = true;
             }*/
-            if(userData.result[0].course !== this.devoteeData.course) {
+            if (userData.result[0].course !== this.devoteeData.course) {
               valuesToUpdate['course'] = this.devoteeData.course;
               misMatch = true;
             }
 
-            if(misMatch) {
+            if (misMatch) {
               const YES = 'YES';
               const NO = 'NO';
               const dialogRef = this.dialog.open(EditDevoteeConfirm, {
                 width: '280px',
-                data: { YES: YES, NO:NO, update:valuesToUpdate}
+                data: { YES: YES, NO: NO, update: valuesToUpdate}
               });
               dialogRef.afterClosed().subscribe(result => {
 
@@ -540,7 +537,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
                 valuesToUpdate['_id'] = userData.result[0]._id;
                 this._userService.editDevotee(valuesToUpdate)
                 .subscribe(editData => {
-                  if(editData['result'] === 'ok') {
+                  if (editData['result'] === 'ok') {
                     swal({
 
                         type: 'success',
@@ -562,7 +559,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
                     this.loading = false;
                   }
                   });
-                  //devoteeForm.reset();
+                  // devoteeForm.reset();
                   this.markAttendance(course, contact, name);
                }else {
                  this.loading = false;
@@ -618,7 +615,6 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         });
       }
     }
- 
     markAttendance(course, contact, name) {
        console.log('mark attendance', course, this.devoteeData);
        if (course !== '') {
@@ -705,9 +701,9 @@ export class EditDevoteeComponent {
 
   courses = [
     {value: 'OTP'},
-    {value: 'TSSV'},
-    {value: 'ASHRAY1'},
-    {value: 'ASHRAY2'},
+    {value: 'TSSV-B10'},
+    {value: 'ASHRAY'},
+    {value: 'BSS'},
     {value: 'UMANG'},
   ];
 
@@ -722,7 +718,7 @@ export class EditDevoteeComponent {
     public dialogRef: MatDialogRef<MarkpresentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  updateDevotee(form:NgForm): void{
+  updateDevotee(form: NgForm): void {
     this.dialogRef.close(form.value);
   }
   onNoClick(): void {
@@ -738,7 +734,7 @@ export class EditDevoteeComponent {
   styleUrls: ['./edit-confirm.css'],
 })
 
-export class EditDevoteeConfirm implements OnInit{
+export class EditDevoteeConfirm implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
   ngOnInit() {
@@ -779,9 +775,9 @@ export class AddDevoteeComponent implements OnInit {
 
   courses = [
     {value: 'OTP'},
-    {value: 'TSSV'},
-    {value: 'ASHRAY1'},
-    {value: 'ASHRAY2'},
+    {value: 'TSSV-B10'},
+    {value: 'ASHRAY'},
+    {value: 'BSS'},
     {value: 'UMANG'},
   ];
 

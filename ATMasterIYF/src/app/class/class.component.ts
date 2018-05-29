@@ -40,10 +40,12 @@ export class ClassComponent implements AfterViewInit, OnInit {
 
   courses = [
     {value: 'OTP'},
-    {value: 'TSSV'},
-    {value: 'ASHRAY1'},
-    {value: 'ASHRAY2'},
+    {value: 'TSSV-B8'},
+    {value: 'TSSV-B9'},
+    {value: 'ASHRAY-1'},
+    {value: 'ASHRAY-2'},
     {value: 'UMANG'},
+    {value: 'BSS'},
   ];
   topic = '';
   date = '';
@@ -85,8 +87,8 @@ export class ClassComponent implements AfterViewInit, OnInit {
 
   sdlClass(form: NgForm) {
    form.value.date = this._userService.parseDate(form.value.date);
-    if (!form.value.date || !form.value.speaker || !form.value.course 
-      || !form.value.time || !form.value.topic){
+    if (!form.value.date || !form.value.speaker || !form.value.course
+      || !form.value.time || !form.value.topic) {
         swal({
 
             type: 'warning',

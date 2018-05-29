@@ -297,6 +297,21 @@ export class UserService{
        )
    }
 
+   downloadCourseExcel(dTe) {
+    // console.log("atten is ", dTe);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('course', dTe.course);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + 'downloadCourseExcel', options)
+        .map((response: Response) => {
+          return response.json();
+       });
+  }
+
+
    downloadToExCounsellor(dTe){
     //console.log("atten is ", dTe);
     let headers = new Headers();

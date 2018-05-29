@@ -72,6 +72,27 @@
                 <i class="fa fa-fw fa-download"></i>Download</button>
             </form>
         </div>
+
+        <div>
+          
+          <h6>Download Devotees of particular course</h6>
+          
+          <form #download3="ngForm" (ngSubmit)="downloadCourseExcel(download3)"
+               class="classSc" style="margin:10px;">
+               <mat-form-field>                                                             
+                 <mat-select [(ngModel)]="course" name="course" placeholder="Course" required>                                         
+                   <mat-option *ngFor="let co of courses" [value]="co.value">
+                     {{co.value}}  
+                   </mat-option>                              
+                                               
+                 </mat-select>                                                              
+               </mat-form-field>                                                            
+              <button mat-raised-button type="submit" class="btn btn-primary">
+                <i class="fa fa-fw fa-download"></i>Download</button>
+            </form>
+        </div>
+
+
       </div>                                      
     </div>
 </div>
