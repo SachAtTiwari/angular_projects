@@ -5,3 +5,149 @@
 .nav-link-text {
 	padding-left: 20px;
 }
+
+.main-wrapper{
+    background:rgba(255, 255, 255, 0.8) !important; 
+}
+.mid-pane{
+    height: calc(100vh - 105px);
+    float: left;
+    width: 100%;
+    transition: 0.5s ease-in-out;
+    display: flex;
+}
+.left-pane {
+    max-width: 250px;
+    padding: 0;
+    flex:1;
+    float: left;
+    overflow: auto;
+    display: block;
+    background: #272634;
+    height: calc(100vh - 105px);
+    transition: 0.5s ease-in-out;
+}
+.right-pane {
+    padding: 20px;
+    flex:1;
+    height: calc(100vh - 105px);
+    overflow:auto;
+}
+.cmp-logo img {
+    width: 70%;
+    margin: 10px;
+}
+.header-logo {
+    float: left;
+    width: 100%;
+    padding: 15px 15px 10px 15px;
+}
+.cmp-heading{
+    float: left;
+}
+.header-logo h1 {
+    color: #858598;
+    margin: 0 !important;
+    font-size: 20px;
+    margin: 15px;
+}
+.header-logo span {
+    color: #858598;
+    font-size: 13px;
+}
+.left-pane ul{
+    list-style-type: none;
+    padding: 0px;
+    float: left;
+    width: 100%;
+    display: block;
+}
+.left-pane li {
+    width: 100%;
+    display: inline-block;
+}
+.left-pane ul li a {
+    width: 100%;
+    display: block;;
+    line-height: 20px;
+    font-size: 14px;
+    color: #858598;
+    padding: 8px 15px ;
+}
+.left-pane ul li li a{
+	padding-left: 40px;
+}
+.left-pane ul li li ul a{
+    padding-left: 75px;
+}
+.left-pane ul li [data-toggle="collapse"]{
+	position: relative;
+}
+
+.left-pane ul li a i{
+	margin-right: 10px;
+    font-size: 16px;
+}
+.left-pane ul li a.collapsed i.fas.fa-angle-right{ 
+    transform:  rotate(0deg);
+}
+.left-pane ul li a i.fas.fa-angle-right{   
+	 float: right;
+    font-size: 16px;
+    transform: rotate(90deg);
+}
+
+.left-pane ul li a:hover,
+.left-pane ul li a:focus {
+	color: #C9C7EF;
+	text-decoration: none;
+}
+@keyframes swing {
+    0% { transform: rotate(20deg); }
+    100% { transform: rotate(-20deg); }
+}
+.left-pane ul li a:hover i:nth-child(1) {
+    animation: swing ease-in-out .7s infinite alternate;
+}
+.hide{
+    display: none;
+}
+/*=======collapsible code==========*/
+.sidebar-icon{
+    float: right;
+}
+.sidebar-icon i {
+    float: right;
+    color: rgba(255,255,255,.7);
+    font-size: 20px;
+    cursor: pointer;
+}
+.left-pane.collapseSideBar{
+    max-width: 67px;
+    overflow-x: hidden;
+    padding: 0 10px;
+}
+.left-pane .fa-indent{
+    display: none
+}
+.left-pane .fa-outdent{
+    display: block
+}
+.left-pane.collapseSideBar .fa-outdent{
+    display: none
+}
+.left-pane.collapseSideBar .fa-indent{
+    display: block
+}
+.left-pane.collapseSideBar .cmp-heading,
+.left-pane.collapseSideBar li span,
+.left-pane.collapseSideBar li span,
+.left-pane.collapseSideBar li .fa-angle-right{
+    display: none;
+}
+.left-pane.collapseSideBar li i{
+    font-size: 18px;
+}
+.left-pane.collapseSideBar ul li li a{
+	padding-left: 15px;
+}
