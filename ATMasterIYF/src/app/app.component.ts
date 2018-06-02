@@ -7,7 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 //import { window } from 'rxjs/operators/window';
-
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-root',
@@ -56,6 +57,17 @@ export class AppComponent  {
             }
         })
     }
+    $(document).ready(function() {
+      $('#sidebar-collaps i').on('click', function() {
+          if ($('.left-pane').hasClass("collapseSideBar")) {
+              $('.left-pane').removeClass("collapseSideBar");
+
+          }
+          else {
+              $('.left-pane').addClass("collapseSideBar");
+          }
+      });
+  });
   }
   
 }

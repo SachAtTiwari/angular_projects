@@ -109,88 +109,95 @@
   <div class="left-pane">
  <div class="header-logo">
  <a class="cmp-heading">
-   <h1>Orane Consulting</h1>
-   <span>Private Limited</span>
+  
+   <img src="./assets/img/logo.jpeg" style="width:90%">
  </a>
  <a id="sidebar-collaps" class="sidebar-icon">
-   <i class="fas fa-indent"></i>
-   <i class="fas fa-outdent"></i>
+   <i class="fa fa-indent"></i>
+   <i class="fa fa-outdent"></i>
  </a>
  </div>
  <ul>
-   <li>
-     <a href="">
-       <i class="fas fa-tachometer-alt"></i>
-       <span>Dashboard</span>
-     </a>
-   </li>
+   
    <li>
      <a class="collpased" data-toggle="collapse" href="#collapse1" class="collapsed">
        
-       <i class="fas fa-user-cog"></i>   	
-       <span>System Admin</span>	
-       <i class="fas fa-angle-right"></i>
+      <i class="fa fa-fw fa-dashboard"></i>
+                <span   class="nav-link-text">COURSES</span>
+       <i class="fas fa fa-angle-right"></i>
      </a>
      <div class="collapse" id="collapse1">
-          <ul class="nav">
-           <li>
-               <a href="">
-             <i class="fas fa-user-cog"></i>   	
-             <span>Company</span>	
-           </a>
-           </li>
-           <li>
-               <a href="">
-             <i class="fas fa-user-cog"></i>   	
-             <span>Project</span>	
-           </a>
-           </li>
-           <li>
-             <a href="">
-             <i class="fas fa-user-cog"></i>   	
-             <span>Employee</span>	
-           </a>
-           </li>
-           <li routerLinkActive="active">
-             <a  routerLink='/adminHome/viewExpenseMaster'>
-               <i class="fas fa-user-tie"></i>
-               <span>Expense Master</span>
-             </a>             
-           </li>
-            <li routerLinkActive="active">
-             <a routerLink='/adminHome/viewExpenseMasterTravel'>
-               <i class="fas fa-user-tie"></i>
-               <span>Travel Expense Master</span>
-             </a>             
-           </li>
+          <ul class="nav" style="background: #f8f9fa">
+            <li>
+              <a style="color:#000;"  routerLink="/otpattendance" [queryParams]="{ course: 1 }"
+                  routerActive="/otpattendance"><i class="fas fa fa-book"></i><span>OTP</span> </a>
+            </li>
+            <li >
+              <a style="color:#000;" routerLink="/tssvattendance" [queryParams]="{ course: 2 }" 
+              routerActive="/tssvattendance"><i class="fas fa fa-book"></i>TSSV-B10</a>
+            </li>
+            <li >
+              <a style="color:#000;" routerLink="/ashrayattendance" [queryParams]="{ course: 3 }" 
+              routerActive="/ashrayattendance"><i class="fas fa fa-book"></i>ASHRAY</a>
+            </li>
+            <li >
+              <a style="color:#000;" routerLink="/umangattendance" [queryParams]="{ course: 4 }" 
+              routerActive="/umangattendance"><i class="fas fa fa-book"></i>UMANG</a>
+            </li>
+            <li >
+              <a style="color:#000;" routerLink="/bssattendance" [queryParams]="{ course: 6 }" 
+              routerActive="/bssattendance"><i class="fas fa fa-book"></i>BSS</a>
+            </li>
+            <li >
+                <a style="color:#000" routerLink="/attendance" [queryParams]="{ course: 5 }" 
+                routerActive="/attendance"><i class="fas fa fa-book"></i>ALL DEVOTEES</a>
+            </li>
           </ul>
      </div>
    </li>
-   <li>
-     <a data-toggle="collapse" href="#collapse2" class="" aria-expanded="true">
-       <i class="fas fa-user-shield"></i> 
-       <span>User Mangement</span>
-       <i class="fas fa-angle-right"></i>
-     </a>
-     <div class="collapse" id="collapse2" style="">
-          <ul class="nav">
-             <li routerLinkActive="active"><a routerLink='/adminHome/viewApprover'><i class="fas fa-user-check"></i><span>Approver</span></a></li>
-             <li><a><i class="fas fa-user-plus"></i><span>Vendor</span></a></li>
-          </ul>
-     </div>
-   </li>
-   <li>
-     <a href=""><i class="fab fa-readme"></i><span>Rule Engine</span></a>
-   </li>
-   <li>
-     <a href=""><i class="fas fa-file-excel"></i><span>Reports</span></a>
-   </li>
-   <li routerLinkActive="active">
-     <a routerLink='/adminHome/bulkUpload'><i class="fas fa-file-excel" ></i><span>Bulk Upload</span></a>
-   </li>
+   
+   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+    <a class="nav-link" routerLink="/downloads" routerActive="/downloads">
+      <i class="fa fa-fw fa-download"></i>
+      <span class="nav-link-text">Downloads</span>
+    </a>
+</li>
+
+<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+<a  class="nav-link" routerLink="/classSdl" routerActive="/classSdl">
+  <i class="fa fa-calendar"></i>
+  <span class="nav-link-text"> Scheduled Classes</span>
+</a>
+</li> 
  </ul>
   </div>
+  <div class="topBar">
+      <a *ngIf="!isLoggedIn" style="margin-top:25px;" class="pull-right"
+      routerLink="/adminLogin" routerActive="/adminLogin">
+      <i class="fa fa-sign-in" aria-hidden="true"></i> Admin Login</a>
+
+      <a *ngIf="isLoggedIn" style="margin:25px;color:blue;" class="pull-right"
+      (click)="adminLogout();" >
+          <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+
+      <a *ngIf="isLoggedIn" style="margin-top:25px;color:blue;" class="pull-right">
+      <i class="fa fa-user" aria-hidden="true"></i> Hare Krishna, Admin</a>
+
+      
+
+  <a href="#" class="pull-right">
+      <img src="./assets/img/lokanathswami.jpg" style="margin:15px;border-radius:50%;"
+       width="44" height="46">
+    </a> 
+    <a href="#" class="pull-right">
+        <img src="./assets/img/spp.jpg" style="margin:15px;border-radius:50%;" 
+        width="44" height="46" >
+    </a> 
+
+  </div>
   <div class="right-pane">
+      
+    
    <router-outlet></router-outlet>
   </div>
 </div>

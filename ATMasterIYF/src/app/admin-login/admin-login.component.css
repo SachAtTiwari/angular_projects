@@ -14,13 +14,17 @@ mat-form-field {
 
 .content-wrapper{
 	background:url('../../assets/img/bg.jpg') repeat;
-	background-size: cover;
+    background-size: cover;
+    height: 100vh;
 }
 
 .container-fluid{
-    margin-top:70px;
+    
     padding-left: 255px;
     padding-right: 300px;
-	opacity: 0.8;
+    opacity: 0.8;
+    position: relative;
+    top: 100px;
+
 
 }

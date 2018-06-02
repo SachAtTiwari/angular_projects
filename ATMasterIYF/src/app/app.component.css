@@ -24,14 +24,18 @@
     overflow: auto;
     display: block;
     background: #272634;
-    height: calc(100vh - 105px);
-    transition: 0.5s ease-in-out;
+    /*height: calc(100vh - 105px);*/
+    height: calc(100vh);
+	transition: 0.5s ease-in-out;
+	z-index: 10;
 }
 .right-pane {
-    padding: 20px;
+    padding: 0px;
     flex:1;
-    height: calc(100vh - 105px);
-    overflow:auto;
+    /*height: calc(100vh - 105px);*/
+    height: 100vh;
+	overflow:auto;
+	background: #272634;
 }
 .cmp-logo img {
     width: 70%;
@@ -150,4 +154,10 @@
 }
 .left-pane.collapseSideBar ul li li a{
 	padding-left: 15px;
+}
+
+.topBar {
+	position: absolute;
+    width: 100%;
+    background: #272734;
 }
