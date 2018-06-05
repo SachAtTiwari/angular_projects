@@ -31,11 +31,11 @@
 }
 .right-pane {
     padding: 0px;
-    flex:1;
+    /* flex:1; */
     /*height: calc(100vh - 105px);*/
     height: 100vh;
 	overflow:auto;
-	background: #272634;
+	
 }
 .cmp-logo img {
     width: 70%;
@@ -160,4 +160,6 @@
 	position: absolute;
     width: 100%;
     background: #272734;
+        right: 0px;
+        z-index:9;
 }
