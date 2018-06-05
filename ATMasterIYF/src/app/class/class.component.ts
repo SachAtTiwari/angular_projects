@@ -36,6 +36,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
 
   courses = [

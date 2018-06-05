@@ -35,32 +35,29 @@ export class UserService{
           //console.log("mock data 1 " , response.json());
           return response.json();
          }
-       )
+       );
      }
-  
-  getSearchedDevotee(contact, course){
-      console.log("in searched", contact);
+
+  getSearchedDevotee(contact, course) {
       let isContact = false;
-      if(!isNaN(parseInt(contact))){
+      if (!isNaN(parseInt(contact))) {
          isContact = true;
       }
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
-      if(isContact == true){
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      if (isContact === true) {
         searchParams.append('contact', contact);
-      }else{
+      }else {
         searchParams.append('email', contact);
-        
       }
       searchParams.append('course', course);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-
-      return this._http.get(this._url + "getSearchedDevotee", options)
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getSearchedDevotee', options)
         .map((response: Response) => {
             return response.json();
            }
-         )
+         );
     }
 
   getDevotees(course, token): Observable<any>{
@@ -132,22 +129,19 @@ export class UserService{
            }
          )
     }
-   
   checkIfClassSdlForCourse(course, date): Observable<any> {
-      //console.log("Checking class sdl");
-      //console.log("atten is ", ckStatus.course);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
+      console.log('check sdl class', course, date);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
       searchParams.append('course', course);
       searchParams.append('date', date);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + "checkClassSdl", options)
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'checkClassSdl', options)
           .map((response: Response) => {
-            //console.log("mock data 1 " , response.json());
             return response.json();
          }
-       )
+       );
    }
 
 
@@ -220,18 +214,16 @@ export class UserService{
        );
   }
 
-  editDevotee(body): Observable<Response>{
-    console.log("edit devotee", body);
-    return this._http.put(this._url + "updateDevotee", {
+  editDevotee(body): Observable<Response> {
+    console.log('edit devotee', body);
+    return this._http.put(this._url + 'updateDevotee', {
        body: body
       })
        .map(
          res => {
-           //console.log("res is", res);
            return res.json();
          },
          err => {
-           console.log("Error occured");
            return err.json();
          }
        );
@@ -246,7 +238,7 @@ export class UserService{
     return date;
    }
 
-   SdlClass(body){
+   SdlClass(body) {
     console.log("body is", body)  
     this._http.post(this._url + "sdlClass", {
        body: body
@@ -261,40 +253,37 @@ export class UserService{
        );
   }
 
-   markAttendance(attendance): Observable<Response>{
-    console.log("atten is ", attendance);
-     return this._http.post(this._url + "markAttendance", {
-            attendance:attendance
+   markAttendance(attendance): Observable<Response> {
+    console.log('atten is ', attendance);
+     return this._http.post(this._url + 'markAttendance' , {
+            attendance: attendance
        })
-        .map(
+       .map(
           res => {
-            console.log(res);
             return res.json();
           },
           err => {
-            console.log("Error occured", err);
             err.json();
           }
         );
    }
 
 
-   downloadToExcel(dTe){
-      //console.log("atten is ", dTe);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
+   downloadToExcel (dTe) {
+      console.log('downlods', dTe);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
       searchParams.append('date', dTe.date);
       searchParams.append('course', dTe.course);
       searchParams.append('counsellor', dTe.counsellor);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
+      const options = new RequestOptions({ headers: headers, params: searchParams });
 
-      return this._http.get(this._url + "downloadToExcel", options)
+      return this._http.get(this._url + 'downloadToExcel', options)
           .map((response: Response) => {
-            //console.log("mock data 1 " , response.json());
             return response.json();
          }
-       )
+       );
    }
 
    downloadCourseExcel(dTe) {
@@ -303,6 +292,7 @@ export class UserService{
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
     searchParams.append('course', dTe.course);
+    searchParams.append('isAlumni', dTe.isAlumni);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
     return this._http.get(this._url + 'downloadCourseExcel', options)
@@ -333,7 +323,7 @@ export class UserService{
    getTodayAttendance(course){
     //console.log("atten is ", dTe);
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');    
+    headers.append('Content-Type', 'application/json');
     let searchParams = new URLSearchParams();
     searchParams.append('course', course);
     let options = new RequestOptions({ headers: headers, params: searchParams });

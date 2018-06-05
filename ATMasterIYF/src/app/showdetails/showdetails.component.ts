@@ -20,62 +20,59 @@ import swal from 'sweetalert2';
 export class ShowdetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
-    public dialog: MatDialog, 
-    private _userService:UserService,
+    public dialog: MatDialog,
+    private _userService: UserService,
     private router: Router) { }
 
-  id : string;
+  id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
   dataSource = new MatTableDataSource([]);
-  devoteeData = {contact:'', counsellor:'',course:'', email:'',dob:'',name:'', bace:''};
+  devoteeData = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   isLoggedIn = false;
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
-    let getLoggedIn = localStorage.getItem("token");
+    const getLoggedIn = localStorage.getItem('token');
    // console.log("token is in atte init",getLoggedIn);
-    if(getLoggedIn){
+    if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-            //console.log("token res", tokenRes);
-            if(tokenRes.result == "ok"){
+            if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
             }
-        })
+        });
 
     this.route.params.subscribe(params => {
-      this.id =  params["id"];
-      //console.log("this id", this.id);
+      this.id =  params['id'];
       this._userService.getDetails(this.id)
       .subscribe(userData => {
-           console.log("user data is ", userData.result);
-           if(userData.result[0].attendance){
+           console.log(' user data is ', userData.result);
+           if (userData.result[0].attendance) {
             this.dataSource.data = userData.result[0].attendance;
            }
            this.devoteeData = userData.result[0];
          });
-       });    
+       });
      }
     }
 
-    updateDevotee(form:NgForm): void{
-      console.log("update at", this.devoteeData);
+    updateDevotee(form: NgForm): void {
+      console.log('update at', this.devoteeData);
       this._userService.editDevotee(this.devoteeData)
       .subscribe(userData => {
-        //console.log("Edit record is ", userData);
-        if(userData["result"] === "ok"){
+        // console.log("Edit record is ", userData);
+        if (userData['result'] === 'ok') {
          swal({
 
              type: 'success',
              title: 'Record updated successfully',
-             html: "Hari Bol!!",
+             html: 'Hari Bol!!',
              showConfirmButton: false,
              timer: 1500
-         })          
+         });
         }
        });
-      
     }
 
 }

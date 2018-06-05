@@ -47,6 +47,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
 
   courses = [
@@ -344,7 +345,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     const todayDateNew = this._userService.parseDate(this.todayDate);
     const getLoggedIn = localStorage.getItem('token');
     this.route.queryParams.subscribe(params => {
-        console.log('param is main', params['course']);
+        // console.log('param is main', params['course']);
 
         if (params['course'] === '1') {
             course = 'OTP';
@@ -383,6 +384,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
 
       this._userService.getTodayAttendance(course)
       .subscribe(userData => {
+          console.log('userdata is', userData);
           if (userData.result.length !== 0) {
           const result_json = [];
           for (let i = 0; i < userData.result.length; i++) {
@@ -617,11 +619,17 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
     markAttendance(course, contact, name) {
        console.log('mark attendance', course, this.devoteeData);
+       let specialCourse = false;
+       this.route.queryParams.subscribe(params => {
+        if (params['course'] === '4') {
+            specialCourse = true;
+        }
+       });
        if (course !== '') {
           this.loading = true;
           const month = this.todayDate.getMonth() + 1;
           const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
-          this._userService.checkIfClassSdlForCourse(course, date)
+          this._userService.checkIfClassSdlForCourse(specialCourse ? 'UMANG' : course, date)
           .subscribe(userData => {
             if (userData.result.length > 0) {
 
@@ -697,6 +705,7 @@ export class EditDevoteeComponent {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
 
   courses = [
@@ -771,6 +780,7 @@ export class AddDevoteeComponent implements OnInit {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
 
   courses = [

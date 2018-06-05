@@ -60,7 +60,11 @@
                       HG Kalpvraksha Prabhuji </mat-option> <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> <mat-option
                         value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
                         <mat-option
-                        value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji </mat-option>
+                        value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji 
+                      </mat-option>
+                      <mat-option
+                      value="NA"> NA 
+                    </mat-option>
                         </mat-select> </mat-form-field>
 
                         <!--mat-form-field>                                                              
@@ -77,6 +81,13 @@
                           <mat-option value="NO"> NO </mat-option> 
                         </mat-select>
                        </mat-form-field>
+                       <mat-form-field>                                                             
+                        <mat-select name="isAlumni" [(ngModel)]="devoteeData.isAlumni" 
+                           placeholder="Update if devotee is alumni now" required>                                      
+                           <mat-option value="YES"> YES </mat-option>          
+                           <mat-option value="NO"> NO </mat-option>          
+                        </mat-select>                                                              
+                     </mat-form-field>  
                       <button mat-raised-button color="primary" style="margin-left:8px;"
                       (click)="updateDevotee(devoteeForm)">Update Devotee</button>
                 </form>

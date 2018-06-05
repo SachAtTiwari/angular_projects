@@ -29,24 +29,6 @@
          </mat-form-field>                                                             
                                                                                     
           <mat-form-field>                                                             
-            <mat-select [(ngModel)]="speaker" name="speaker" placeholder="Speaker">                                         
-              <mat-option *ngFor="let sp of speakers" [value]="sp.value">
-                {{sp.value}}  
-              </mat-option>                              
-                                          
-            </mat-select>                                                              
-          </mat-form-field>                                                            
-                                                                                    
-          <!--mat-form-field>                                                             
-            <mat-select [(ngModel)]="counsellor" name="counsellor" placeholder="Counsellor">                                      
-               
-              <mat-option *ngFor="let c of counsellors" [value]="c.value">
-                  {{c.value}}  
-              </mat-option>                              
-                                          
-            </mat-select>                                                              
-          </mat-form-field-->  
-          <mat-form-field>                                                             
               <mat-select [(ngModel)]="course" name="course" placeholder="Course">                                      
                  
                 <mat-option *ngFor="let c of courses" [value]="c.value">
@@ -54,6 +36,14 @@
                 </mat-option>                              
                                             
               </mat-select>                                                              
+          </mat-form-field>  
+          <mat-form-field>                                                             
+            <mat-select [(ngModel)]="speaker" name="speaker" placeholder="Speaker">                                         
+              <mat-option *ngFor="let sp of speakers" [value]="sp.value">
+                {{sp.value}}  
+              </mat-option>                              
+                                          
+            </mat-select>                                                              
           </mat-form-field>  
 
           <mat-form-field>                                  

@@ -3,18 +3,25 @@ const assert = require('assert');
  
 exports.downloadToExcel =  function(req, res, next) {
   try{
-    console.log("i m here", req.query);
+    console.debug("in downloads", req.query);
     let db = req.app.locals.db;
 
     db.listCollections().toArray(function(err, collections){
         if (collections === undefined){
               res.send({error:"No Collections present in DB"});
         }else{
-             db.collection("devotees").find(
-              { 
-                course:req.query.course, 
-                "attendance.date":req.query.date,  
+            if (req.query.course === 'UMANG') {
+              query = {
+                "attendance.date": req.query.date,  
               }
+            }else {
+              query = {
+                course:req.query.course, 
+                "attendance.date": req.query.date,  
+              }
+            }
+             db.collection("devotees").find(
+              query
               ).toArray(function(err, result) {
                 if (err) {
             			console.log("err is ", err);
@@ -50,7 +57,7 @@ exports.downloadToExCounsellor =  function(req, res, next) {
               ).toArray(function(err, result) {
                 if (err) {
             			console.log("err is ", err);
-                	res.send({erroe:500});
+                	res.send({error:500});
 	            	}else{
                 //console.log("result is ",result);
                 res.send({result:result});
@@ -73,14 +80,16 @@ exports.downloadCourseExcel =  function(req, res, next) {
         if (collections === undefined){
               res.send({error:"No Collections present in DB"});
         }else{
+           
              db.collection("devotees").find(
               { 
                 course:req.query.course, 
+                isAlumni: req.query.isAlumni
               }
               ).toArray(function(err, result) {
                 if (err) {
             			console.log("err is ", err);
-                	res.send({erroe:500});
+                	res.send({error:500});
 	            	}else{
                 //console.log("result is ",result);
                 res.send({result:result});
