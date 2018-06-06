@@ -8,7 +8,8 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 //import { window } from 'rxjs/operator/window';
 import swal from 'sweetalert2';
 
-
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-admin-login',
@@ -29,6 +30,9 @@ export class AdminLoginComponent implements OnInit {
   isLoggedIn = false;
   ngOnInit() {
     //console.log("in login init");
+  if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = "none";
+        }
   }
   
   

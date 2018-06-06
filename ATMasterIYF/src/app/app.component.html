@@ -116,6 +116,7 @@
    <i class="fa fa-indent"></i>
    <i class="fa fa-outdent"></i>
  </a>
+ <a class="fa fa-close CloseIcon" style="display:none;"></a>
  </div>
  <ul>
    
@@ -174,6 +175,7 @@
   
   <div class="right-pane">
    <div class="topBar">
+     <button class="mobileToggle" id="sidebar-collapsM" ><i class="fa fa-bars"></i></button>
       <a *ngIf="!isLoggedIn" style="margin-top:25px;" class="pull-right"
       routerLink="/adminLogin" routerActive="/adminLogin">
       <i class="fa fa-sign-in" aria-hidden="true"></i> Admin Login</a>

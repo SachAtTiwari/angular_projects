@@ -5,6 +5,8 @@ import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
 import { takeWhile } from 'rxjs/operators';
 import { mergeAnalyzedFiles } from '@angular/compiler';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-downloads',
@@ -47,6 +49,9 @@ export class DownloadsComponent implements OnInit {
             }
         });
       }
+      if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = "none";
+        }
   }
 
 

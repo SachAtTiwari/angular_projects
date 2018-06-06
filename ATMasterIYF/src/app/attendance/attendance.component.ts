@@ -9,7 +9,8 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
 import { resetFakeAsyncZone } from '@angular/core/testing';
-
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-attendance',
@@ -87,6 +88,10 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
           this._getDevotees(params);
         }
     });
+      
+      if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = "none";
+        }
   }
 
   getErrorMessage() {
@@ -339,7 +344,9 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
 
   ngOnInit()  {
-
+    if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = "none";
+        }
     let course = '';
     const todayDateNew = this._userService.parseDate(this.todayDate);
     const getLoggedIn = localStorage.getItem('token');

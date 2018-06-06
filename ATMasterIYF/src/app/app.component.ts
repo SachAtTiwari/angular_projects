@@ -67,6 +67,21 @@ export class AppComponent  {
               $('.left-pane').addClass("collapseSideBar");
           }
       });
+        
+        $('#sidebar-collapsM').on('click', function() {
+          $('.left-pane')[0].style.display = "block";
+      });
+        
+        $('.CloseIcon').on('click', function() {
+          $('.left-pane')[0].style.display = "none";
+      });
+        
+//      if ($(window).width() < 600) {
+//          $('.left-pane').addClass('collapseSideBar');
+//          
+//      } else {
+//          $('.left-pane').removeClass('collapseSideBar');
+//      }
   });
   }
   

@@ -8,7 +8,8 @@ import { Body } from '@angular/http/src/body';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
 import swal from 'sweetalert2';
 
-
+declare var jquery: any;
+declare var $: any;
 
 
 @Component({
@@ -80,6 +81,10 @@ export class ClassComponent implements AfterViewInit, OnInit {
             this.dataSource.data = classInfo.result;
         });
     }
+       
+      if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = "none";
+        }
   }
 
 
