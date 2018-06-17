@@ -56,6 +56,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     {value: 'ASHRAY'},
     {value: 'BSS'},
     {value: 'UMANG'},
+    {value: 'DYS'},
   ];
 
 
@@ -129,72 +130,6 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/showDetails', dv['_id']]);
   }
 
-  /* markPresent(dv){
-    //console.log("in  update", dv);
-    this.contact = dv.contact;
-    let dialogRef : any;
-    dialogRef = this.dialog.open(MarkpresentComponent, {
-        width: '300px',
-        hasBackdrop: false,
-        //data: {all:true}
-     });
-
-     dialogRef.afterClosed().subscribe(result => {
-         // console.log('The dialog was closed', result.date);
-          result.date = this._userService.parseDate(result.date);
-          this._userService.checkIfClassSdlForCourse(dv.course, result.date)
-          .subscribe(userData => {
-            console.log("user data is ", userData.result);
-            if (userData.result.length > 0){
-
-                this.dStatus["date"] = userData.result[0].date;
-                this.dStatus["present"] = "YES";
-                this.dStatus["topic"] = userData.result[0].topic;
-                this.dStatus["speaker"] = userData.result[0].speaker;
-                if(dv.contact){
-                  this.dStatus["contact"] =  dv.contact
-                  this._userService.markAttendance(this.dStatus)
-                    .subscribe(userData => {
-                      if(userData["result"] === "ok"){
-                          swal({
-
-                              type: 'success',
-                              title: 'Attendance updated successfully',
-                              html: "Hari Bol!!",
-                              showConfirmButton: false,
-                              timer: 1500
-                          })
-                        //swal("" , "Hari Bol!!", 'success');
-                      }else{
-                          swal({
-
-                              type: 'warning',
-                              title: 'Attendance already updated',
-                              html: "Hari Bol!!",
-                              showConfirmButton: false,
-                              timer: 1500
-                          })
-                        //swal("", "Hari Bol :)", 'warning');
-                      }
-                    });
-                }
-            }else{
-              console.log("No class sdl for selected date");
-             // swal("", "Hari Bol..", 'error')
-              swal({
-
-                  type: 'error',
-                  title: 'No class sdl for selected date',
-                  html: "Hari Bol!!",
-                  showConfirmButton: false,
-                  timer: 1500
-              })
-            }
-          });
-
-    });
-  }*/
-
 
   handleDevoteeDialog(){
     const dialogRef = this.dialog.open(AddDevoteeComponent, {
@@ -237,7 +172,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  editDevoteeDialog(dv){
+  editDevoteeDialog(dv) {
     const dialogRef = this.dialog.open(EditDevoteeComponent, {
       width: '100vh',
       height: '60vh',
@@ -350,13 +285,15 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         if (params['course'] === '1') {
             course = 'OTP';
         }else if (params['course'] === '2') {
-            course = 'TSSV';
+            course = 'TSSV-B10';
         }else if (params['course'] === '3') {
             course = 'ASHRAY';
         }else if (params['course'] === '4') {
             course = 'UMANG';
         }else if (params['course'] === '6') {
             course = 'BSS';
+        }else if (params['course'] === '7') {
+            course = 'DYS';
         }
     });
 
@@ -714,6 +651,7 @@ export class EditDevoteeComponent {
     {value: 'ASHRAY'},
     {value: 'BSS'},
     {value: 'UMANG'},
+    {value: 'DYS'},
   ];
 
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -789,6 +727,7 @@ export class AddDevoteeComponent implements OnInit {
     {value: 'ASHRAY'},
     {value: 'BSS'},
     {value: 'UMANG'},
+    {value: 'DYS'},
   ];
 
   ngOnInit() {
