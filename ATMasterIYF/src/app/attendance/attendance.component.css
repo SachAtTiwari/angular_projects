@@ -30,12 +30,12 @@ mat-form-field {
 .content-wrapper{
 	background:url('../../assets/img/bg.jpg') repeat;
 	background-size: cover;
-	height: 100vh;
+	/* height: 100vh;*/
 }
 
 .container-fluid{
 	z-index: 1;
 	opacity: 0.8;
 	position: relative;
-    top: 100px;
+  /*  top: 100px;*/
 }

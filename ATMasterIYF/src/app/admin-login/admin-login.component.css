@@ -1,11 +1,48 @@
 .adminForm{
+    position: relative;
+    top:100px;
     border: 2px solid brown;
     padding: 35px;
     border-radius: 20px;
     height: 370px;
     z-index: 1;
+    width: 500px;
     background-color: azure;
+    overflow: hidden;
 }
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+
+}
+
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+      .adminForm{
+          left: 215px;
+      }
+}
+
+
+/* Smartphones (portrait) ----------- */
+/* Portrait */
+@media screen 
+  and (device-width: 320px) 
+  and (device-height: 640px) 
+  and (-webkit-device-pixel-ratio: 2) 
+  and (orientation: portrait) {
+      .adminForm{
+        float: left !important; 
+        margin-left: 10% !important;
+        background-color: green;
+      }
+      
+
+}
+
 
 mat-form-field {
 	margin: 15px;
