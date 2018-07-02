@@ -21,7 +21,7 @@
           <button *ngIf="showAddDevotee" 
           mat-raised-button
           (click)="handleDevoteeDialog()" 
-          class="btn btn-primary pull-right">
+          class="btn btn-primary pull-right" matTooltip="Add New Devotee">
           Add Devotee
         </button>
           
@@ -58,36 +58,33 @@
                       <button *ngIf="showAllSwitch"
                         mat-raised-button style="margin:2px;" type="submit" 
                         (click)="markPresent(element)" 
-                        class="btn btn-primary">
+                        class="btn btn-primary" matTooltip="Click here to mark present" >
                        <i class="fa fa-fw fa-user"></i>
-                       <span matTooltip="Click here to mark present"></span>
                      </button>  
 
                      <button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 
                       (click)="showDetails(element)" 
-                      class="btn btn-primary">
+                      class="btn btn-primary" matTooltip="Show Details">
                       <i class="fa fa-address-card"></i>
-                      <span matTooltip="Show Details"></span>
-                   
                      </button>
 
 
                      <!--button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 
                       (click)="delRecord(element)" 
-                      class="btn btn-primary">
+                      class="btn btn-primary" matTooltip="Delete Record">
                       <i class="fa fa-trash"></i>
-                      <span matTooltip="Delete Record"></span>
-                   
+
                      </button-->
 
                      <button
                      mat-raised-button style="margin:2px;" type="submit" 
                      (click)="editDevoteeDialog(element)" 
-                     class="btn btn-primary">
+                     class="btn btn-primary" 
+                     matTooltip="Edit Details">
                      <i class="fa fa-edit"></i>
-                     <span matTooltip="Edit Details"></span>
+                     
                   
                     </button>
 

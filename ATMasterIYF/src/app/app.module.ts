@@ -76,6 +76,7 @@ const appRoutes: Routes = [
   { path: 'tssvattendance', component: MainAttendanceComponent},
   { path: 'bssattendance', component: MainAttendanceComponent},
   { path: 'umangattendance', component: MainAttendanceComponent},
+  { path: 'dysattendance', component: MainAttendanceComponent},
   { path: 'ashrayattendance', component: MainAttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
   { path: 'adminLogin', component: AdminLoginComponent},

@@ -349,6 +349,9 @@ exports.updateDevotee = function(req, res, next) {
     if(req.body.body.area){
       valuesToUpdate["area"] = req.body.body.area;
     } 
+    if(req.body.body.isAlumni){
+      valuesToUpdate["isAlumni"] = req.body.body.isAlumni;
+    }
     console.log("value to update", valuesToUpdate);
     let db = req.app.locals.db;
     
@@ -395,26 +398,22 @@ exports.getSearchedDevotee = function(req, res, next) {
       }else{
           regexp = new RegExp("^"+ req.query.email);
           query = {email:regexp, course:req.query.course}
-          
       }
+    
       query = {
         course:req.query.course,
         "$or":[
            {contact:req.query.contact},
            {contact2:req.query.contact}
          ]
-       }
-       console.log("query is", query);
-     /* db.collection("devotees").find(
-        query
-      ).toArray(function(err, dataRes){
-        if(err){
-          console.log("err is", err);
-        }else{
-          console.log("data res", dataRes);
-          res.send({result:dataRes});
+      }
+      if (req.query.course === "UMANG") {
+        query = {
+          contact:req.query.contact
         }
-      });*/
+      }
+      console.log("query is", query);
+     
       db.collection("devotees").find(
         query
       ).toArray(function(err, result) {

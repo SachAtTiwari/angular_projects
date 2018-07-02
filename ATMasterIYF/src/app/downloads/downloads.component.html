@@ -38,7 +38,7 @@
                </mat-select>                                                              
              </mat-form-field-->                                                             
                                                                        
-            <button mat-raised-button type="submit" class="btn btn-primary">
+            <button mat-raised-button type="submit" class="btn btn-primary" matTooltip="Download">
               <i class="fa fa-fw fa-download"></i>Download</button>
           </form>
         <div *ngIf="isLoggedIn">
@@ -65,10 +65,11 @@
                     <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> 
                     <mat-option value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
                     <mat-option value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji </mat-option>          
+                    <mat-option value="NA"> NA </mat-option>          
                  </mat-select>                                                              
                </mat-form-field>                                                             
                                                                          
-              <button mat-raised-button type="submit" class="btn btn-primary">
+              <button mat-raised-button type="submit" class="btn btn-primary" matTooltip="Download">
                 <i class="fa fa-fw fa-download"></i>Download</button>
             </form>
         </div>
@@ -83,11 +84,19 @@
                  <mat-select [(ngModel)]="course" name="course" placeholder="Course" required>                                         
                    <mat-option *ngFor="let co of courses" [value]="co.value">
                      {{co.value}}  
-                   </mat-option>                              
-                                               
-                 </mat-select>                                                              
-               </mat-form-field>                                                            
-              <button mat-raised-button type="submit" class="btn btn-primary">
+                   </mat-option>      
+                 </mat-select>
+                </mat-form-field>                                                          
+                    
+                 <mat-form-field>                                                             
+                  <mat-select name="isAlumni" [(ngModel)]="isAlumni" 
+                     placeholder="Including alumni" required>                                      
+                     <mat-option value="YES"> YES </mat-option>          
+                     <mat-option value="NO"> NO </mat-option>          
+                  </mat-select>                                                              
+               </mat-form-field>       
+
+              <button mat-raised-button type="submit" class="btn btn-primary" matTooltip="Download">
                 <i class="fa fa-fw fa-download"></i>Download</button>
             </form>
         </div>

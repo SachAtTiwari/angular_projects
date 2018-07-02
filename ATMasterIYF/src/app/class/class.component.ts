@@ -37,6 +37,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
 
   courses = [
@@ -45,6 +46,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'ASHRAY'},
     {value: 'UMANG'},
     {value: 'BSS'},
+    {value: 'DYS'},
   ];
   topic = '';
   date = '';
@@ -104,7 +106,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
       this._userService.checkIfClassSdlForCourse(form.value.course, form.value.date)
       .subscribe(sdlresult => {
          if (sdlresult.result.length === 0) {
-             this._userService.SdlClass(form.value);
+            this._userService.SdlClass(form.value);
             form.reset();
             // this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
             swal({

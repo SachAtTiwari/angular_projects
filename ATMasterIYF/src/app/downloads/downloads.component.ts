@@ -35,6 +35,7 @@ export class DownloadsComponent implements OnInit {
     {value: 'HG Vaidant Chaitnya Prabhuji'},
     {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
   ];
   ngOnInit() {
     const getLoggedIn = localStorage.getItem('token');

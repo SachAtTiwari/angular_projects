@@ -1,25 +1,24 @@
 import {Injectable} from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { attachEmbeddedView } from '@angular/core/src/view/view_attach';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/mergeMap';
-import { Body } from '@angular/http/src/body';
 
 
 
 @Injectable()
-export class UserService{
-   private _url : string = "http://localhost:3000/";
-  // private _url : string = "/";
-   
-   constructor(private _http: Http){}
 
-  adminLogin(form){
-    return this._http.post(this._url + "adminLogin", {
+export class UserService {
+  private _url: string = 'http://localhost:3000/' ;
+  // _url : string = "/";
+
+  constructor(private _http: Http) {}
+
+  adminLogin(form) {
+    return this._http.post(this._url + 'adminLogin', {
+
       body: form
-     })
-      .map(
+     }).map(
         res => {
           return res.json();
         },
@@ -28,172 +27,167 @@ export class UserService{
         }
       );
     }
-  
-  getOTPDevotees(){
-    return this._http.get(this._url + "getOTPDevotees")  //, options)
-      .map((response: Response) => {
-          //console.log("mock data 1 " , response.json());
-          return response.json();
-         }
-       )
-     }
-  
-  getSearchedDevotee(contact, course){
-      console.log("in searched", contact);
-      let isContact = false;
-      if(!isNaN(parseInt(contact))){
-         isContact = true;
-      }
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
-      if(isContact == true){
-        searchParams.append('contact', contact);
-      }else{
-        searchParams.append('email', contact);
-        
-      }
-      searchParams.append('course', course);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
 
-      return this._http.get(this._url + "getSearchedDevotee", options)
-        .map((response: Response) => {
-            return response.json();
-           }
-         )
+  getOTPDevotees() {
+    return this._http.get(this._url + 'getOTPDevotees').map((response: Response) => {
+          return response.json();
+        }
+      );
     }
 
-  getDevotees(course, token): Observable<any>{
-      let courseName = "";
-      if(course == "1"){
-        courseName = "OTP";
-      }else if(course == "2"){
-        courseName = "TSSV";        
-      }else if(course == "3"){
-        courseName = "ASHRAY1";                
-      }else if(course == "4"){
-        courseName = "ASHRAY2";                       
+  getSearchedDevotee(contact, course) {
+      let isContact = false;
+      if (!isNaN(parseInt(contact))) {
+         isContact = true;
       }
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
-      searchParams.append('course', courseName);
-      searchParams.append('token', token);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-
-      return this._http.get(this._url + "getDevotees", options)
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      if (isContact === true) {
+        searchParams.append('contact', contact);
+      }else {
+        searchParams.append('email', contact);
+      }
+      searchParams.append('course', course);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getSearchedDevotee', options)
         .map((response: Response) => {
-            //console.log("mock data 1 " , response.json());
             return response.json();
            }
-         )
+         );
+    }
+
+  getDevotees(course, token): Observable<any> {
+      let courseName = '';
+      switch (course) {
+        case '1':
+          courseName = 'OTP';
+          break;
+        case '2':
+          courseName = 'TSSV';
+          break;
+        case '3':
+          courseName = 'ASHRAY';
+          break;
+        case '4':
+          courseName = 'UMANG';
+          break;
+        case '5':
+          courseName = '';
+          break;
+        case '6':
+          courseName = 'BSS';
+          break;
+        case '7':
+          courseName = 'DYS';
+          break;
+      }
+
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      searchParams.append('course', courseName);
+      searchParams.append('token', token);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getDevotees', options)
+        .map((response: Response) => {
+            return response.json();
+           }
+         );
        }
 
   getDetails(id): Observable<any> {
-    //  console.log("options", id);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
-      let token = localStorage.getItem('token');
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      const token = localStorage.getItem('token');
       searchParams.append('id', id);
       searchParams.append('token', token);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-      
-     return this._http.get(this._url + "getDetails", options)
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getDetails', options)
        .map((response: Response) => {
            return response.json();
           }
-        )
+        );
       }
 
-  getSdlClasses(){
-      
-      return this._http.get(this._url + "getSdlClasses")
+  getSdlClasses() {
+      return this._http.get(this._url + 'getSdlClasses')
         .map((response: Response) => {
-          //  console.log("mock data 1 " , response.json());
             return response.json();
            }
-         )
+         );
     }
 
-    checkIfDevoteePresentForGivenDate(date, counsellor, course){
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
+  checkIfDevoteePresentForGivenDate(date, counsellor, course) {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
       searchParams.append('course', course);
       searchParams.append('date', date);
       searchParams.append('counsellor', counsellor);
 
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-      
-      return this._http.get(this._url + "checkDevoteeStatusForGivenDate")
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'checkDevoteeStatusForGivenDate')
         .map((response: Response) => {
             return response.json();
            }
-         )
-    }
-   
+         );
+  }
+
   checkIfClassSdlForCourse(course, date): Observable<any> {
-      //console.log("Checking class sdl");
-      //console.log("atten is ", ckStatus.course);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
+      // console.log('check sdl class', course, date);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
       searchParams.append('course', course);
       searchParams.append('date', date);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + "checkClassSdl", options)
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'checkClassSdl', options)
           .map((response: Response) => {
-            //console.log("mock data 1 " , response.json());
             return response.json();
          }
-       )
+       );
    }
 
 
   isTokenVerified(token) {
-    console.log("token in devotee", token);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');    
-    let searchParams = new URLSearchParams();
+    // console.log("token in devotee", token);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
     searchParams.append('token', token);
-    let options = new RequestOptions({ headers: headers, params: searchParams });
-    return this._http.get(this._url + "isTokenVerified", options)
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+    return this._http.get(this._url + 'isTokenVerified', options)
         .map((response: Response) => {
           return response.json();
        }
-     )
- }
+     );
+  }
 
-   delRecord(contact):Observable <Response>{
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');    
-    let delParams = new URLSearchParams();
+  delRecord(contact): Observable <Response> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const delParams = new URLSearchParams();
     delParams.append('contact', contact);
-   
-    let options = new RequestOptions({ headers: headers, params: delParams });
+    const options = new RequestOptions({ headers: headers, params: delParams });
 
 
-    return this._http.delete(this._url + "delRecord", options)
+    return this._http.delete(this._url + 'delRecord', options)
       .map(
         res => {
-          console.log("res is", res);
           return res.json();
         },
         err => {
-          console.log("Error occured", err);
           return err.json();
         }
       );
    }
 
-   
-   addDevotee(body): Observable<Response>{
-      
-     return this._http.post(this._url + "addDevotee", {
+  addDevotee(body): Observable<Response> {
+     return this._http.post(this._url + 'addDevotee', {
         body: body
-       })
-        .map(
+       }).map(
           res => {
             return res.json();
           },
@@ -201,100 +195,87 @@ export class UserService{
             return err.json();
           }
         );
-   }
+  }
 
-   addDevoteeGeneric(body): Observable<Response>{
-      
-    return this._http.post(this._url + "addDevoteeGeneric", {
+   addDevoteeGeneric(body): Observable<Response> {
+    return this._http.post(this._url + 'addDevoteeGeneric', {
+       body: body
+      }).map(
+         res => {
+           return res.json();
+         },
+         err => {
+           return err.json();
+         }
+       );
+    }
+
+  editDevotee(body): Observable<Response> {
+    return this._http.put(this._url + 'updateDevotee', {
        body: body
       })
        .map(
          res => {
-           console.log("res is", res);
            return res.json();
          },
          err => {
-           console.log("Error occured");
            return err.json();
          }
        );
   }
 
-  editDevotee(body): Observable<Response>{
-    console.log("edit devotee", body);
-    return this._http.put(this._url + "updateDevotee", {
-       body: body
-      })
-       .map(
-         res => {
-           //console.log("res is", res);
-           return res.json();
-         },
-         err => {
-           console.log("Error occured");
-           return err.json();
-         }
-       );
-  }
+   parseDate(date): string {
 
-   parseDate(date): string{
-
-    var temp_datetime_obj = new Date(date);
-    let month = temp_datetime_obj.getMonth() + 1
+    const temp_datetime_obj = new Date(date);
+    const month = temp_datetime_obj.getMonth() + 1;
     date =  temp_datetime_obj.getDate() + '-' + month + '-' + temp_datetime_obj.getFullYear();
-    //console.log("final date ", date); 
     return date;
    }
 
-   SdlClass(body){
-    console.log("body is", body)  
-    this._http.post(this._url + "sdlClass", {
+   SdlClass(body) {
+    this._http.post(this._url + 'sdlClass', {
        body: body
-      })
-       .subscribe(
+      }).subscribe(
          res => {
-           console.log("res is", res);
+           // console.log('res is', res);
          },
          err => {
-           console.log("Error occured");
+          // console.log('err is', err);
          }
        );
   }
 
-   markAttendance(attendance): Observable<Response>{
-    console.log("atten is ", attendance);
-     return this._http.post(this._url + "markAttendance", {
-            attendance:attendance
+   markAttendance(attendance): Observable<Response> {
+    console.log('atten is ', attendance);
+     return this._http.post(this._url + 'markAttendance' , {
+            attendance: attendance
        })
-        .map(
+       .map(
           res => {
-            console.log(res);
             return res.json();
           },
           err => {
-            console.log("Error occured", err);
             err.json();
           }
         );
    }
 
 
-   downloadToExcel(dTe){
-      //console.log("atten is ", dTe);
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');    
-      let searchParams = new URLSearchParams();
+   downloadToExcel (dTe) {
+      console.log('downlods', dTe);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
       searchParams.append('date', dTe.date);
       searchParams.append('course', dTe.course);
       searchParams.append('counsellor', dTe.counsellor);
-      let options = new RequestOptions({ headers: headers, params: searchParams });
+      const options = new RequestOptions({ headers: headers, params: searchParams });
 
-      return this._http.get(this._url + "downloadToExcel", options)
+      return this._http.get(this._url + 'downloadToExcel', options)
           .map((response: Response) => {
-            //console.log("mock data 1 " , response.json());
             return response.json();
          }
-       )
+       );
    }
 
    downloadCourseExcel(dTe) {
@@ -303,6 +284,7 @@ export class UserService{
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
     searchParams.append('course', dTe.course);
+    searchParams.append('isAlumni', dTe.isAlumni);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
     return this._http.get(this._url + 'downloadCourseExcel', options)
@@ -312,36 +294,33 @@ export class UserService{
   }
 
 
-   downloadToExCounsellor(dTe){
-    //console.log("atten is ", dTe);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');    
-    let searchParams = new URLSearchParams();
+   downloadToExCounsellor(dTe) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
     searchParams.append('date', dTe.date);
     searchParams.append('course', dTe.course);
     searchParams.append('counsellor', dTe.counsellor);
-    let options = new RequestOptions({ headers: headers, params: searchParams });
+    const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + "downloadToExCounsellor", options)
+    return this._http.get(this._url + 'downloadToExCounsellor', options)
         .map((response: Response) => {
-          //console.log("mock data 1 " , response.json());
           return response.json();
        }
-     )
+     );
  }
 
-   getTodayAttendance(course){
-    //console.log("atten is ", dTe);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');    
-    let searchParams = new URLSearchParams();
+   getTodayAttendance(course) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
     searchParams.append('course', course);
-    let options = new RequestOptions({ headers: headers, params: searchParams });
+    const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + "getTodayAttendance", options)
+    return this._http.get(this._url + 'getTodayAttendance', options)
         .map((response: Response) => {
           return response.json();
        }
-     )
+     );
  }
 }
