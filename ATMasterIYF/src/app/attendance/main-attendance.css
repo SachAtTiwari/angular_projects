@@ -1,6 +1,5 @@
 
 .formClass {
-	height: 410px;
 	overflow: hidden;
 	border-radius: 20px;
 	padding: 10px; 
@@ -9,10 +8,10 @@
 
 mat-form-field {
 	margin: 10px;
-	width: 400px;
+	width: 198px;
 }
+
 mat-progress-spinner{
-  
   margin: auto;
 }
 
@@ -24,5 +23,14 @@ mat-progress-spinner{
 .container-fluid{
 	z-index: 1;
 	opacity: 0.8;
-	
 }
+
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1200px) {
+	/* Styles */
+	mat-form-field {
+		margin: 10px;
+		width: 400px;
+	}
+}
+	

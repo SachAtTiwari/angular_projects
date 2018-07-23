@@ -19,6 +19,10 @@ mat-form-field {
 	width: 900px;
 }
 
+.mat-row, .mat-header-row {
+	width: 200vw;
+}
+
 .mat-form-field-infix {
 	width: 900px;
 }
@@ -38,4 +42,17 @@ mat-form-field {
 	opacity: 0.8;
 	position: relative;
   /*  top: 100px;*/
+}
+
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1200px) {
+	/* Styles */
+	.mat-row, .mat-header-row {
+		width: auto;
+	}
+
+	mat-form-field {
+		width: 800px;
+	}
+
 }

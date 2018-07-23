@@ -90,10 +90,9 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
           this._getDevotees(params);
         }
     });
-      
-      if ($(window).width() < 600) {
-      $('.left-pane')[0].style.display = "none";
-        }
+    if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = 'none';
+    }
   }
 
   getErrorMessage() {
@@ -281,8 +280,8 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
 
   ngOnInit()  {
     if ($(window).width() < 600) {
-      $('.left-pane')[0].style.display = "none";
-        }
+      $('.left-pane')[0].style.display = 'none';
+    }
     let course = '';
     const todayDateNew = this._userService.parseDate(this.todayDate);
     const getLoggedIn = localStorage.getItem('token');

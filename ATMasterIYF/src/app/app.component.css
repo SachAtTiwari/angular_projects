@@ -160,10 +160,14 @@
 	position: absolute;
     width: 100%;
     background: #272734;
-        right: 0px;
-        z-index:9;
+    right: 0px;
+    z-index:9;
+    height: 70px;
 }
-
+.ach{
+    margin:15px;border-radius:50%;
+    visibility: hidden;
+}
 /* Responive */
 
 @media only screen and (max-width: 600px) {
@@ -190,6 +194,14 @@
 	.left-pane {
 		display:block !important;
 	}
+}
+
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1200px) {
+	/* Styles */
+	.ach{
+        visibility: visible;
+    }
 }
 
 .mobileToggle {
