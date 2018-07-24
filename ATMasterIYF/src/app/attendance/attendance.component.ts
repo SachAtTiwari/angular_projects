@@ -9,6 +9,7 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
 import { resetFakeAsyncZone } from '@angular/core/testing';
+import {ViewEncapsulation} from '@angular/core';
 declare var jquery: any;
 declare var $: any;
 
@@ -135,10 +136,9 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  handleDevoteeDialog(){
+  handleDevoteeDialog() {
     const dialogRef = this.dialog.open(AddDevoteeComponent, {
       width: '100vh',
-      height: '50vh;',
       hasBackdrop: false,
     });
 
@@ -712,6 +712,7 @@ export class EditDevoteeConfirm implements OnInit {
   selector: 'add-devotee',
   templateUrl: 'add-devotee.html',
   styleUrls: ['./add-devotee.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddDevoteeComponent implements OnInit {
 

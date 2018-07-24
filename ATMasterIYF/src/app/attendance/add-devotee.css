@@ -1,15 +1,22 @@
  
 mat-form-field{
-    margin: 25px;
+    margin: 15px;
     width: 140px;
-    z-index: 1000;
 }
 
 .form-container{
     border-radius: 15px;
     margin-bottom: 30px;
-    z-index: 10000;
 
 }
 
+.mat-dialog-container {
+    height: 85vh;
+}
 
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1200px) {
+	.mat-dialog-container {
+        height: 55vh;
+    }
+}
