@@ -66,9 +66,9 @@ export class DownloadsComponent implements OnInit {
   }
 
   downloadExCounsellor(form: NgForm) {
-    console.log('in counsellor', form.value, this.counsellor, this.course);
+    console.log('in counsellor', form.value);
     const classList = [];
-    this._userService.getSdlClasses()
+    this._userService.getSdlClassesCourse(this.course)
     .subscribe(sdlClass => {
        for (let j = 0; j < 8; j++) {
          if (!sdlClass.result[j]) {
@@ -78,6 +78,8 @@ export class DownloadsComponent implements OnInit {
          }
        }
     });
+    console.log('in class list', classList);
+
     this._userService.downloadToExCounsellor(form.value)
     .subscribe(userData => {
        const result_json = [];
@@ -104,7 +106,7 @@ export class DownloadsComponent implements OnInit {
           }
         }
         result_json.push(objectToInsert);
-      //  console.log("object to insert", objectToInsert);
+        // console.log('object to insert', objectToInsert);
        }
        const ws_name = 'Attendance';
        const wb: WorkBook = { SheetNames: [], Sheets: {} };

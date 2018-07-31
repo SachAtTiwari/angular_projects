@@ -4,12 +4,11 @@ import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
-import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
-import { resetFakeAsyncZone } from '@angular/core/testing';
 import {ViewEncapsulation} from '@angular/core';
+import { ShowdetailsComponent } from '../showdetails/showdetails.component';
+
 declare var jquery: any;
 declare var $: any;
 
@@ -25,8 +24,12 @@ declare var $: any;
 export class AttendanceComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'contact', 'counsellor', 'actions'];
   ELEMENT_DATA: Element[] = [];
+  DETAILS_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSourceDetails = new MatTableDataSource<any>(this.DETAILS_DATA);
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginatorDetails: MatPaginator;
 
   contact: string;
   launchModal = false;
@@ -69,6 +72,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSourceDetails.paginator = this.paginatorDetails;
   }
 
   applyFilter(filterValue: string) {
@@ -97,7 +101,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
   getErrorMessage() {
-    return this.email.hasError('required') ? 'You must enter a value' :
+    return this.email.hasError('requirceed') ? 'You must enter a value' :
         this.email.hasError('email') ? 'Not a valid email' :
             '';
   }
@@ -124,15 +128,26 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
      });
   }
 
-  /* updateOTPDevotees() {
-    this._userService.getOTPDevotees()
-        .subscribe(userData => {
-          console.log("user data is ", userData.result);
-          this.devotees = userData.result;
-    });
-  }*/
+
   showDetails(dv) {
-    this.router.navigate(['/showDetails', dv['_id']]);
+    // this.router.navigate(['/showDetails', dv['_id']]);
+
+    this._userService.getDetails(dv['_id'])
+    .subscribe(userData => {
+           console.log(' user data is ', userData.result[0]);
+           if (userData.result[0].attendance) {
+            this.dataSourceDetails.data = userData.result[0].attendance;
+            userData.result[0].dataSourceDetails = this.dataSourceDetails;
+           }
+           const dialogRef = this.dialog.open(ShowdetailsComponent, {
+            width: '100vh',
+            hasBackdrop: false,
+            data: {...userData.result[0]}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('result is', result);
+          });
+    });
   }
 
 
@@ -262,9 +277,11 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
   topic: string;
   displayedColumns = ['Name', 'Contact', 'Attendance'];
   dataSource = new MatTableDataSource([]);
+
   isLoggedIn = false;
   todayDate = new Date();
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private route: ActivatedRoute,

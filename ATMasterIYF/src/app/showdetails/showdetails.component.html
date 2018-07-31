@@ -1,44 +1,44 @@
-<div class="content-wrapper">
-    <div class="container-fluid">  
+<div class="">
+    <div class="">  
              <!-- Breadcrumbs-->
-             <ol class="breadcrumb" style="margin-top:30px;">
+             <!--ol class="breadcrumb" style="margin-top:20px;">
                 <li class="breadcrumb-item">
                   <a href="#">COURSES</a>
                 </li>
                 <li class="breadcrumb-item active">Attendance</li>
-              </ol>  
+              </ol-->  
 
-              <div class="card mb-3 col-md-offset-2" style="margin-top:15px;">
+              <div class="" style="margin-top:15px;">
                   <div class="card-header" style="background-color:yellow;">
                     <i class="fa fa-table"></i> Devotee Details
                   </div>
-                  <div class="card-body formClass mat-elevation-z12">
+                  <div class="formClass">
                       <form #devoteeForm="ngForm">
                           
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
                           mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
                             <mat-form-field> <input matInput
-                                 name="contact" [(ngModel)]="devoteeData.contact"
+                                 name="contact" [(ngModel)]="data.contact"
                                 placeholder="Contact" maxlength="10" minlength="10" required> </mat-form-field>
                             <mat-form-field> <input matInput required
-                                 name="name" [(ngModel)]="devoteeData.name"
+                                 name="name" [(ngModel)]="data.name"
                                 placeholder="Name" > </mat-form-field>	
                             
                                 
                             <mat-form-field> <input type="email" matInput
                               required
-                                 name="email" [(ngModel)]="devoteeData.email"
+                                 name="email" [(ngModel)]="data.email"
                                 placeholder="Email" > </mat-form-field>
 
                                 <mat-form-field> <input type="text" matInput
                                   required
-                                     name="area" [(ngModel)]="devoteeData.area"
-                                    placeholder="Location" > </mat-form-field>
+                                     name="area" [(ngModel)]="data.area"
+                                  placeholder="Location" > </mat-form-field>
 
                             
                         <mat-form-field>                                                              
-                        <input matInput name="dob" [(ngModel)]="devoteeData.dob" 
+                        <input matInput name="dob" [(ngModel)]="data.dob" 
                          [matDatepicker]="picker" placeholder="Date of Birth" required>       
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
                         <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>                                   
@@ -46,7 +46,7 @@
 
                       <mat-form-field>
                       <mat-select name="course" placeholder="Course" required
-                        [(ngModel)]="devoteeData.course"> <mat-option
+                        [(ngModel)]="data.course"> <mat-option
                         value="OTP"> OTP </mat-option> <mat-option value="TSSV-B10">
                       TSSV-B10 </mat-option> <mat-option value="ASHRAY"> ASHRAY </mat-option> <mat-option
                         value="BSS"> BSS </mat-option> <mat-option value="UMANG">
@@ -54,7 +54,7 @@
 
                       <mat-form-field>
                       <mat-select name="counsellor" placeholder="Counsellor" required
-                        [(ngModel)]="devoteeData.counsellor"> <mat-option
+                        [(ngModel)]="data.counsellor"> <mat-option
                         value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
                       <mat-option value="HG Kalpvraksha Prabhuji">
                       HG Kalpvraksha Prabhuji </mat-option> <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> <mat-option
@@ -76,13 +76,13 @@
                         
                       <mat-form-field>
                         <mat-select name="bace" placeholder="Is BACE Devotee?" required
-                          [(ngModel)]="devoteeData.bace"> 
+                          [(ngModel)]="data.bace"> 
                           <mat-option value="YES"> YES </mat-option> 
                           <mat-option value="NO"> NO </mat-option> 
                         </mat-select>
                        </mat-form-field>
                        <mat-form-field>                                                             
-                        <mat-select name="isAlumni" [(ngModel)]="devoteeData.isAlumni" 
+                        <mat-select name="isAlumni" [(ngModel)]="data.isAlumni" 
                            placeholder="Update if devotee is alumni now" required>                                      
                            <mat-option value="YES"> YES </mat-option>          
                            <mat-option value="NO"> NO </mat-option>          
@@ -91,15 +91,12 @@
                       <button mat-raised-button color="primary" style="margin-left:8px;"
                       (click)="updateDevotee(devoteeForm)">Update Devotee</button>
                 </form>
-          
-
           <div class="card mb-3 col-md-offset-2" style="margin-top:25px;">
               <div class="card-header" style="background-color:yellow;">
                   <i class="fa fa-table"></i> Programs attended till date
                 </div>
 
-                        <mat-table #table [dataSource]="dataSource">
-
+                        <mat-table #table *ngIf="data.attendance" [dataSource]="data.dataSourceDetails">
                             <!-- Position Column -->
                             <ng-container matColumnDef="Date">
                               <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
@@ -128,7 +125,7 @@
                             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                         
                           </mat-table>
-                          <mat-paginator #paginator
+                          <mat-paginator #data.dataSourceDetails.paginatorDetails
                            [pageSize]="10"
                            [pageSizeOptions]="[5, 10, 20]"
                            >

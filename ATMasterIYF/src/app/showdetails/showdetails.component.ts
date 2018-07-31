@@ -1,4 +1,4 @@
-import { Component, OnInit,Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
@@ -6,6 +6,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/ma
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import swal from 'sweetalert2';
+import {ViewEncapsulation} from '@angular/core';
+
 
 
 
@@ -14,7 +16,8 @@ import swal from 'sweetalert2';
   selector: 'app-showdetails',
   templateUrl: './showdetails.component.html',
   styleUrls: ['./showdetails.component.css'],
-  providers: [UserService]
+  providers: [UserService],
+  encapsulation: ViewEncapsulation.None
 
 })
 export class ShowdetailsComponent implements OnInit {
@@ -22,20 +25,21 @@ export class ShowdetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router) { }
 
   id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
-  dataSource = new MatTableDataSource([]);
-  devoteeData = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+//  dataSource = new MatTableDataSource([]);
+//  data = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
+//  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   isLoggedIn = false;
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    const getLoggedIn = localStorage.getItem('token');
+  //  this.dataSource.paginator = this.paginator;
+   // const getLoggedIn = localStorage.getItem('token');
    // console.log("token is in atte init",getLoggedIn);
-    if (getLoggedIn) {
+   /* if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
             if (tokenRes.result === 'ok') {
@@ -54,14 +58,15 @@ export class ShowdetailsComponent implements OnInit {
            this.devoteeData = userData.result[0];
          });
        });
-     }
+     }*/
     }
 
     updateDevotee(form: NgForm): void {
-      console.log('update at', this.devoteeData);
-      this._userService.editDevotee(this.devoteeData)
+      form.value._id = this.data['_id'];
+   //   console.log('update devotee ', form.value);
+
+      this._userService.editDevotee(form.value)
       .subscribe(userData => {
-        // console.log("Edit record is ", userData);
         if (userData['result'] === 'ok') {
          swal({
 

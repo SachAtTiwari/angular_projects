@@ -6,7 +6,6 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/ma
 import { ActivatedRoute, Router } from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
-//import { window } from 'rxjs/operators/window';
 declare var jquery: any;
 declare var $: any;
 
@@ -20,17 +19,17 @@ declare var $: any;
 })
 
 export class AppComponent  {
-  constructor(private _userService:UserService) { }
+  constructor(private _userService: UserService) { }
 
   isLoggedIn = false;
-  adminLogout(){
+  adminLogout() {
     localStorage.clear();
     window.location.reload();
   }
 
-  toggleClicked(){
-    console.log("toggle clicked");
-    if(document.getElementById('sidebar').style.width == "250px" || document.getElementById('sidebar').style.width == "") {
+  toggleClicked() {
+    console.log('toggle clicked');
+    if (document.getElementById('sidebar').style.width == "250px" || document.getElementById('sidebar').style.width == "") {
         document.getElementById('sidebar').style.width = "52px";
         document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "52px";
         document.getElementById('homefooter').style.width = "calc(100% - 0px)";
@@ -40,9 +39,7 @@ export class AppComponent  {
         document.getElementsByClassName('content-wrapper')[0]['style'].marginLeft = "250px";  
         document.getElementById('homefooter').style.width = "calc(100% - 250px)";
        document.getElementById('sidenavToggler').childNodes[1]['className'] = "fa fa-fw fa-angle-left";
-  
     }
-    
   }
 
   ngOnInit() {
@@ -51,7 +48,7 @@ export class AppComponent  {
     if(getLoggedIn){
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-            console.log(tokenRes);
+          //S  console.log(tokenRes);
             if(tokenRes.result == "ok"){
               this.isLoggedIn = true;
             }

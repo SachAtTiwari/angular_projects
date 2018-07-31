@@ -132,7 +132,33 @@ exports.getSdlClasses = function(req, res, next) {
     }
   };
 
-exports.getTodayAttendance =  function(req, res, next) {
+  exports.getSdlClassesCourse = function(req, res, next) {
+    try{
+      console.log("Get sdl classes for course", req.query.course );
+      let db = req.app.locals.db;
+      
+      db.listCollections().toArray(function(err, collections){
+            if (collections === undefined){
+              res.send({error:"No Collections present in DB"});
+           }else{
+              db.collection("entity").find({course: req.query.course }).sort({_id:1}).toArray(function(err, result) {
+                if (err) {
+                  console.log("err is ", err);
+                  res.send({result:"notok"});
+                }else{
+                  //console.log("result",result);
+                  res.send({result:result});
+                }
+              });
+            }
+        });
+      }catch(err){
+        console.log("Exception:", err);
+  
+      }
+  };
+
+ exports.getTodayAttendance =  function(req, res, next) {
   try{
     console.log("today attendance", req.query);
     let date = new Date();

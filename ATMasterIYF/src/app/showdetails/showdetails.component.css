@@ -1,10 +1,8 @@
 .formClass {
 	overflow: hidden;
-    padding: 25px;
 }
 
 mat-form-field {
-	margin: 10px;
 	width: 198px;
 }
 
@@ -23,7 +21,6 @@ mat-progress-spinner{
 	z-index: 1;
 	opacity: 0.8;
 	position: relative;
-    top: 100px;
 	
 }
 mat-cell{
@@ -35,7 +32,15 @@ mat-cell{
 	/* Styles */
 	mat-form-field {
 		margin: 10px;
-		width: 400px;
+		width: 250px;
 	}
+	.mat-dialog-container {
+        height: 55vh;
+    }
 	
 }
+
+.mat-dialog-container {
+    height: 85vh;
+}
+

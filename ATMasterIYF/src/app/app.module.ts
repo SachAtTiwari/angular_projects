@@ -103,6 +103,7 @@ const appRoutes: Routes = [
     EditDevoteeComponent,
     EditDevoteeConfirm,
     MainAttendanceComponent,
+    ShowdetailsComponent
   ],
   imports: [
     DataTablesModule,

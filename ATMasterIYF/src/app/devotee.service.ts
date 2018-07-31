@@ -9,7 +9,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 
 export class UserService {
-  private _url: string = 'http://localhost:3000/';
+   private _url: string = 'http://localhost:3000/';
   // private _url: string = '/';
 
   constructor(private _http: Http) {}
@@ -119,6 +119,20 @@ export class UserService {
          );
     }
 
+  getSdlClassesCourse(course) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('course', course);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + 'getSdlClassesCourse', options)
+        .map((response: Response) => {
+            return response.json();
+        }
+    );
+  }
+
   checkIfDevoteePresentForGivenDate(date, counsellor, course) {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
@@ -132,7 +146,7 @@ export class UserService {
         .map((response: Response) => {
             return response.json();
            }
-         );
+      );
   }
 
   checkIfClassSdlForCourse(course, date): Observable<any> {
