@@ -77,11 +77,11 @@ export class DownloadsComponent implements OnInit {
            classList.push(sdlClass.result[j].date);
          }
        }
-    });
-    console.log('in class list', classList);
+      // console.log('in class list', classList, classList.length);
 
-    this._userService.downloadToExCounsellor(form.value)
-    .subscribe(userData => {
+     if (classList.length > 0) {
+      this._userService.downloadToExCounsellor(form.value)
+      .subscribe(userData => {
        const result_json = [];
        for (let i = 0; i < userData.result.length; i++) {
          const objectToInsert = {};
@@ -94,20 +94,24 @@ export class DownloadsComponent implements OnInit {
          // check if devotee present for that day
          // search for date in attendance array for given counsellor/course
          // if yes add present else absent
-        for (let j = 0; j < 8; j++) {
+         for (let j = 0; j < 8; j++) {
           if (classList[j] && userData.result[i].attendance !== undefined) {
             let status = {};
             status = this.checkIfDevoteePresntForGivenDate(
               classList[j], userData.result[i].attendance);
             if (status !== undefined) {
               // console.log("status", status);
+              if (objectToInsert['status'] !== 'active') {
+                objectToInsert['status'] = 'active';
+              }
               objectToInsert[classList[j]] = status['present'];
             }
           }
         }
         result_json.push(objectToInsert);
-        // console.log('object to insert', objectToInsert);
        }
+       // console.log('object to insert', result_json);
+
        const ws_name = 'Attendance';
        const wb: WorkBook = { SheetNames: [], Sheets: {} };
        const ws: any = utils.json_to_sheet(result_json);
@@ -124,7 +128,9 @@ export class DownloadsComponent implements OnInit {
        }
        saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
            form.value.course + '_' + form.value.counsellor + '.xlsx');
-   });
+      });
+     }
+    });
   }
 
 
