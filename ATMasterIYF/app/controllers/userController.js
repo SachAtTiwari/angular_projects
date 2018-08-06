@@ -36,9 +36,6 @@ exports.addDevoteeGeneric = function(req, res, next) {
 
 exports.adminLogin = function(req, res, next) {
   try{
-  console.log("in admin login ", req.body.body)
-  pass = bcrypt.hashSync(req.body.body.password, 10);
-  console.log("in admin login pass ", pass)
   
   let db = req.app.locals.db;
   db.collection("devotees").find(
@@ -48,13 +45,10 @@ exports.adminLogin = function(req, res, next) {
        console.log("err is ", err);
        res.send({result:"notok"});
       }else{
-        //admin details find verify pass
-         console.log("result ", dvData);
         if(dvData.length > 0 && 
           bcrypt.compareSync(req.body.body.password, dvData[0].password)){
             let token = jwt.sign({user:dvData}, 'khsandasinasfnasiu2194u19u41142i210',
             {expiresIn:900});
-            console.log("token assigned", token);
             res.status(200).json({
               result:"ok",
               message:"Logged in Successfully",

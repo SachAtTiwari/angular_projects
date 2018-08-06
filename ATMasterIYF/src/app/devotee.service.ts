@@ -9,7 +9,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 
 export class UserService {
-   private _url: string = 'http://localhost:3000/';
+  private _url: string = 'http://localhost:3000/';
   // private _url: string = '/';
 
   constructor(private _http: Http) {}
@@ -27,6 +27,19 @@ export class UserService {
         }
       );
     }
+
+  counLogin(form) {
+    return this._http.post(this._url + 'counLogin', {
+        body: form
+       }).map(
+          res => {
+            return res.json();
+          },
+          err => {
+            return err.json();
+          }
+        );
+  }
 
   getOTPDevotees() {
     return this._http.get(this._url + 'getOTPDevotees').map((response: Response) => {
@@ -109,7 +122,7 @@ export class UserService {
            return response.json();
           }
         );
-      }
+  }
 
   getSdlClasses() {
       return this._http.get(this._url + 'getSdlClasses')

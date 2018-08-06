@@ -67,6 +67,8 @@ import { EditDevoteeComponent } from './attendance/attendance.component';
 import { EditDevoteeConfirm } from './attendance/attendance.component';
 import { MainAttendanceComponent } from './attendance/attendance.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { CounsellorLoginComponent } from './counsellor-login/counsellor-login.component';
+import { CallingDetailsComponent } from './calling-details/calling-details.component';
 
 const appRoutes: Routes = [
   { path: 'showDetails/:id', component: ShowdetailsComponent},
@@ -80,6 +82,8 @@ const appRoutes: Routes = [
   { path: 'ashrayattendance', component: MainAttendanceComponent},
   { path: 'downloads', component: DownloadsComponent},
   { path: 'adminLogin', component: AdminLoginComponent},
+  { path: 'counLogin', component: CounsellorLoginComponent},
+  { path: 'callingdetails', component: CallingDetailsComponent},
   { path: '', redirectTo: 'classSdl', pathMatch: 'full'}
 ];
 
@@ -96,6 +100,8 @@ const appRoutes: Routes = [
     MainAttendanceComponent,
     EditDevoteeConfirm,
     AdminLoginComponent,
+    CounsellorLoginComponent,
+    CallingDetailsComponent,
   ],
   entryComponents: [
     MarkpresentComponent,

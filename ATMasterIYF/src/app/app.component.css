@@ -190,6 +190,12 @@
     }
 }
 
+.logindropdown{
+    font-size: 30px;
+    margin-top: 16px;
+    margin-right: 13px;
+}
+
 @media only screen and (min-width: 601px) { 
 	.left-pane {
 		display:block !important;
