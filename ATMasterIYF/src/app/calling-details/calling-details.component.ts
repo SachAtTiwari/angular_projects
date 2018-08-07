@@ -8,37 +8,49 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
+import { DataService } from '../data.service';
 
 
 @Component({
   selector: 'app-calling-details',
   templateUrl: './calling-details.component.html',
-  styleUrls: ['./calling-details.component.css']
+  styleUrls: ['./calling-details.component.css'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
+    private _dataService: DataService,
     private router: Router,
     public snackBar: MatSnackBar) { }
 
   displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
 
-  @Input()
-  dataSource = new MatTableDataSource([]);
-
-  @Input('isLoggedIn')
-  isLoggedIn = false;
-
+  ELEMENT_DATA: Element[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   todayDate = new Date();
+  comment = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
-     console.log('in calling ', this.isLoggedIn, this.dataSource);
+    /* this._dataService.currentMessage.subscribe(message => {
+       console.log('mesage ', message);
+       this.dataSource.data = message;
+     });*/
+    this.route.params.subscribe(params => {
+      this._userService.getCounsellorData(params['username'])
+      .subscribe(data => {
+         console.log('data is ', data);
+         this.dataSource.data = data.resources;
+
+      });
+    });
    }
 
   ngAfterViewInit() {

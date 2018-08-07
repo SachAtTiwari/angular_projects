@@ -68,6 +68,16 @@
                       <i class="fa fa-address-card"></i>
                      </button>
 
+                     <mat-form-field class="comment">                                                             
+                        <mat-select name="comment" placeholder="Comment" required>                                      
+                           <mat-option value="CA"> CA </mat-option>
+                           <mat-option value="NC"> NC </mat-option>
+                           <mat-option value="Coming"> Coming </mat-option> 
+                           <mat-option value="Not Reachable"> Not Reachable </mat-option>
+                           <mat-option value="Switch Off"> Switch Off </mat-option>          
+                        </mat-select>                                                              
+                      </mat-form-field> 
+
 
                      <!--button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 

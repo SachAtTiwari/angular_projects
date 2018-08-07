@@ -83,7 +83,7 @@ const appRoutes: Routes = [
   { path: 'downloads', component: DownloadsComponent},
   { path: 'adminLogin', component: AdminLoginComponent},
   { path: 'counLogin', component: CounsellorLoginComponent},
-  { path: 'callingdetails', component: CallingDetailsComponent},
+  { path: 'callingdetails/:username', component: CallingDetailsComponent},
   { path: '', redirectTo: 'classSdl', pathMatch: 'full'}
 ];
 

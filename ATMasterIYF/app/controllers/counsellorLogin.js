@@ -20,21 +20,15 @@ exports.counLogin = function(req, res, next) {
           if(dvData.length > 0 && 
             bcrypt.compareSync(req.body.body.password, dvData[0]._password)){
              // console.log('passed matched');
-              db.collection("devotees").find(
-                {counsellor: findCounsellor(req.body.body.username)})
-              .toArray(function(err, cdata){
-               // console.log('cdata is', cdata);
-                let token = jwt.sign({user:dvData}, crypto.randomBytes(256),
-                  {expiresIn:900});
-                  res.status(200).json({
-                    result:"ok",
-                    message:"Logged in Successfully",
-                    token:token,
-                    userId: dvData._id,
-                    resources: cdata
-                  })
+              // console.log('cdata is', cdata);
+              let token = jwt.sign({user:dvData}, crypto.randomBytes(256),
+              {expiresIn:900});
+              res.status(200).json({
+                result:"ok",
+                message:"Logged in Successfully",
+                token:token,
+                userId: dvData._id,
               })
-              
            }else{
               res.send({result:"notok"});
            }
@@ -45,8 +39,21 @@ exports.counLogin = function(req, res, next) {
     }
   }
 
+exports.getCounsellorData = function(req, res, next) {
+  console.log('req is ', findCounsellor(req.query.username));
+  db.collection("devotees").find(
+    {counsellor: findCounsellor(req.query.username)})
+  .toArray(function(err, cdata){
+    res.status(200).json({
+      result:"ok",
+      resources: cdata,
+     })
+  });
+  }
+
+
   // Return counsellor name 
-  function findCounsellor(username) {
+function findCounsellor(username) {
       console.log('username found', username);
       cslr = '';
       switch(username) {

@@ -70,6 +70,19 @@ export class UserService {
          );
     }
 
+  getCounsellorData(name): Observable<any> {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      searchParams.append('username', name);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getCounsellorData', options)
+        .map((response: Response) => {
+            return response.json();
+        }
+      );
+  }
+
   getDevotees(course, token): Observable<any> {
       let courseName = '';
       switch (course) {
@@ -121,7 +134,7 @@ export class UserService {
        .map((response: Response) => {
            return response.json();
           }
-        );
+      );
   }
 
   getSdlClasses() {

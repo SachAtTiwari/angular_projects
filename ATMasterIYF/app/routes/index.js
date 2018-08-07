@@ -30,6 +30,8 @@ router.get('/classSdl', function(req, res, next) {
 /* Counsellor login*/
 router.post('/counLogin', counsellorLogin.counLogin);
 
+/* Counsellor data*/
+router.get('/getCounsellorData', counsellorLogin.getCounsellorData);
 
 
 //USER ROUTES
