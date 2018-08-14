@@ -25,7 +25,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     private _userService: UserService,
     private _dataService: DataService,
     private router: Router,
-    public snackBar: MatSnackBar, private appComp: AppComponent) { }
+    public snackBar: MatSnackBar) { }
 
   displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
 
@@ -47,7 +47,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
       this._userService.getCounsellorData(params['username'])
       .subscribe(data => {
          console.log('data is ', data);
-         this.appComp.isLoggedIn = true;
+         
          this.dataSource.data = data.resources;
 
       });

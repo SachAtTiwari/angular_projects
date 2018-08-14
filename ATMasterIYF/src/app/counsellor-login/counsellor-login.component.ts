@@ -6,6 +6,7 @@ import swal from 'sweetalert2';
 declare var jquery: any;
 declare var $: any;
 import { DataService } from '../data.service';
+import {AppComponent} from '../app.component';
 
 
 
@@ -22,7 +23,7 @@ export class CounsellorLoginComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private _userService: UserService,
     private _dataService: DataService,
-    private router: Router,
+    private router: Router, private appComp: AppComponent
    ) { }
 
   course = '';
@@ -40,9 +41,10 @@ export class CounsellorLoginComponent implements OnInit {
       if (data.result === 'ok') {
     //     console.log('data is ', data.resources);
         // this._dataService.changeMessage(data.resources);
-         this.isLoggedIn = true;
+         
          this.router.navigateByUrl('/callingdetails/' + form.value.username);
-
+          this.appComp.isLoggedIn = true;
+          this.appComp.userName = 'fromcounselorLogin';
       }
     });
   }

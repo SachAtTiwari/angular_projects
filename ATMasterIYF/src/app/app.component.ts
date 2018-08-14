@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   constructor(private _userService: UserService) { }
 
   isLoggedIn = false;
+  userName = '';
   adminLogout() {
     localStorage.clear();
     window.location.reload();
