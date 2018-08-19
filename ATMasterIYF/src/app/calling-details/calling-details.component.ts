@@ -20,6 +20,9 @@ import {AppComponent} from '../app.component';
 })
 export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
+  todayDate = new Date();
+  checked = false;
+  comment = '';
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
@@ -32,8 +35,6 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   ELEMENT_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
-  todayDate = new Date();
-  comment = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -47,7 +48,6 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
       this._userService.getCounsellorData(params['username'])
       .subscribe(data => {
          console.log('data is ', data);
-         
          this.dataSource.data = data.resources;
 
       });
@@ -56,6 +56,57 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  checkIfDevoteePresntForGivenDate(date, myArray) {
+    for (let i = 0; i < myArray.length; i++) {
+        if (myArray[i].date === date) {
+            console.log('yes');
+            return myArray[i];
+        }
+    }
+  }
+
+  findActive () {
+    const classList = [];
+
+    this._userService.getSdlClassesCourse('OTP')
+    .subscribe(sdlClass => {
+           console.log('in active ', this.dataSource.data[0], sdlClass);
+            this.dataSource.data.forEach(element => {
+              if (element['attendance'] && element['attendance'].length > 0) {
+                for (let j = 0; j < 8; j++) {
+                  let status = {};
+                 // console.log('class  is ', sdlClass.result[j].date, element['attendance']);
+                  status = this.checkIfDevoteePresntForGivenDate(sdlClass.result[j].date, element['attendance']);
+                  // console.log('status is ', status);
+                  if ( status  !== undefined) {
+                    //  console.log('status', element['contact'], element['name']);
+                      classList.push(element);
+                  }
+                }
+              }
+          });
+        console.log('class list is ', classList);
+        this.dataSource.data =  classList;
+    });
+
+  }
+
+  changeBox(e, type) {
+    console.log(e.checked, type === 'Active');
+    if (e.checked === false) {
+       this.dataSource.filter = '';
+    } else {
+      type = type.trim(); // Remove whitespace
+      type = type.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+      if (type === 'active') {
+        console.log(type);
+        this.findActive();
+      } else {
+        this.dataSource.filter = type;
+      }
+    }
   }
 
   applyFilter(filterValue: string) {

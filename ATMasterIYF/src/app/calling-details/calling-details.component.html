@@ -30,10 +30,39 @@
         <div class="card-body" >
           <div class="table-responsive formClass mat-elevation-z12" >
 
-				
-
+        <div class="filters" >
+          <h5>Select checkbox to filter out devotees</h5>
+          <br/>
+          <mat-checkbox 
+            (change)="changeBox($event, 'OTP')" 
+            value="OTP" >
+            OTP
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'TSSV-B10')"
+             value="TSSV-B10">
+             TSSV-B10
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'ASHRAY')"
+             value="ASHRAY">
+             ASHRAY
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'BSS')"
+             value="BSS">
+             BSS
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'Active')"
+             value="Active">
+             Active
+          </mat-checkbox>
+        </div>
+        
+          
 					<mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
 

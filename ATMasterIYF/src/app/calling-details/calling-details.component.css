@@ -19,6 +19,10 @@ mat-form-field {
     margin-top: 13px;
 }
 
+.filters{
+	margin: 17px;
+}
+
 .comment{
 	width: 127px;
 }

@@ -191,6 +191,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['contact'] = userData.result[i].contact;
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
+         objectToInsert['email'] = userData.result[i].email;
          result_json.push(objectToInsert);
       }
       const ws_name = 'Attendance';
