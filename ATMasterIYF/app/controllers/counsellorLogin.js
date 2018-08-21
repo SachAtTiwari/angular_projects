@@ -48,8 +48,64 @@ exports.getCounsellorData = function(req, res, next) {
       result:"ok",
       resources: cdata,
      })
-  });
-  }
+   });
+}
+
+function getDate() {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const datenew =  date.getDate() + '-' + month + '-' + date.getFullYear();
+  return datenew;
+}
+
+exports.updateComment = function(req, res, next) {
+    console.log('comment is ', req.body);
+      try{
+        let db = req.app.locals.db;
+        let date = new Date();
+        let month = date.getMonth() + 1
+        date =  date.getDate() + '-' + month + '-' + date.getFullYear();
+
+        db.listCollections().toArray(function(err, collections){     
+              if (collections === undefined){
+                res.send({error:"No Collections present in DB"});
+              }else{
+                //Check if calling status already marked for the contact
+                db.collection("devotees").find(
+                  { 
+                    contact:req.body.body.contact, 
+                    "calling.date": date,  
+                  }
+                ).toArray(function(err, result) {
+                  if (err) {
+                    console.log("err is 1", err);
+                    res.send({error:500});
+                  } else {
+                  if(result.length === 0){
+                    db.collection("devotees").update(
+                      {contact:req.body.body.contact}, 
+                      {$set: {selected:req.body.body.selected, lockedDate: getDate()}, 
+                      $push:{calling:{date: date, comment:req.body.body.selected}}},
+                      {upsert:false}, 
+                      function(err, resatt) {
+                        if (err) {
+                          console.log("err is ", err);
+                          res.send({result:"notok"});
+                         } else {
+                            res.send({result:"ok"});
+                         }
+                     });
+                  }else{
+                    res.send({result:"notok"});
+                  }
+                 }  
+                });
+              }
+            });
+          }catch(err){
+            console.log("Exception :", err);
+        }
+}
 
 
   // Return counsellor name 

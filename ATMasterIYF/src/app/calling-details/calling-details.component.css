@@ -26,6 +26,13 @@ mat-form-field {
 .comment{
 	width: 127px;
 }
+
+.locked {
+	pointer-events:none;
+	opacity: 0.5 !important; /* Fade effect */
+    cursor: not-allowed; /* Cursor change to disabled state*/
+}
+
 .mat-row, .mat-header-row {
 	width: 200vw;
 }

@@ -46,7 +46,20 @@ export class UserService {
           return response.json();
         }
       );
-    }
+  }
+
+  updateComment(element) {
+    return this._http.post(this._url + 'updateComment', {
+      body: element
+     }).map(
+        res => {
+          return res.json();
+        },
+        err => {
+          return err.json();
+        }
+      );
+  }
 
   getSearchedDevotee(contact, course) {
       let isContact = false;

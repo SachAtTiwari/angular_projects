@@ -4,12 +4,13 @@ import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
 import { DataService } from '../data.service';
 import {AppComponent} from '../app.component';
+import swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-calling-details',
@@ -23,6 +24,12 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   todayDate = new Date();
   checked = false;
   comment = '';
+  selected = 'CA';
+  isCourseSelected = false;
+  otp = false;
+  tssv = false;
+  bss = false;
+  sps = false;
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
@@ -47,7 +54,6 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       this._userService.getCounsellorData(params['username'])
       .subscribe(data => {
-         console.log('data is ', data);
          this.dataSource.data = data.resources;
 
       });
@@ -58,10 +64,58 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  getDate() {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const datenew =  date.getDate() + '-' + month + '-' + date.getFullYear();
+    return datenew;
+  }
+
+  // [ngClass]="isLocked(element) ? '':'locked'"
+  /*isLocked(element) {
+      console.log('element ', element.contact);
+      if ( element.calling && element.calling.length > 0 ) {
+        element.calling.forEach(data => {
+          if (data.date === this.getDate()) {
+            console.log('data is ', data);
+            return true;
+          }
+        });
+      }
+  }*/
+
+  lockIt(element, event) {
+  //  console.log('element ', element.calling);
+    element['locked'] = true;
+    this._userService.updateComment(element)
+      .subscribe(result => {
+          console.log('result is ', result);
+          if (result.result === 'ok') {
+            swal({
+
+              type: 'success',
+              title: 'Hare Krishna, Status locked for the day',
+              html: 'Hari Bol!!',
+              showConfirmButton: false,
+              timer: 1500
+          });
+          } else {
+            swal({
+
+              type: 'success',
+              title: 'Hare Krishna, Status already locked for the day',
+              html: 'Hari Bol!!',
+              showConfirmButton: false,
+              timer: 1500
+          });
+
+          }
+      });
+  }
+
   checkIfDevoteePresntForGivenDate(date, myArray) {
     for (let i = 0; i < myArray.length; i++) {
         if (myArray[i].date === date) {
-            console.log('yes');
             return myArray[i];
         }
     }
@@ -97,6 +151,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     console.log(e.checked, type === 'Active');
     if (e.checked === false) {
        this.dataSource.filter = '';
+       this.isCourseSelected = false;
     } else {
       type = type.trim(); // Remove whitespace
       type = type.toLowerCase(); // MatTableDataSource defaults to lowercase matches
@@ -104,6 +159,29 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
         console.log(type);
         this.findActive();
       } else {
+        /*switch (type) {
+          case 'OTP':
+            this.tssv = false;
+            this.bss = false;
+            this.sps = false;
+            break;
+          case 'ASHRAY':
+            this.tssv = false;
+            this.bss = false;
+            this.otp = false;
+            break;
+          case 'TSSV-B10':
+            this.bss = false;
+            this.otp = false;
+            this.sps = false;
+            break;
+          case 'BSS':
+            this.tssv = false;
+            this.otp = false;
+            this.sps = false;
+            break;
+        }*/
+        this.isCourseSelected = true;
         this.dataSource.filter = type;
       }
     }

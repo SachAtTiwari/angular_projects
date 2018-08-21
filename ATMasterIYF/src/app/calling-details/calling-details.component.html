@@ -53,7 +53,7 @@
              value="BSS">
              BSS
           </mat-checkbox>
-          <mat-checkbox 
+          <mat-checkbox [ngClass]="isCourseSelected ? '':'locked'"
             (change)="changeBox($event, 'Active')"
              value="Active">
              Active
@@ -96,9 +96,12 @@
                       class="btn btn-primary" matTooltip="Show Details">
                       <i class="fa fa-address-card"></i>
                      </button>
-
-                     <mat-form-field class="comment">                                                             
-                        <mat-select name="comment" placeholder="Comment" required>                                      
+                     <div [ngClass]="element.locked ? 'locked':''" >
+                     <mat-form-field [ngClass]="element.lockedDate === getDate() ? 'locked':''"
+                        class="comment">                                                             
+                        <mat-select name="comment" value={{element.selected}} 
+                        [(ngModel)]="element.selected"
+                         placeholder="Comment" required>                                      
                            <mat-option value="CA"> CA </mat-option>
                            <mat-option value="NC"> NC </mat-option>
                            <mat-option value="Coming"> Coming </mat-option> 
@@ -106,6 +109,11 @@
                            <mat-option value="Switch Off"> Switch Off </mat-option>          
                         </mat-select>                                                              
                       </mat-form-field> 
+
+                      <i (click)="lockIt(element, $event)" style="cursor:pointer"
+                      matTooltip="Click to lock it for the day" class="fa fa-lock"></i>
+                     </div>
+                      
 
 
                      <!--button *ngIf="isLoggedIn"
