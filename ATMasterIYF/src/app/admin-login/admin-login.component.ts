@@ -5,6 +5,8 @@ import { UserService} from '../devotee.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDrawerToggleResult} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
+import {AppComponent} from '../app.component';
+
 
 declare var jquery: any;
 declare var $: any;
@@ -22,10 +24,10 @@ export class AdminLoginComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
-    private router: Router,
+    private router: Router, private appComp: AppComponent
    ) { }
 
-  isLoggedIn = false;
+  // isLoggedIn = false;
   ngOnInit() {
   if ($(window).width() < 600) {
       $('.left-pane')[0].style.display = 'none';
@@ -40,11 +42,12 @@ export class AdminLoginComponent implements OnInit {
     this._userService.adminLogin(form.value)
     .subscribe(data => {
       if (data.result === 'ok') {
-        this.isLoggedIn = true;
+        // this.isLoggedIn = true;
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
-        window.location.reload();
-
+     //   window.location.reload();
+        this.appComp.userName = form.value.username;
+        this.appComp.isLoggedIn = true;
         this.router.navigate(['/attendance'],
          { queryParams: { course: '5'},
 

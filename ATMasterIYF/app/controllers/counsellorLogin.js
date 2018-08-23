@@ -4,6 +4,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
+secret = crypto.randomBytes(256)
 
 exports.counLogin = function(req, res, next) {
     try{
@@ -21,7 +22,7 @@ exports.counLogin = function(req, res, next) {
             bcrypt.compareSync(req.body.body.password, dvData[0]._password)){
              // console.log('passed matched');
               // console.log('cdata is', cdata);
-              let token = jwt.sign({user:dvData}, crypto.randomBytes(256),
+              let token = jwt.sign({user:dvData}, secret,
               {expiresIn:900});
               res.status(200).json({
                 result:"ok",
@@ -107,6 +108,32 @@ exports.updateComment = function(req, res, next) {
         }
 }
 
+exports.iscTokenVerified = function(req, res, next) {
+  try{
+      console.log("verify token ", req.query.token);
+      let db = req.app.locals.db;
+      //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+      jwt.verify(req.query.token, secret,
+      function(err, decoded){
+        if(err){
+          // respond to request with error
+          console.error("err in verification", err);
+          res.send({result:"notok"})
+          
+        }else{
+          // continue with the request
+          console.log("decoded ", decoded);
+          if(decoded.user.length > 0){
+              res.send({result:"ok"})
+          }else{
+            res.send({result:"notok"})
+          }
+        }
+      });
+  }catch(err){
+    console.log("Exception :", err);
+  }
+}
 
   // Return counsellor name 
 function findCounsellor(username) {

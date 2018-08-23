@@ -34,7 +34,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private _userService: UserService,
     private _dataService: DataService,
-    private router: Router,
+    private router: Router, private appComp: AppComponent, 
     public snackBar: MatSnackBar) { }
 
   displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
@@ -51,13 +51,26 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
        console.log('mesage ', message);
        this.dataSource.data = message;
      });*/
-    this.route.params.subscribe(params => {
-      this._userService.getCounsellorData(params['username'])
-      .subscribe(data => {
-         this.dataSource.data = data.resources;
+     const getLoggedIn = localStorage.getItem('ctoken');
+    console.log('getLogged in ', getLoggedIn);
+    if (getLoggedIn) {
+        this._userService.iscTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+           console.log('data is ', tokenRes);
 
-      });
-    });
+            if (tokenRes.result === 'ok') {
+              this.route.params.subscribe(params => {
+                this._userService.getCounsellorData(params['username'])
+                .subscribe(data => {
+                   this.dataSource.data = data.resources;
+                });
+              });
+              this.appComp.isLoggedIn = true;
+              this.appComp.userName =  localStorage.getItem('cname');
+            }
+        });
+    }
+
    }
 
   ngAfterViewInit() {

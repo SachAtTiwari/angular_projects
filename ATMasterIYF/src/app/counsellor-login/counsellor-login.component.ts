@@ -32,19 +32,34 @@ export class CounsellorLoginComponent implements OnInit {
     if ($(window).width() < 600) {
       $('.left-pane')[0].style.display = 'none';
     }
+
+    const getLoggedIn = localStorage.getItem('ctoken');
+    console.log('getLogged in ', getLoggedIn);
+    if (getLoggedIn) {
+        this._userService.iscTokenVerified(getLoggedIn)
+        .subscribe(tokenRes => {
+           console.log('data is ', tokenRes);
+
+            if (tokenRes.result === 'ok') {
+              this.appComp.isLoggedIn = true;
+              this.appComp.userName =  localStorage.getItem('cname');
+            }
+        });
+    }
   }
 
   counLogin(form: NgForm): void {
-  //  console.log('in login', form.value);
     this._userService.counLogin(form.value)
     .subscribe(data => {
       if (data.result === 'ok') {
-    //     console.log('data is ', data.resources);
+         console.log('data is ', data);
+
+         localStorage.setItem('ctoken', data.token);
+         localStorage.setItem('cname', form.value.username);
         // this._dataService.changeMessage(data.resources);
-         
-         this.router.navigateByUrl('/callingdetails/' + form.value.username);
+          this.router.navigateByUrl('/callingdetails/' + form.value.username);
           this.appComp.isLoggedIn = true;
-          this.appComp.userName = 'fromcounselorLogin';
+          this.appComp.userName = form.value.username;
       }
     });
   }
