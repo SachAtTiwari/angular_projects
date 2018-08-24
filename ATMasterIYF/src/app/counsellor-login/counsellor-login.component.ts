@@ -43,6 +43,8 @@ export class CounsellorLoginComponent implements OnInit {
             if (tokenRes.result === 'ok') {
               this.appComp.isLoggedIn = true;
               this.appComp.userName =  localStorage.getItem('cname');
+            } else {
+              this.router.navigateByUrl('/counLogin');
             }
         });
     }

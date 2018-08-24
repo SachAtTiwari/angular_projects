@@ -51,6 +51,11 @@
                     <mat-header-cell *matHeaderCellDef> Counsellor </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.counsellor}} </mat-cell>
                   </ng-container>
+
+                  <ng-container matColumnDef="course">
+                      <mat-header-cell *matHeaderCellDef> Course </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.course}} </mat-cell>
+                  </ng-container>
               
                   <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
@@ -78,7 +83,7 @@
 
                      </button-->
 
-                     <button
+                     <!--button
                      mat-raised-button style="margin:2px;" type="submit" 
                      (click)="editDevoteeDialog(element)" 
                      class="btn btn-primary" 
@@ -86,7 +91,7 @@
                      <i class="fa fa-edit"></i>
                      
                   
-                    </button>
+                    </button-->
 
                     
                     </mat-cell>

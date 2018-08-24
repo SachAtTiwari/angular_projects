@@ -37,7 +37,7 @@ router.get('/getCounsellorData', counsellorLogin.getCounsellorData);
 router.post('/updateComment', counsellorLogin.updateComment);
 
 /* Verify counselor token */
-router.post('/iscTokenVerified', counsellorLogin.iscTokenVerified);
+router.get('/iscTokenVerified', counsellorLogin.iscTokenVerified);
 
 
 //USER ROUTES

@@ -8,6 +8,9 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
+import {AppComponent} from '../app.component';
+
+
 
 declare var jquery: any;
 declare var $: any;
@@ -22,7 +25,7 @@ declare var $: any;
 })
 
 export class AttendanceComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'contact', 'counsellor', 'actions'];
+  displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
   ELEMENT_DATA: Element[] = [];
   DETAILS_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -85,13 +88,18 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private _userService: UserService,
     private router: Router,
-    public snackBar: MatSnackBar) { }
+    public snackBar: MatSnackBar, private appComp: AppComponent) { }
 
   ngOnInit() {
    // console.log("in attendance");
     this.route.queryParams.subscribe(params => {
         if (params['course'] === '5') {
           this.showAddDevotee = true;
+          const cLogIn = localStorage.getItem('ctoken');
+          console.log('c log in  ', cLogIn);
+          if (cLogIn) {
+            this.appComp.userName = localStorage.getItem('cname');
+          }
           this._getDevotees(params);
         }
     });
@@ -108,6 +116,10 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
 
   _getDevotees(params) {
     const getLoggedIn = localStorage.getItem('token');
+    if (getLoggedIn) {
+      this.appComp.userName = 'admin';
+    }
+    console.log('get logged in ', getLoggedIn);
     this._userService.getDevotees(params['course'], getLoggedIn)
     .subscribe(userData => {
       console.log('in get devotees', userData);

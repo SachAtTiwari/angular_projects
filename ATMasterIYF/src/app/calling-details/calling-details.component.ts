@@ -67,8 +67,13 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
               });
               this.appComp.isLoggedIn = true;
               this.appComp.userName =  localStorage.getItem('cname');
+            } else {
+                this.router.navigateByUrl('/counLogin');
             }
         });
+    } else {
+      this.router.navigateByUrl('/counLogin');
+
     }
 
    }
