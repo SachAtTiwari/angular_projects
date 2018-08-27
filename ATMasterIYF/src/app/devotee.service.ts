@@ -140,8 +140,14 @@ export class UserService {
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
       const token = localStorage.getItem('token');
+      const ctoken = localStorage.getItem('ctoken');
+      if (token) {
+        searchParams.append('token', token);
+      }
+      if (ctoken) {
+        searchParams.append('ctoken', ctoken);
+      }
       searchParams.append('id', id);
-      searchParams.append('token', token);
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getDetails', options)
        .map((response: Response) => {

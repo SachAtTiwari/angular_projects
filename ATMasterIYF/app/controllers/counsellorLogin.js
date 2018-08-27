@@ -4,7 +4,9 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-secret = crypto.randomBytes(256)
+secret = crypto.randomBytes(256);
+exports.secret = secret;
+
 
 exports.counLogin = function(req, res, next) {
     try{

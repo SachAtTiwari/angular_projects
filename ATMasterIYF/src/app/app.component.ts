@@ -46,6 +46,20 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // Check if counsellor logged in
+    const cLogIn = localStorage.getItem('ctoken');
+    if (cLogIn) {
+      this._userService.iscTokenVerified(cLogIn)
+      .subscribe(ctokenRes => {
+        if (ctokenRes.result === 'ok') {
+          this.isLoggedIn = true;
+          this.userName = localStorage.getItem('cname');
+          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
+        }
+      });
+    }
+
     const getLoggedIn = localStorage.getItem('token');
     if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
@@ -55,6 +69,7 @@ export class AppComponent implements OnInit {
             }
         });
     }
+
     $(document).ready(function() {
       $('#sidebar-collaps i').on('click', function() {
           if ($('.left-pane').hasClass('collapseSideBar')) {
