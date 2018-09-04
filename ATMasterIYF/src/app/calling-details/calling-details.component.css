@@ -23,6 +23,11 @@ mat-form-field {
 	margin: 17px;
 }
 
+.fhead{
+	margin-left: 18px;
+    margin-top: 17px;
+}
+
 .comment{
 	width: 127px;
 }

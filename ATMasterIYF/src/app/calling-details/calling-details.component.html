@@ -30,7 +30,7 @@
         <div class="card-body" >
           <div class="table-responsive formClass mat-elevation-z12" >
 
-        <div class="filters" >
+        <!--div class="filters" >
           <h5>Select checkbox to filter out devotees</h5>
           <br/>
           <mat-checkbox 
@@ -58,7 +58,29 @@
              value="Active">
              Active
           </mat-checkbox>
-        </div>
+        </div-->
+         <h5 class="fhead">Select course to filter out devotees</h5>
+         
+         <div class="cfilters">
+            <mat-form-field style="width: 500px;">
+               <mat-select [(ngModel)]="selectedCourse"
+                (ngModelChange)="OnSelectCourse($event)"
+                name="coursefilter"  
+                placeholder="Course Filter">                                      
+                  <mat-option value="OTP"> OTP </mat-option>
+                  <mat-option value="TSSV-B10">TSSV-B10 </mat-option>
+                  <mat-option value="ASHRAY"> ASHRAY </mat-option> 
+                  <mat-option value="BSS"> BSS </mat-option>
+               </mat-select> 
+             </mat-form-field> 
+             <mat-checkbox [(ngModel)]="selectedBox" [ngClass]="isCourseSelected ? '':'locked'"
+             (change)="changeBox($event, 'Active')"
+              value="Active">
+              Active
+           </mat-checkbox>
+
+          
+          </div>
         
           
 					<mat-form-field>

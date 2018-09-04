@@ -26,10 +26,10 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   comment = '';
   selected = 'CA';
   isCourseSelected = false;
-  otp = false;
-  tssv = false;
-  bss = false;
-  sps = false;
+  selectedCourse = '';
+  selectedBox = false;
+  copyDataSource = [];
+  originalCopy = [];
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
@@ -63,6 +63,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
                 this._userService.getCounsellorData(params['username'])
                 .subscribe(data => {
                    this.dataSource.data = data.resources;
+                   this.originalCopy = this.dataSource.data;
                 });
               });
               this.appComp.isLoggedIn = true;
@@ -141,35 +142,59 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
   findActive () {
     const classList = [];
+    console.log('class list is ', this.selectedCourse);
+    this.copyDataSource = this.dataSource.data;
 
-    this._userService.getSdlClassesCourse('OTP')
+    this._userService.getSdlClassesCourse(this.selectedCourse)
     .subscribe(sdlClass => {
-           console.log('in active ', this.dataSource.data[0], sdlClass);
+           console.log('in active ', this.dataSource.data, sdlClass);
             this.dataSource.data.forEach(element => {
               if (element['attendance'] && element['attendance'].length > 0) {
                 for (let j = 0; j < 8; j++) {
                   let status = {};
-                 // console.log('class  is ', sdlClass.result[j].date, element['attendance']);
-                  status = this.checkIfDevoteePresntForGivenDate(sdlClass.result[j].date, element['attendance']);
+                 // console.log('class  is ', sdlClass.result[j].date);
+                 if (sdlClass.result[j] === undefined) {
+                    break;
+                 }
+                 status = this.checkIfDevoteePresntForGivenDate(sdlClass.result[j].date, element['attendance']);
                   // console.log('status is ', status);
                   if ( status  !== undefined) {
                     //  console.log('status', element['contact'], element['name']);
                       classList.push(element);
+                      break;
                   }
                 }
               }
           });
-        console.log('class list is ', classList);
         this.dataSource.data =  classList;
     });
 
   }
 
+  OnSelectCourse(e) {
+    console.log('event is ', e, this.selectedBox);
+    if (this.selectedBox) {
+      this.dataSource.data = this.originalCopy;
+      this.dataSource.filter = e;
+      this.findActive();
+    } else {
+      this.isCourseSelected = true;
+      this.dataSource.filter = e;
+
+    }
+
+  }
+
   changeBox(e, type) {
-    console.log(e.checked, type === 'Active');
+    console.log(e.checked, this.selectedCourse, type === 'Active', this.dataSource.data);
     if (e.checked === false) {
-       this.dataSource.filter = '';
-       this.isCourseSelected = false;
+       if (this.selectedCourse) {
+       // this.dataSource.filter = this.selectedCourse;
+        this.dataSource.data = this.copyDataSource;
+       } else {
+         this.dataSource.filter =  '';
+         this.isCourseSelected = false;
+       }
     } else {
       type = type.trim(); // Remove whitespace
       type = type.toLowerCase(); // MatTableDataSource defaults to lowercase matches
@@ -177,28 +202,6 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
         console.log(type);
         this.findActive();
       } else {
-        /*switch (type) {
-          case 'OTP':
-            this.tssv = false;
-            this.bss = false;
-            this.sps = false;
-            break;
-          case 'ASHRAY':
-            this.tssv = false;
-            this.bss = false;
-            this.otp = false;
-            break;
-          case 'TSSV-B10':
-            this.bss = false;
-            this.otp = false;
-            this.sps = false;
-            break;
-          case 'BSS':
-            this.tssv = false;
-            this.otp = false;
-            this.sps = false;
-            break;
-        }*/
         this.isCourseSelected = true;
         this.dataSource.filter = type;
       }
