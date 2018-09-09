@@ -95,7 +95,6 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(params => {
         if (params['course'] === '5') {
           this.showAddDevotee = true;
-          
           this._getDevotees(params);
         }
     });

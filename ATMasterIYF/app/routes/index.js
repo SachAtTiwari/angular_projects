@@ -100,6 +100,9 @@ router.get('/getTodayAttendance', classController.getTodayAttendance);
 /*Download to Excel */
 router.get('/downloadToExcel', downloadController.downloadToExcel);
 
+/*Download call report Excel */
+router.get('/downloadCallReportCounsellor', downloadController.downloadCallReportCounsellor);
+
 /*Download to Excel  Counsellor*/
 router.get('/downloadToExCounsellor', downloadController.downloadToExCounsellor);
 

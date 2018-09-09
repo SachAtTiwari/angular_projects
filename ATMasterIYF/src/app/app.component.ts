@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
       });
     }
 
+    // check if admin is login
     const getLoggedIn = localStorage.getItem('token');
     if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)

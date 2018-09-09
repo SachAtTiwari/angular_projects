@@ -333,6 +333,24 @@ export class UserService {
    }
 
 
+   downloadCallReportCounsellor (dTe) {
+    console.log('downlods call report', dTe);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('date', dTe.date);
+    searchParams.append('counsellor', dTe.counsellor);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + 'downloadCallReportCounsellor', options)
+        .map((response: Response) => {
+          return response.json();
+       }
+     );
+ }
+
+
+
    downloadToExcel (dTe) {
       console.log('downlods', dTe);
       const headers = new Headers();

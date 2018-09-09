@@ -5,6 +5,7 @@ import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
 import { takeWhile } from 'rxjs/operators';
 import { mergeAnalyzedFiles } from '@angular/compiler';
+import {AppComponent} from '../app.component';
 declare var jquery: any;
 declare var $: any;
 
@@ -17,7 +18,7 @@ declare var $: any;
 })
 export class DownloadsComponent implements OnInit {
 
-  constructor(private _userService: UserService) { }
+  constructor(private _userService: UserService, private appComp: AppComponent) { }
   isLoggedIn = false;
   course = '';
   counsellor = '';
@@ -38,6 +39,22 @@ export class DownloadsComponent implements OnInit {
     {value: 'NA'},
   ];
   ngOnInit() {
+    // Check if counsellor logged in
+    const cLogIn = localStorage.getItem('ctoken');
+    if (cLogIn) {
+      this._userService.iscTokenVerified(cLogIn)
+      .subscribe(ctokenRes => {
+        if (ctokenRes.result === 'ok') {
+          this.isLoggedIn = true;
+          this.appComp.isLoggedIn = true;
+          this.appComp.userName =  localStorage.getItem('cname');
+         // this.userName = localStorage.getItem('cname');
+          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
+        }
+      });
+    }
+
+    // check if cousellor is login
     const getLoggedIn = localStorage.getItem('token');
     if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
@@ -51,7 +68,7 @@ export class DownloadsComponent implements OnInit {
         });
       }
       if ($(window).width() < 600) {
-      $('.left-pane')[0].style.display = "none";
+      $('.left-pane')[0].style.display = 'none';
         }
   }
 
@@ -63,6 +80,50 @@ export class DownloadsComponent implements OnInit {
             return myArray[i];
         }
     }
+  }
+
+  downloadCallReportCounsellor(form: NgForm) {
+      console.log('in call report ', form.value);
+      this._userService.downloadCallReportCounsellor(form.value)
+      .subscribe(userData => {
+          console.log(userData);
+          const result_json = [];
+          for (let  i = 0; i < userData.result.length; i++) {
+            const objectToInsert = {};
+            objectToInsert['name'] = userData.result[i].name;
+            objectToInsert['contact'] = userData.result[i].contact;
+            objectToInsert['course'] = userData.result[i].course;
+            objectToInsert['counsellor'] = userData.result[i].counsellor;
+
+            if (userData.result[i].calling !== undefined) {
+              for (let j = 0; j < userData.result[i].calling.length; j++) {
+                objectToInsert[userData.result[i].calling[j].date] =
+                       userData.result[i].calling[j].comment;
+              }
+            }
+         result_json.push(objectToInsert);
+         }
+         console.log('result json ', result_json);
+
+          const ws_name = 'Attendance';
+          const wb: WorkBook = { SheetNames: [], Sheets: {} };
+          const ws: any = utils.json_to_sheet(result_json);
+          wb.SheetNames.push(ws_name);
+          wb.Sheets[ws_name] = ws;
+          const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+          function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i !== s.length; ++i) {
+              view[i] = s.charCodeAt(i) & 0xFF;
+            }
+            return buf;
+          }
+          saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
+              form.value.date + '_' + form.value.counsellor + '.xlsx');
+
+      });
+
   }
 
   downloadExCounsellor(form: NgForm) {
@@ -149,7 +210,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
          if (userData.result[i].attendance !== undefined) {
-         for (let j = 0;j < userData.result[i].attendance.length;j++){
+         for (let j = 0; j < userData.result[i].attendance.length;j++){
            if (userData.result[i].attendance[j].date.localeCompare(form.value.date) === 0) {
              objectToInsert['date'] = userData.result[i].attendance[j].date;
              objectToInsert['present'] = userData.result[i].attendance[j].present;
