@@ -10,14 +10,16 @@ import swal from 'sweetalert2';
 
 declare var jquery: any;
 declare var $: any;
+import {ViewEncapsulation} from '@angular/core';
+
 
 
 @Component({
   selector: 'app-class',
   templateUrl: './class.component.html',
   styleUrls: ['./class.component.css'],
-  providers: [UserService]
-
+  providers: [UserService],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ClassComponent implements AfterViewInit, OnInit {
 

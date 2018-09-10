@@ -8,12 +8,15 @@ import { mergeAnalyzedFiles } from '@angular/compiler';
 import {AppComponent} from '../app.component';
 declare var jquery: any;
 declare var $: any;
+import {ViewEncapsulation} from '@angular/core';
+
 
 @Component({
   selector: 'app-downloads',
   templateUrl: './downloads.component.html',
   styleUrls: ['./downloads.component.css'],
-  providers: [UserService]
+  providers: [UserService],
+  encapsulation: ViewEncapsulation.None,
 
 })
 export class DownloadsComponent implements OnInit {
