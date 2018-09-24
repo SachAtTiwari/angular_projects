@@ -18,8 +18,8 @@
         height: 100vh;
     }*/
 
-    mat-form-field {
-        width: 287px;
+   .classSc mat-form-field {
+        width: 287px !important;
     }
 	
 }
