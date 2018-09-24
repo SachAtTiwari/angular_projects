@@ -31,10 +31,8 @@ mat-form-field {
 	flex: 0 0 35%;
 }
 
-.content-wrapper{
-	background:url('../../assets/img/bg.jpg') repeat;
-	background-size: cover;
-	/* height: 100vh;*/
+ .content-wrapper{
+	margin-top: 80px;
 }
 
 .container-fluid{

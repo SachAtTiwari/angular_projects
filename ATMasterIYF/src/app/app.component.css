@@ -10,7 +10,7 @@
     background:rgba(255, 255, 255, 0.8) !important; 
 }
 .mid-pane{
-    height: calc(100vh - 105px);
+    /* height: calc(100vh - 105px); */
     float: left;
     width: 100%;
     transition: 0.5s ease-in-out;
@@ -35,7 +35,8 @@
     /*height: calc(100vh - 105px);*/
         height: calc(100vh);
 	overflow:auto;
-	
+	 background:url('../assets/img/bg.jpg') repeat;
+	 background-size: cover;
 }
 .cmp-logo img {
     width: 70%;
