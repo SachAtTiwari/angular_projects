@@ -9,7 +9,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 
 export class UserService {
-   private _url: string = 'http://localhost:3000/';
+  private _url: string = 'http://localhost:3000/';
   // private _url: string = '/';
 
   constructor(private _http: Http) {}
@@ -28,12 +28,38 @@ export class UserService {
       );
     }
 
+  counLogin(form) {
+    return this._http.post(this._url + 'counLogin', {
+        body: form
+       }).map(
+          res => {
+            return res.json();
+          },
+          err => {
+            return err.json();
+          }
+        );
+  }
+
   getOTPDevotees() {
     return this._http.get(this._url + 'getOTPDevotees').map((response: Response) => {
           return response.json();
         }
       );
-    }
+  }
+
+  updateComment(element) {
+    return this._http.post(this._url + 'updateComment', {
+      body: element
+     }).map(
+        res => {
+          return res.json();
+        },
+        err => {
+          return err.json();
+        }
+      );
+  }
 
   getSearchedDevotee(contact, course) {
       let isContact = false;
@@ -56,6 +82,19 @@ export class UserService {
            }
          );
     }
+
+  getCounsellorData(name): Observable<any> {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      searchParams.append('username', name);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getCounsellorData', options)
+        .map((response: Response) => {
+            return response.json();
+        }
+      );
+  }
 
   getDevotees(course, token): Observable<any> {
       let courseName = '';
@@ -101,15 +140,21 @@ export class UserService {
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
       const token = localStorage.getItem('token');
+      const ctoken = localStorage.getItem('ctoken');
+      if (token) {
+        searchParams.append('token', token);
+      }
+      if (ctoken) {
+        searchParams.append('ctoken', ctoken);
+      }
       searchParams.append('id', id);
-      searchParams.append('token', token);
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getDetails', options)
        .map((response: Response) => {
            return response.json();
           }
-        );
-      }
+      );
+  }
 
   getSdlClasses() {
       return this._http.get(this._url + 'getSdlClasses')
@@ -173,6 +218,19 @@ export class UserService {
     searchParams.append('token', token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
     return this._http.get(this._url + 'isTokenVerified', options)
+        .map((response: Response) => {
+          return response.json();
+       }
+     );
+  }
+
+  iscTokenVerified(token) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('token', token);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+    return this._http.get(this._url + 'iscTokenVerified', options)
         .map((response: Response) => {
           return response.json();
        }
@@ -273,6 +331,24 @@ export class UserService {
           }
         );
    }
+
+
+   downloadCallReportCounsellor (dTe) {
+    console.log('downlods call report', dTe);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('date', dTe.date);
+    searchParams.append('counsellor', dTe.counsellor);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + 'downloadCallReportCounsellor', options)
+        .map((response: Response) => {
+          return response.json();
+       }
+     );
+ }
+
 
 
    downloadToExcel (dTe) {

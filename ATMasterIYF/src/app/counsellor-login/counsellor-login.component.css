@@ -35,9 +35,9 @@ mat-form-field {
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1200px) {
 	/* Styles */
-	mat-form-field {
-		margin: 10px;
-		width: 400px;
+	.counLogin mat-form-field {
+		margin: 10px !important;
+		width: 400px !important;
     }
     .adminForm{
         width: 500px;

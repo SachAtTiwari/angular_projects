@@ -2,9 +2,8 @@
     width: 900px;
 }
 
-.content-wrapper{
-    background:url('../../assets/img/bg.jpg') repeat;
-    background-size: cover;
+ .content-wrapper{
+	margin-top: 80px;
 }
 
 .container-fluid{
@@ -16,4 +15,10 @@
 }
 mat-cell{
     font-weight: bold;
+}
+
+@media only screen and (min-width: 1200px){
+  mat-form-field {
+    width: 387px;
+  }
 }

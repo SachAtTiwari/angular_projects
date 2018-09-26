@@ -30,10 +30,61 @@
         <div class="card-body" >
           <div class="table-responsive formClass mat-elevation-z12" >
 
-				
+        <!--div class="filters" >
+          <h5>Select checkbox to filter out devotees</h5>
+          <br/>
+          <mat-checkbox 
+            (change)="changeBox($event, 'OTP')" 
+            value="OTP" >
+            OTP
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'TSSV-B10')"
+             value="TSSV-B10">
+             TSSV-B10
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'ASHRAY')"
+             value="ASHRAY">
+             ASHRAY
+          </mat-checkbox>
+          <mat-checkbox 
+            (change)="changeBox($event, 'BSS')"
+             value="BSS">
+             BSS
+          </mat-checkbox>
+          <mat-checkbox [ngClass]="isCourseSelected ? '':'locked'"
+            (change)="changeBox($event, 'Active')"
+             value="Active">
+             Active
+          </mat-checkbox>
+        </div-->
+         <h5 class="fhead">Select course to filter out devotees</h5>
+         
+         <div class="cfilters">
+            <mat-form-field style="width: 500px;">
+               <mat-select [(ngModel)]="selectedCourse"
+                (ngModelChange)="OnSelectCourse($event)"
+                name="coursefilter"  
+                placeholder="Course Filter">                                      
+                  <mat-option value="OTP"> OTP </mat-option>
+                  <mat-option value="TSSV-B10">TSSV-B10 </mat-option>
+                  <mat-option value="ASHRAY"> ASHRAY </mat-option> 
+                  <mat-option value="BSS"> BSS </mat-option>
+               </mat-select> 
+             </mat-form-field> 
+             <mat-checkbox [(ngModel)]="selectedBox" [ngClass]="isCourseSelected ? '':'locked'"
+             (change)="changeBox($event, 'Active')"
+              value="Active">
+              Active
+           </mat-checkbox>
 
+          
+          </div>
+        
+          
 					<mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
 
@@ -55,24 +106,36 @@
                   <ng-container matColumnDef="course">
                       <mat-header-cell *matHeaderCellDef> Course </mat-header-cell>
                       <mat-cell *matCellDef="let element"> {{element.course}} </mat-cell>
-                  </ng-container>
+                    </ng-container>
               
                   <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                      <button *ngIf="showAllSwitch"
-                        mat-raised-button style="margin:2px;" type="submit" 
-                        (click)="markPresent(element)" 
-                        class="btn btn-primary" matTooltip="Click here to mark present" >
-                       <i class="fa fa-fw fa-user"></i>
-                     </button>  
-
+                      
                      <button *ngIf="isLoggedIn"
                       mat-raised-button style="margin:2px;" type="submit" 
                       (click)="showDetails(element)" 
                       class="btn btn-primary" matTooltip="Show Details">
                       <i class="fa fa-address-card"></i>
                      </button>
+                     <div [ngClass]="element.locked ? 'locked':''" >
+                     <mat-form-field [ngClass]="element.lockedDate === getDate() ? 'locked':''"
+                        class="comment">                                                             
+                        <mat-select name="comment" value={{element.selected}} 
+                        [(ngModel)]="element.selected"
+                         placeholder="Comment" required>                                      
+                           <mat-option value="CA"> CA </mat-option>
+                           <mat-option value="NC"> NC </mat-option>
+                           <mat-option value="Coming"> Coming </mat-option> 
+                           <mat-option value="Not Reachable"> Not Reachable </mat-option>
+                           <mat-option value="Switch Off"> Switch Off </mat-option>          
+                        </mat-select>                                                              
+                      </mat-form-field> 
+
+                      <i (click)="lockIt(element, $event)" style="cursor:pointer"
+                      matTooltip="Click to lock it for the day" class="fa fa-lock"></i>
+                     </div>
+                      
 
 
                      <!--button *ngIf="isLoggedIn"
@@ -83,17 +146,6 @@
 
                      </button-->
 
-                     <!--button
-                     mat-raised-button style="margin:2px;" type="submit" 
-                     (click)="editDevoteeDialog(element)" 
-                     class="btn btn-primary" 
-                     matTooltip="Edit Details">
-                     <i class="fa fa-edit"></i>
-                     
-                  
-                    </button-->
-
-                    
                     </mat-cell>
                   </ng-container>
               
@@ -103,7 +155,7 @@
                 </mat-table>
                 <mat-paginator #paginator
                  [pageSize]="10"
-                 [pageSizeOptions]="[5, 10, 20, 50]" (page)="pageEvent = getPageDetails($event)"
+                 [pageSizeOptions]="[5, 10, 20, 50]" 
                  >
              </mat-paginator> 
             

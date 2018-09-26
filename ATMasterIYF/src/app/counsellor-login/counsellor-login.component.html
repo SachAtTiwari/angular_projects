@@ -1,0 +1,33 @@
+<div class="content-wrapper">
+    <div class="container" >  
+      <div class="adminForm mat-elevation-z12">
+        <div class="card-header" >
+        <h3>Counsellor Details</h3>
+        </div>
+
+        <form #cForm="ngForm" (ngSubmit)="counLogin(cForm)" class="counLogin" style="margin:auto;">
+     
+            <mat-form-field>                                  
+                <input matInput name="username" [(ngModel)]="name"  placeholder="Name" required>  
+             </mat-form-field>  
+    
+    
+             <mat-form-field>                                  
+                <input matInput name="password" [(ngModel)]="pass" type="password" placeholder="Password" required>  
+             </mat-form-field>  
+
+             <!--mat-form-field>                                                             
+                <mat-select name="course" [(ngModel)]="course" placeholder="Course" required>                                      
+                   <mat-option	value="OTP"> OTP</mat-option>
+                   <mat-option value="TSSV-B10"> TSSV-B10 </mat-option>
+                   <mat-option value="ASHRAY"> ASHRAY </mat-option> 
+                   <mat-option value="BSS"> BSS </mat-option>
+                   <mat-option value="UMANG"> UMANG </mat-option>          
+                </mat-select>                                                              
+              </mat-form-field-->  
+              <button mat-raised-button type="submit" class="btn btn-primary">Login</button>
+            
+        </form>
+      </div>
+    </div>
+</div>

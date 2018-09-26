@@ -8,6 +8,9 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
+import {AppComponent} from '../app.component';
+
+
 
 declare var jquery: any;
 declare var $: any;
@@ -22,7 +25,7 @@ declare var $: any;
 })
 
 export class AttendanceComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'contact', 'counsellor', 'actions'];
+  displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
   ELEMENT_DATA: Element[] = [];
   DETAILS_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -85,7 +88,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private _userService: UserService,
     private router: Router,
-    public snackBar: MatSnackBar) { }
+    public snackBar: MatSnackBar, private appComp: AppComponent) { }
 
   ngOnInit() {
    // console.log("in attendance");
@@ -107,11 +110,31 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
   _getDevotees(params) {
+
+    // Check if counsellor logged in
+    const cLogIn = localStorage.getItem('ctoken');
+    if (cLogIn) {
+      this._userService.iscTokenVerified(cLogIn)
+      .subscribe(ctokenRes => {
+        if (ctokenRes.result === 'ok') {
+          this.isLoggedIn = true;
+          this.appComp.userName = localStorage.getItem('cname');
+          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
+        }
+      });
+    }
+    // check if admin logged in
     const getLoggedIn = localStorage.getItem('token');
+    if (getLoggedIn) {
+      this.isLoggedIn = true;
+      this.appComp.userName = 'admin';
+      console.log('get logged in ', getLoggedIn);
+    }
+
+    // get all devotees
     this._userService.getDevotees(params['course'], getLoggedIn)
     .subscribe(userData => {
       console.log('in get devotees', userData);
-      this.isLoggedIn = userData.isLoggedIn;
        if (userData.result) {
          userData.result = userData.result.filter(function(el) {
             return el.username !== 'admin';
@@ -131,7 +154,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
 
   showDetails(dv) {
     // this.router.navigate(['/showDetails', dv['_id']]);
-
+    console.log('show deve', dv);
     this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
            console.log(' user data is ', userData.result[0]);

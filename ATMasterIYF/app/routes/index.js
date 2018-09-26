@@ -2,18 +2,18 @@ var express = require('express');
 var userController = require('../controllers/userController');
 var classController = require('../controllers/classController');
 var downloadController = require('../controllers/downloadController');
+var counsellorLogin = require('../controllers/counsellorLogin');
 var router = express.Router();
 
 const dbClient = require('mongodb').MongoClient;
 const assert = require('assert');
  
 // Connection URL
-//const url = 'mongodb://localhost:27017';
-const url = 'mongodb://iyfuser:h2so4na2co#@ds253918.mlab.com:53918/iyfdb';
+// const url = 'mongodb://iyfuser:h2so4na2co#@ds253918.mlab.com:53918/iyfdb';
 
  
 // Database Name
-const dbName = 'iyfdb';
+// const dbName = 'iyfdb';
 
 
 /* GET home page. */
@@ -26,6 +26,19 @@ router.get('/classSdl', function(req, res, next) {
   //res.render('index', { title: 'Express' });
   res.sendFile('app.component.html');
 });
+
+/* Counsellor login*/
+router.post('/counLogin', counsellorLogin.counLogin);
+
+/* Counsellor data*/
+router.get('/getCounsellorData', counsellorLogin.getCounsellorData);
+
+/* update calling comment*/
+router.post('/updateComment', counsellorLogin.updateComment);
+
+/* Verify counselor token */
+router.get('/iscTokenVerified', counsellorLogin.iscTokenVerified);
+
 
 //USER ROUTES
 /* Delete a record*/
@@ -86,6 +99,9 @@ router.get('/getTodayAttendance', classController.getTodayAttendance);
 ///Download Controller
 /*Download to Excel */
 router.get('/downloadToExcel', downloadController.downloadToExcel);
+
+/*Download call report Excel */
+router.get('/downloadCallReportCounsellor', downloadController.downloadCallReportCounsellor);
 
 /*Download to Excel  Counsellor*/
 router.get('/downloadToExCounsellor', downloadController.downloadToExCounsellor);

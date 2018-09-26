@@ -12,10 +12,9 @@ mat-progress-spinner{
 }
 
 
-.content-wrapper{
-	background:url('../../assets/img/bg.jpg') repeat;
-	background-size: cover;
-}
+ .content-wrapper{
+	margin-top: 80px;
+} 
 
 .container-fluid{
 	z-index: 1;

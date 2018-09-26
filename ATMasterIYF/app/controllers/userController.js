@@ -2,6 +2,7 @@ const assert = require('assert');
 var mongo = require('mongodb');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+var cLogin = require('./counsellorLogin');
 
 exports.addDevoteeGeneric = function(req, res, next) {
   try{
@@ -36,9 +37,6 @@ exports.addDevoteeGeneric = function(req, res, next) {
 
 exports.adminLogin = function(req, res, next) {
   try{
-  console.log("in admin login ", req.body.body)
-  pass = bcrypt.hashSync(req.body.body.password, 10);
-  console.log("in admin login pass ", pass)
   
   let db = req.app.locals.db;
   db.collection("devotees").find(
@@ -48,13 +46,10 @@ exports.adminLogin = function(req, res, next) {
        console.log("err is ", err);
        res.send({result:"notok"});
       }else{
-        //admin details find verify pass
-         console.log("result ", dvData);
         if(dvData.length > 0 && 
           bcrypt.compareSync(req.body.body.password, dvData[0].password)){
             let token = jwt.sign({user:dvData}, 'khsandasinasfnasiu2194u19u41142i210',
             {expiresIn:900});
-            console.log("token assigned", token);
             res.status(200).json({
               result:"ok",
               message:"Logged in Successfully",
@@ -279,10 +274,17 @@ exports.getDevotees = function(req, res, next) {
 
 exports.getDevoteeDetail = function(req, res, next) {
   try{
-   // console.log("im here", req.query.id);
+    console.log("im here", req.query, cLogin.secret);
 
    let db = req.app.locals.db;
-   var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+   if (req.query.token) {
+      var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+   }
+
+   if (req.query.ctoken) {
+      var decoded = jwt.verify(req.query.ctoken, cLogin.secret);
+   }
+  
    if(decoded.user.length > 0){
      db.listCollections().toArray(function(err, collections){
           if (collections === undefined){

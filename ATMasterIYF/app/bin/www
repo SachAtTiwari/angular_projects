@@ -10,7 +10,13 @@ var http = require('http');
 var bcrypt =  require('bcryptjs');
 const DB_URL = process.env.DB_URL;
 
-
+counsellorInfo = [
+  {username:'sgp', secret: process.env.SGPSECRET},
+  {username:'kvp', secret: process.env.KVPSECRET},
+  {username:'pvnp', secret: process.env.PVNPSECRET},
+  {username:'jnp', secret: process.env.JNPSECRET},
+  {username:'vcp', secret: process.env.VCPSECRET},
+]
 
 const dbName = process.env.DBNAME;
 const dbClient = require('mongodb').MongoClient;
@@ -84,6 +90,34 @@ function onError(error) {
   }
 }
 
+function initCounsellorInfo(username, secret) {
+  /*Init counsellor details */
+
+  db.collection("clogin").find(
+    {_username: username})
+  .toArray(function(err, cData){
+    if (err) {
+      console.log("err is ", err);
+     }else{
+       if(cData.length == 0){
+          pass = bcrypt.hashSync(secret, 10)
+          console.log('pass ',pass);
+          db.collection("clogin")
+          .insertOne({_username: username, _password:pass}, 
+          function(err, sgpRes) {
+              if (err) {
+                  console.log("err is ", err);
+              }else{
+                  console.log("counsller init data added");
+              }
+          });
+        }else{
+          console.log("already have counsellor init data");
+        }
+     }
+  })
+}
+
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -97,6 +131,9 @@ function onListening() {
     db.collection("devotees").createIndex(
        { contact: 1, course:1, "attendance.date": 1 } )
 
+    for (var i = 0; i < counsellorInfo.length; i++) {
+        initCounsellorInfo(counsellorInfo[i]['username'], counsellorInfo[i]['secret']);
+    }
     pass = bcrypt.hashSync(process.env.DSECRET, 10)
     db.collection("devotees").find(
       {username:'admin'})

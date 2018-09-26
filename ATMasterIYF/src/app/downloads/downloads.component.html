@@ -74,6 +74,41 @@
             </form>
         </div>
 
+
+        <div *ngIf="isLoggedIn">
+          
+            <h6>Download Calling Report of specific Counsellor</h6>
+            
+            <form #download3="ngForm" (ngSubmit)="downloadCallReportCounsellor(download3)"
+                 class="classSc" style="margin:10px;">
+              
+                 <mat-form-field >                                                              
+                    <input matInput name="date" [(ngModel)]="date" [matDatepicker]="picker" placeholder="Choose a date" required>       
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+                    <mat-datepicker #picker></mat-datepicker>                                   
+                  </mat-form-field>                                                                        
+                                                                          
+                                                                                           
+                 <mat-form-field>                                                             
+                   <mat-select name="counsellor" [(ngModel)]="counsellor" placeholder="Counsellor" required>                                      
+                      <mat-option	value="HG Shyam Gopal Prabhuji"> HG Shyam Gopal Prabhuji </mat-option>
+                      <mat-option value="HG Kalpvraksha Prabhuji"> HG Kalpvraksha Prabhuji </mat-option>
+                      <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> 
+                      <mat-option value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
+                      <mat-option value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji </mat-option>          
+                      <mat-option value="NA"> NA </mat-option>          
+                   </mat-select>                                                              
+                 </mat-form-field>                                                             
+                                                                           
+                <button mat-raised-button type="submit" class="btn btn-primary" matTooltip="Download">
+                  <i class="fa fa-fw fa-download"></i>Download</button>
+              </form>
+          </div>
+
+
+
+
+
         <div>
           
           <h6>Download Devotees of particular course</h6>

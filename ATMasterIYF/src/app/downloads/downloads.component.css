@@ -1,7 +1,6 @@
 
-.content-wrapper{
-    background:url('../../assets/img/bg.jpg') repeat;
-    background-size: cover;
+ .content-wrapper{
+	margin-top: 80px;
 }
 
 
@@ -14,8 +13,12 @@
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1200px) {
     /* Styles */
-    .content-wrapper{
+    /*.content-wrapper{
         height: 100vh;
+    }*/
+
+   .classSc mat-form-field {
+        width: 287px !important;
     }
 	
 }
