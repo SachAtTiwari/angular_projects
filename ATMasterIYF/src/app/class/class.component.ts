@@ -85,10 +85,10 @@ export class ClassComponent implements AfterViewInit, OnInit {
             this.dataSource.data = classInfo.result;
         });
     }
-       
-      if ($(window).width() < 600) {
-      $('.left-pane')[0].style.display = "none";
-        }
+
+    if ($(window).width() < 600) {
+      $('.left-pane')[0].style.display = 'none';
+    }
   }
 
 
@@ -105,29 +105,41 @@ export class ClassComponent implements AfterViewInit, OnInit {
             timer: 1500
         });
     }else {
-      this._userService.checkIfClassSdlForCourse(form.value.course, form.value.date)
-      .subscribe(sdlresult => {
-         if (sdlresult.result.length === 0) {
-            this._userService.SdlClass(form.value);
-            form.reset();
-            // this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
+      if (form.value.course === 'DYS') {
+        this._userService.SdlClass(form.value);
+        form.reset();
+        swal({
+             type: 'success',
+             title: 'Class Scheduled ',
+             html: 'Hari Bol!!',
+             showConfirmButton: false,
+             timer: 1500
+         });
+      } else {
+        this._userService.checkIfClassSdlForCourse(form.value.course, form.value.date)
+        .subscribe(sdlresult => {
+          if (sdlresult.result.length === 0) {
+              this._userService.SdlClass(form.value);
+              form.reset();
+              // this.router.navigate(['/downloads']).then(() => { this.router.navigate(['/classSdl']); });
+              swal({
+                  type: 'success',
+                  title: 'Class Scheduled ',
+                  html: 'Hari Bol!!',
+                  showConfirmButton: false,
+                  timer: 1500
+              });
+          }else {
             swal({
-                 type: 'success',
-                 title: 'Class Scheduled ',
-                 html: 'Hari Bol!!',
-                 showConfirmButton: false,
-                 timer: 1500
-             });
-         }else {
-           swal({
-            type: 'success',
-            title: 'Class already scheduled for given date and course. ',
-            html: 'Hari Bol!!',
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      });
+              type: 'success',
+              title: 'Class already scheduled for given date and course. ',
+              html: 'Hari Bol!!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        });
+    }
     }
   }
 

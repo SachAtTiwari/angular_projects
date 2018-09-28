@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
+import { DyshandlerComponent } from '../dyshandler/dyshandler.component';
 import {AppComponent} from '../app.component';
 
 
@@ -358,6 +359,16 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
       .subscribe(sdlresult => {
          if (sdlresult.result.length === 0) {
             this.router.navigateByUrl('/classSdl');
+
+         }else if (sdlresult.result.length !== 0 && course === 'DYS') {
+            console.log('course dys ', course);
+            const dialogRef = this.dialog.open(DyshandlerComponent, {
+              width: '280px',
+              data: {}
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('after close');
+            });
          }else {
            this.topic = sdlresult.result[0].topic;
            this.devoteeData.counsellor = sdlresult.result[0].speaker;
