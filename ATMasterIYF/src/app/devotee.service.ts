@@ -392,7 +392,7 @@ export class UserService {
     searchParams.append('course', dTe.course);
     searchParams.append('counsellor', dTe.counsellor);
     const options = new RequestOptions({ headers: headers, params: searchParams });
-
+    console.log('options ', options);
     return this._http.get(this._url + 'downloadToExCounsellor', options)
         .map((response: Response) => {
           return response.json();

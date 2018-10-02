@@ -51,9 +51,13 @@
                                                                                          
                <mat-form-field>                                                             
                  <mat-select [(ngModel)]="course" name="course" placeholder="Course" required>                                         
-                   <mat-option *ngFor="let co of courses" [value]="co.value">
-                     {{co.value}}  
-                   </mat-option>                              
+                   
+                   <mat-option	value="OTP"> OTP </mat-option>
+                   <mat-option value="TSSV-B10"> TSSV-B10 </mat-option>
+                   <mat-option value="ASHRAY"> ASHRAY </mat-option> 
+                   <mat-option value="BSS"> BSS </mat-option>
+                   <mat-option value="DYS"> DYS </mat-option>          
+                   <mat-option value="ALL"> ALL </mat-option>                    
                                                
                  </mat-select>                                                              
                </mat-form-field>                                                            
@@ -65,7 +69,7 @@
                     <mat-option value="HG Vaidant Chaitnya Prabhuji"> HG Vaidant Chaitnya Prabhuji </mat-option> 
                     <mat-option value="HG Pundrik Vidhyanidhi Prabhuji"> HG Pundrik Vidhyanidhi Prabhuji </mat-option>
                     <mat-option value="HG Jagadanand Pandit Prabhuji"> HG Jagadanand Pandit Prabhuji </mat-option>          
-                    <mat-option value="NA"> NA </mat-option>          
+                    <mat-option value="ALL"> ALL </mat-option>          
                  </mat-select>                                                              
                </mat-form-field>                                                             
                                                                          

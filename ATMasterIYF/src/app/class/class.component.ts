@@ -7,6 +7,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Body } from '@angular/http/src/body';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
 import swal from 'sweetalert2';
+import {AppComponent} from '../app.component';
+
 
 declare var jquery: any;
 declare var $: any;
@@ -19,7 +21,6 @@ import {ViewEncapsulation} from '@angular/core';
   templateUrl: './class.component.html',
   styleUrls: ['./class.component.css'],
   providers: [UserService],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ClassComponent implements AfterViewInit, OnInit {
 
@@ -53,7 +54,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
   topic = '';
   date = '';
   isLoggedIn = false;
-  constructor(private _userService: UserService, private router: Router) { }
+  constructor(private _userService: UserService, private router: Router, private appComp: AppComponent) { }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -66,25 +67,35 @@ export class ClassComponent implements AfterViewInit, OnInit {
 
 
    ngOnInit() {
+    // Check if counsellor logged in
+    const cLogIn = localStorage.getItem('ctoken');
+    if (cLogIn) {
+      this._userService.iscTokenVerified(cLogIn)
+      .subscribe(ctokenRes => {
+        if (ctokenRes.result === 'ok') {
+          this.isLoggedIn = true;
+          this.appComp.isLoggedIn = true;
+          this.appComp.userName =  localStorage.getItem('cname');
+        }
+      });
+    }
+
+    // check if cousellor is login
     const getLoggedIn = localStorage.getItem('token');
-   // console.log("token is in atte init",getLoggedIn);
     if (getLoggedIn) {
         this._userService.isTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
             if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
+              this.appComp.isLoggedIn = true;
+              this.appComp.userName =  'admin';
             }
         });
-        this._userService.getSdlClasses()
-          .subscribe(classInfo => {
-            this.dataSource.data = classInfo.result;
-        });
-    }else {
-      this._userService.getSdlClasses()
-          .subscribe(classInfo => {
-            this.dataSource.data = classInfo.result;
-        });
-    }
+      }
+    this._userService.getSdlClasses()
+    .subscribe(classInfo => {
+          this.dataSource.data = classInfo.result;
+    });
 
     if ($(window).width() < 600) {
       $('.left-pane')[0].style.display = 'none';

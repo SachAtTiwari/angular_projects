@@ -16,7 +16,6 @@ import {ViewEncapsulation} from '@angular/core';
   templateUrl: './downloads.component.html',
   styleUrls: ['./downloads.component.css'],
   providers: [UserService],
-  encapsulation: ViewEncapsulation.None,
 
 })
 export class DownloadsComponent implements OnInit {
@@ -31,6 +30,7 @@ export class DownloadsComponent implements OnInit {
     {value: 'ASHRAY'},
     {value: 'BSS'},
     {value: 'UMANG'},
+    {value: 'DYS'},
   ];
 
   counsellors = [
@@ -64,9 +64,8 @@ export class DownloadsComponent implements OnInit {
         .subscribe(tokenRes => {
             if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
-            } else {
-              localStorage.clear();
-
+              this.appComp.isLoggedIn = true;
+              this.appComp.userName =  'admin';
             }
         });
       }
@@ -198,8 +197,6 @@ export class DownloadsComponent implements OnInit {
   }
 
 
-
-
   downloadToExcel(form: NgForm) {
 
     form.value.date = this._userService.parseDate(form.value.date);
@@ -213,7 +210,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
          if (userData.result[i].attendance !== undefined) {
-         for (let j = 0; j < userData.result[i].attendance.length;j++){
+         for (let j = 0; j < userData.result[i].attendance.length; j++) {
            if (userData.result[i].attendance[j].date.localeCompare(form.value.date) === 0) {
              objectToInsert['date'] = userData.result[i].attendance[j].date;
              objectToInsert['present'] = userData.result[i].attendance[j].present;

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild, AfterViewInit } from '@angular/co
 import { NgForm } from '@angular/forms';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService} from '../devotee.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, throwMatDialogContentAlreadyAttachedError} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
@@ -10,6 +10,7 @@ import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
 import { DyshandlerComponent } from '../dyshandler/dyshandler.component';
 import {AppComponent} from '../app.component';
+import { createAotUrlResolver } from '@angular/compiler';
 
 
 
@@ -112,30 +113,35 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
 
   _getDevotees(params) {
 
-    // Check if counsellor logged in
-    const cLogIn = localStorage.getItem('ctoken');
-    if (cLogIn) {
-      this._userService.iscTokenVerified(cLogIn)
-      .subscribe(ctokenRes => {
-        if (ctokenRes.result === 'ok') {
-          this.isLoggedIn = true;
-          this.appComp.userName = localStorage.getItem('cname');
-          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
-        }
+  // Check if counsellor logged in
+  const cLogIn = localStorage.getItem('ctoken');
+  if (cLogIn) {
+    this._userService.iscTokenVerified(cLogIn)
+    .subscribe(ctokenRes => {
+      if (ctokenRes.result === 'ok') {
+        this.isLoggedIn = true;
+        this.appComp.isLoggedIn = true;
+        this.appComp.userName =  localStorage.getItem('cname');
+      }
+    });
+  }
+
+  // check if cousellor is login
+  const getLoggedIn = localStorage.getItem('token');
+  if (getLoggedIn) {
+      this._userService.isTokenVerified(getLoggedIn)
+      .subscribe(tokenRes => {
+          if (tokenRes.result === 'ok') {
+            this.isLoggedIn = true;
+            this.appComp.isLoggedIn = true;
+            this.appComp.userName =  'admin';
+          }
       });
-    }
-    // check if admin logged in
-    const getLoggedIn = localStorage.getItem('token');
-    if (getLoggedIn) {
-      this.isLoggedIn = true;
-      this.appComp.userName = 'admin';
-      console.log('get logged in ', getLoggedIn);
     }
 
     // get all devotees
     this._userService.getDevotees(params['course'], getLoggedIn)
     .subscribe(userData => {
-      console.log('in get devotees', userData);
        if (userData.result) {
          userData.result = userData.result.filter(function(el) {
             return el.username !== 'admin';
@@ -154,11 +160,8 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
 
 
   showDetails(dv) {
-    // this.router.navigate(['/showDetails', dv['_id']]);
-    console.log('show deve', dv);
     this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
-           console.log(' user data is ', userData.result[0]);
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
@@ -168,9 +171,9 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
             hasBackdrop: false,
             data: {...userData.result[0]}
           });
-          dialogRef.afterClosed().subscribe(result => {
+          /*dialogRef.afterClosed().subscribe(result => {
             console.log('result is', result);
-          });
+          });*/
     });
   }
 
@@ -312,7 +315,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private _userService: UserService,
     private router: Router,
-    public snackBar: MatSnackBar) {}
+    public snackBar: MatSnackBar, private appComp: AppComponent) {}
 
   ngAfterViewInit() {
       this.dataSource.paginator = this.paginator;
@@ -325,7 +328,6 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
     let course = '';
     const todayDateNew = this._userService.parseDate(this.todayDate);
-    const getLoggedIn = localStorage.getItem('token');
     this.route.queryParams.subscribe(params => {
         // console.log('param is main', params['course']);
 
@@ -344,30 +346,54 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         }
     });
 
-    if (getLoggedIn) {
-        this._userService.isTokenVerified(getLoggedIn)
-        .subscribe(tokenRes => {
-            if (tokenRes.result === 'ok') {
-              this.isLoggedIn = true;
-            }else {
-              localStorage.clear();
-            }
-        });
+    // Check if counsellor logged in
+  const cLogIn = localStorage.getItem('ctoken');
+  if (cLogIn) {
+    this._userService.iscTokenVerified(cLogIn)
+    .subscribe(ctokenRes => {
+      if (ctokenRes.result === 'ok') {
+        this.isLoggedIn = true;
+        this.appComp.isLoggedIn = true;
+        this.appComp.userName =  localStorage.getItem('cname');
       }
+    });
+  }
 
-      this._userService.checkIfClassSdlForCourse(course, todayDateNew)
+  // check if cousellor is login
+  const getLoggedIn = localStorage.getItem('token');
+  if (getLoggedIn) {
+      this._userService.isTokenVerified(getLoggedIn)
+      .subscribe(tokenRes => {
+          if (tokenRes.result === 'ok') {
+            this.isLoggedIn = true;
+            this.appComp.isLoggedIn = true;
+            this.appComp.userName =  'admin';
+          }
+      });
+    }
+
+
+    this._userService.checkIfClassSdlForCourse(course, todayDateNew)
       .subscribe(sdlresult => {
          if (sdlresult.result.length === 0) {
             this.router.navigateByUrl('/classSdl');
 
          }else if (sdlresult.result.length !== 0 && course === 'DYS') {
-            console.log('course dys ', course);
             const dialogRef = this.dialog.open(DyshandlerComponent, {
               width: '280px',
-              data: {}
+              disableClose: true,
+              hasBackdrop: false,
+              data: {res: sdlresult.result}
             });
             dialogRef.afterClosed().subscribe(result => {
-              console.log('after close');
+              if (result.dystopic !== '') {
+                this.topic = sdlresult.result[0].topic;
+                this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, sdlresult.result[0].topic);
+              } else {
+                this.topic = result.dystopic;
+                this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, result.dystopic);
+              }
+              this.devoteeData.course = 'DYS';
             });
          }else {
            this.topic = sdlresult.result[0].topic;
@@ -378,7 +404,6 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
 
       this._userService.getTodayAttendance(course)
       .subscribe(userData => {
-          console.log('userdata is', userData);
           if (userData.result.length !== 0) {
           const result_json = [];
           for (let i = 0; i < userData.result.length; i++) {
@@ -402,7 +427,16 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
        });
   }
 
-    _searchedDevotee(contact, isContact, course) {
+  getSpeakerOfThisTopic(sdlresult, topic) {
+
+      for (let i = 0; i < sdlresult.result.length; i++) {
+        if (sdlresult.result[i].topic === topic) {
+          return sdlresult.result[i].speaker;
+        }
+      }
+  }
+
+  _searchedDevotee(contact, isContact, course) {
       this._userService.getSearchedDevotee(contact, course)
       .subscribe(userData => {
           if (userData.sdlResult) {
@@ -611,8 +645,62 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         });
       }
     }
+
+    handleDysAttendance = (course, contact, name) => {
+     // console.log('in dys attendance', this.devoteeData, this.topic);
+      const month = this.todayDate.getMonth() + 1;
+      const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
+      this._userService.checkIfClassSdlForCourse(course, date)
+      .subscribe(dysClassData => {
+      //    console.log('dys data is ', dysClassData);
+          this.dStatus['date'] = date;
+          this.dStatus['present'] = 'YES';
+          this.dStatus['topic'] = this.topic;
+          this.dStatus['speaker'] = this.getSpeakerOfThisTopic(dysClassData, this.topic);
+          this.dStatus['contact'] =  contact;
+          console.log('d status is  ', this.dStatus);
+          this._userService.markAttendance(this.dStatus)
+          .subscribe(userDataNew => {
+            if (userDataNew['result'] === 'ok') {
+              this.loading = false;
+              swal({
+
+                  type: 'success',
+                  title: 'Attendance updated successfully',
+                  html: 'Hari Bol!!',
+                  showConfirmButton: false,
+                  timer: 1500
+              });
+              this.attendanceArray.push(
+              {
+                      name: name,
+                      contact: contact,
+                      attendance: 'YES',
+                      topic: this.topic
+              });
+              this.dataSource.data = this.attendanceArray;
+            } else {
+                 swal({
+
+                     type: 'warning',
+                     title: 'Attendance already updated',
+                     html: 'Hari Bol!!',
+                     showConfirmButton: false,
+                     timer: 1500
+                 });
+                this.dataSource.data = this.attendanceArray;
+                this.loading = false;
+            }
+          });
+
+      });
+
+    }
     markAttendance(course, contact, name) {
        console.log('mark attendance', course, this.devoteeData);
+       if (course === 'DYS') {
+         this.handleDysAttendance(course, contact, name);
+       } else {
        let specialCourse = false;
        this.route.queryParams.subscribe(params => {
         if (params['course'] === '4') {
@@ -680,6 +768,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
           });
       }
     }
+  }
 
 }
 
