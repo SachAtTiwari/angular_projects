@@ -96,7 +96,7 @@ export class UserService {
       );
   }
 
-  getDevotees(course, token): Observable<any> {
+  getDevotees(course): Observable<any> {
       let courseName = '';
       switch (course) {
         case '1':
@@ -124,9 +124,10 @@ export class UserService {
 
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
+     // headers.append('token', 'token');
       const searchParams = new URLSearchParams();
       searchParams.append('course', courseName);
-      searchParams.append('token', token);
+      // searchParams.append('token', token);
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getDevotees', options)
         .map((response: Response) => {
@@ -142,10 +143,14 @@ export class UserService {
       const token = localStorage.getItem('token');
       const ctoken = localStorage.getItem('ctoken');
       if (token) {
-        searchParams.append('token', token);
+      //  searchParams.append('token', token);
+        headers.append('token', token);
+
       }
       if (ctoken) {
-        searchParams.append('ctoken', ctoken);
+      //  searchParams.append('ctoken', ctoken);
+        headers.append('ctoken', ctoken);
+
       }
       searchParams.append('id', id);
       const options = new RequestOptions({ headers: headers, params: searchParams });
@@ -215,7 +220,8 @@ export class UserService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
-    searchParams.append('token', token);
+   // searchParams.append('token', token);
+    headers.append('token', token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
     return this._http.get(this._url + 'isTokenVerified', options)
         .map((response: Response) => {
@@ -228,7 +234,9 @@ export class UserService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
-    searchParams.append('token', token);
+  //  searchParams.append('token', token);
+    headers.append('ctoken', token);
+
     const options = new RequestOptions({ headers: headers, params: searchParams });
     return this._http.get(this._url + 'iscTokenVerified', options)
         .map((response: Response) => {
@@ -256,7 +264,7 @@ export class UserService {
       );
    }
 
-  addDevotee(body): Observable<Response> {
+  addDevotee = (body): Observable<Response> => {
      return this._http.post(this._url + 'addDevotee', {
         body: body
        }).map(
@@ -269,7 +277,7 @@ export class UserService {
         );
   }
 
-   addDevoteeGeneric(body): Observable<Response> {
+   addDevoteeGeneric = (body): Observable<Response> => {
     return this._http.post(this._url + 'addDevoteeGeneric', {
        body: body
       }).map(
@@ -282,7 +290,7 @@ export class UserService {
        );
     }
 
-  editDevotee(body): Observable<Response> {
+  editDevotee = (body): Observable<Response> => {
     return this._http.put(this._url + 'updateDevotee', {
        body: body
       })
@@ -304,7 +312,7 @@ export class UserService {
     return date;
    }
 
-   SdlClass(body) {
+   SdlClass = (body) => {
     this._http.post(this._url + 'sdlClass', {
        body: body
       }).subscribe(
@@ -317,7 +325,7 @@ export class UserService {
        );
   }
 
-   markAttendance(attendance): Observable<Response> {
+   markAttendance = (attendance): Observable<Response> => {
     console.log('atten is ', attendance);
      return this._http.post(this._url + 'markAttendance' , {
             attendance: attendance
@@ -333,7 +341,7 @@ export class UserService {
    }
 
 
-   downloadCallReportCounsellor (dTe) {
+   downloadCallReportCounsellor = (dTe) => {
     console.log('downlods call report', dTe);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -351,7 +359,7 @@ export class UserService {
 
 
 
-   downloadToExcel (dTe) {
+   downloadToExcel = (dTe) => {
       console.log('downlods', dTe);
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
@@ -368,7 +376,7 @@ export class UserService {
        );
    }
 
-   downloadCourseExcel(dTe) {
+   downloadCourseExcel = (dTe) => {
     // console.log("atten is ", dTe);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -384,7 +392,7 @@ export class UserService {
   }
 
 
-   downloadToExCounsellor(dTe) {
+   downloadToExCounsellor = (dTe) => {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
@@ -400,7 +408,7 @@ export class UserService {
      );
  }
 
-   getTodayAttendance(course) {
+   getTodayAttendance = (course) => {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();

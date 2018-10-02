@@ -204,12 +204,12 @@ exports.getDevotees = function(req, res, next) {
     let isLoggedIn = false;
 
 
-    if(req.query.token){
+    /*if(req.query.token){
       let decoded = jwt.verify(req.query.token,'khsandasinasfnasiu2194u19u41142i210');
       if (decoded.user.length > 0){
         isLoggedIn = true;
       }  
-    }
+    }*/
   
     if(course){
          db.listCollections().toArray(function(err, collections){
@@ -220,7 +220,7 @@ exports.getDevotees = function(req, res, next) {
               .toArray(function(err, sdlResult) {
                if (err) {
 		            console.log("err ", err)
-                 res.send({error:500, isLoggedIn:isLoggedIn});            
+                 res.send({error:500});            
 		            }else{
                 console.log("sdl result ",sdlResult);
                 //GET OTP devotees 
@@ -237,7 +237,7 @@ exports.getDevotees = function(req, res, next) {
                 		      res.send({error:500, isLoggedIn:isLoggedIn});
 			                  }
                              //console.log("devotee result", result);
-                        res.send({result:result, sdlResult:sdlResult, isLoggedIn:isLoggedIn});
+                        res.send({result:result, sdlResult:sdlResult});
                       });
                       }
                    });
@@ -258,10 +258,10 @@ exports.getDevotees = function(req, res, next) {
               .toArray(function(err, result) {
                if (err) {
 			            console.log("err is ", err);
-                	res.send({error:500, isLoggedIn:isLoggedIn});
+                	res.send({error:500});
 	            	}else{
                 //console.log(result);
-               	res.send({result:result, isLoggedIn:isLoggedIn});
+               	res.send({result:result});
 	          	}
            });
           }
@@ -275,14 +275,13 @@ exports.getDevotees = function(req, res, next) {
 exports.getDevoteeDetail = function(req, res, next) {
   try{
     console.log("im here", req.query, cLogin.secret);
-
    let db = req.app.locals.db;
-   if (req.query.token) {
-      var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
+   if (req.header('token')) {
+      var decoded = jwt.verify(req.header('token'), 'khsandasinasfnasiu2194u19u41142i210');
    }
 
-   if (req.query.ctoken) {
-      var decoded = jwt.verify(req.query.ctoken, cLogin.secret);
+   if (req.header('ctoken')) {
+      var decoded = jwt.verify(req.header('ctoken'), cLogin.secret);
    }
   
    if(decoded.user.length > 0){
@@ -462,10 +461,10 @@ exports.getSearchedDevotee = function(req, res, next) {
 
 exports.isTokenVerified = function(req, res, next) {
     try{
-        console.log("token is verified ", req.query.token);
+      //  console.log("token is verified ", req.header('token'));
         let db = req.app.locals.db;
         //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
-        jwt.verify(req.query.token,'khsandasinasfnasiu2194u19u41142i210',
+        jwt.verify(req.header('token'), 'khsandasinasfnasiu2194u19u41142i210',
         function(err, decoded){
           if(err){
             // respond to request with error

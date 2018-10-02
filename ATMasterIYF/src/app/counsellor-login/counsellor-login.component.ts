@@ -33,12 +33,13 @@ export class CounsellorLoginComponent implements OnInit {
       $('.left-pane')[0].style.display = 'none';
     }
 
+    if (this.appComp.isLoggedIn === true) {
     const getLoggedIn = localStorage.getItem('ctoken');
     console.log('getLogged in ', getLoggedIn);
     if (getLoggedIn) {
         this._userService.iscTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-           console.log('data is ', tokenRes);
+           console.log('data is 1', tokenRes);
 
             if (tokenRes.result === 'ok') {
               this.appComp.isLoggedIn = true;
@@ -49,12 +50,13 @@ export class CounsellorLoginComponent implements OnInit {
         });
     }
   }
+  }
 
   counLogin(form: NgForm): void {
     this._userService.counLogin(form.value)
     .subscribe(data => {
       if (data.result === 'ok') {
-         console.log('data is ', data);
+         console.log('data is 2', data);
 
          localStorage.setItem('ctoken', data.token);
          localStorage.setItem('cname', form.value.username);

@@ -140,7 +140,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     }
 
     // get all devotees
-    this._userService.getDevotees(params['course'], getLoggedIn)
+    this._userService.getDevotees(params['course'])
     .subscribe(userData => {
        if (userData.result) {
          userData.result = userData.result.filter(function(el) {
