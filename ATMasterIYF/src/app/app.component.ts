@@ -21,13 +21,21 @@ declare var $: any;
 })
 
 export class AppComponent implements OnInit {
-  constructor(private _userService: UserService) { }
+
+  constructor(private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private _userService: UserService,
+    private router: Router)  {}
+
 
   isLoggedIn = false;
   userName = '';
   adminLogout() {
     localStorage.clear();
-    window.location.reload();
+    this.isLoggedIn = false;
+    this.router.navigateByUrl('/classSdl');
+
+    // window.location.reload();
   }
 
   toggleClicked() {

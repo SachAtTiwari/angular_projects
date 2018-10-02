@@ -69,6 +69,7 @@ import { MainAttendanceComponent } from './attendance/attendance.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { CounsellorLoginComponent } from './counsellor-login/counsellor-login.component';
 import { CallingDetailsComponent } from './calling-details/calling-details.component';
+import { DyshandlerComponent } from './dyshandler/dyshandler.component';
 
 const appRoutes: Routes = [
   { path: 'showDetails/:id', component: ShowdetailsComponent},
@@ -102,6 +103,7 @@ const appRoutes: Routes = [
     AdminLoginComponent,
     CounsellorLoginComponent,
     CallingDetailsComponent,
+    DyshandlerComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -109,7 +111,8 @@ const appRoutes: Routes = [
     EditDevoteeComponent,
     EditDevoteeConfirm,
     MainAttendanceComponent,
-    ShowdetailsComponent
+    ShowdetailsComponent,
+    DyshandlerComponent
   ],
   imports: [
     DataTablesModule,

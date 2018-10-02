@@ -112,10 +112,10 @@ exports.updateComment = function(req, res, next) {
 
 exports.iscTokenVerified = function(req, res, next) {
   try{
-      console.log("verify token ", req.query.token);
+      console.log("verify token ", req.query);
       let db = req.app.locals.db;
       //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
-      jwt.verify(req.query.token, secret,
+      jwt.verify(req.header('ctoken'), secret,
       function(err, decoded){
         if(err){
           // respond to request with error

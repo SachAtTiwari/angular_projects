@@ -16,7 +16,6 @@ import {ViewEncapsulation} from '@angular/core';
   templateUrl: './downloads.component.html',
   styleUrls: ['./downloads.component.css'],
   providers: [UserService],
-  encapsulation: ViewEncapsulation.None,
 
 })
 export class DownloadsComponent implements OnInit {
@@ -31,6 +30,7 @@ export class DownloadsComponent implements OnInit {
     {value: 'ASHRAY'},
     {value: 'BSS'},
     {value: 'UMANG'},
+    {value: 'DYS'},
   ];
 
   counsellors = [
@@ -64,9 +64,8 @@ export class DownloadsComponent implements OnInit {
         .subscribe(tokenRes => {
             if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
-            } else {
-              localStorage.clear();
-
+              this.appComp.isLoggedIn = true;
+              this.appComp.userName =  'admin';
             }
         });
       }
@@ -75,9 +74,28 @@ export class DownloadsComponent implements OnInit {
         }
   }
 
+  excelGenerator = (d1, d2, result_json) => {
+    const ws_name = 'Attendance';
+    const wb: WorkBook = { SheetNames: [], Sheets: {} };
+    const ws: any = utils.json_to_sheet(result_json);
+    wb.SheetNames.push(ws_name);
+    wb['!autofilter'] = { ref: 'C4' };
+    wb.Sheets[ws_name] = ws;
+    const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+      }
+      return buf;
+    }
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
+        d1 + '_' + d2  + '.xlsx');
 
+  }
 
-  checkIfDevoteePresntForGivenDate(date, myArray) {
+  checkIfDevoteePresntForGivenDate = (date, myArray) => {
     for (let i = 0; i < myArray.length; i++) {
         if (myArray[i].date === date) {
             return myArray[i];
@@ -85,8 +103,7 @@ export class DownloadsComponent implements OnInit {
     }
   }
 
-  downloadCallReportCounsellor(form: NgForm) {
-      console.log('in call report ', form.value);
+  downloadCallReportCounsellor = (form: NgForm) => {
       this._userService.downloadCallReportCounsellor(form.value)
       .subscribe(userData => {
           console.log(userData);
@@ -105,32 +122,13 @@ export class DownloadsComponent implements OnInit {
               }
             }
          result_json.push(objectToInsert);
-         }
-         console.log('result json ', result_json);
-
-          const ws_name = 'Attendance';
-          const wb: WorkBook = { SheetNames: [], Sheets: {} };
-          const ws: any = utils.json_to_sheet(result_json);
-          wb.SheetNames.push(ws_name);
-          wb.Sheets[ws_name] = ws;
-          const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
-          function s2ab(s) {
-            const buf = new ArrayBuffer(s.length);
-            const view = new Uint8Array(buf);
-            for (let i = 0; i !== s.length; ++i) {
-              view[i] = s.charCodeAt(i) & 0xFF;
-            }
-            return buf;
-          }
-          saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
-              form.value.date + '_' + form.value.counsellor + '.xlsx');
-
+        }
+        this.excelGenerator(form.value.date, form.value.counsellor, result_json);
       });
 
   }
 
-  downloadExCounsellor(form: NgForm) {
-    console.log('in counsellor', form.value);
+  downloadExCounsellor = (form: NgForm) => {
     const classList = [];
     this._userService.getSdlClassesCourse(this.course)
     .subscribe(sdlClass => {
@@ -174,33 +172,14 @@ export class DownloadsComponent implements OnInit {
         }
         result_json.push(objectToInsert);
        }
-       // console.log('object to insert', result_json);
-
-       const ws_name = 'Attendance';
-       const wb: WorkBook = { SheetNames: [], Sheets: {} };
-       const ws: any = utils.json_to_sheet(result_json);
-       wb.SheetNames.push(ws_name);
-       wb.Sheets[ws_name] = ws;
-       const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
-       function s2ab(s) {
-         const buf = new ArrayBuffer(s.length);
-         const view = new Uint8Array(buf);
-         for (let i = 0; i !== s.length; ++i) {
-           view[i] = s.charCodeAt(i) & 0xFF;
-         }
-         return buf;
-       }
-       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
-           form.value.course + '_' + form.value.counsellor + '.xlsx');
+       this.excelGenerator(form.value.course, form.value.counsellor, result_json);
       });
      }
     });
   }
 
 
-
-
-  downloadToExcel(form: NgForm) {
+  downloadToExcel = (form: NgForm) => {
 
     form.value.date = this._userService.parseDate(form.value.date);
     this._userService.downloadToExcel(form.value)
@@ -213,7 +192,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
          if (userData.result[i].attendance !== undefined) {
-         for (let j = 0; j < userData.result[i].attendance.length;j++){
+         for (let j = 0; j < userData.result[i].attendance.length; j++) {
            if (userData.result[i].attendance[j].date.localeCompare(form.value.date) === 0) {
              objectToInsert['date'] = userData.result[i].attendance[j].date;
              objectToInsert['present'] = userData.result[i].attendance[j].present;
@@ -225,27 +204,11 @@ export class DownloadsComponent implements OnInit {
       }
       result_json.push(objectToInsert);
       }
-       const ws_name = 'Attendance';
-       const wb: WorkBook = { SheetNames: [], Sheets: {} };
-       const ws: any = utils.json_to_sheet(result_json);
-       wb.SheetNames.push(ws_name);
-       wb['!autofilter'] = { ref: 'C4' };
-       wb.Sheets[ws_name] = ws;
-       const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
-       function s2ab(s) {
-         const buf = new ArrayBuffer(s.length);
-         const view = new Uint8Array(buf);
-         for (let i = 0; i !== s.length; ++i) {
-           view[i] = s.charCodeAt(i) & 0xFF;
-         }
-         return buf;
-       }
-       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
-           form.value.date + '_' + form.value.course  + '.xlsx');
+      this.excelGenerator(form.value.date,  form.value.course, result_json);
    });
   }
 
-  downloadCourseExcel(form: NgForm) {
+  downloadCourseExcel = (form: NgForm) => {
     this._userService.downloadCourseExcel(form.value)
     .subscribe(userData => {
        const result_json = [];
@@ -258,22 +221,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['email'] = userData.result[i].email;
          result_json.push(objectToInsert);
       }
-      const ws_name = 'Attendance';
-      const wb: WorkBook = { SheetNames: [], Sheets: {} };
-      const ws: any = utils.json_to_sheet(result_json);
-      wb.SheetNames.push(ws_name);
-      wb.Sheets[ws_name] = ws;
-      const wbout = write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
-      function s2ab(s) {
-         const buf = new ArrayBuffer(s.length);
-         const view = new Uint8Array(buf);
-         for (let i = 0; i !== s.length; ++i) {
-           view[i] = s.charCodeAt(i) & 0xFF;
-         }
-         return buf;
-       }
-       saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
-           form.value.course  + '.xlsx');
-       });
+      this.excelGenerator(form.value.course, form.value.course, result_json);
+    });
   }
 }

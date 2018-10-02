@@ -1,5 +1,6 @@
 const dbClient = require('mongodb').MongoClient;
 const assert = require('assert');
+
  
 exports.downloadToExcel =  function(req, res, next) {
   try{
@@ -33,6 +34,7 @@ exports.downloadToExcel =  function(req, res, next) {
               });
         }
     });
+  
   }catch(err){
     console.log("Exception:", err);
 
@@ -42,7 +44,6 @@ exports.downloadToExcel =  function(req, res, next) {
 
 exports.downloadToExCounsellor =  function(req, res, next) {
   try{
-    console.log("i m here", req.query);
     let db = req.app.locals.db;
 
     db.listCollections().toArray(function(err, collections){
