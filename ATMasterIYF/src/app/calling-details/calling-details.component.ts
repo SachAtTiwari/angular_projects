@@ -16,7 +16,6 @@ import swal from 'sweetalert2';
   selector: 'app-calling-details',
   templateUrl: './calling-details.component.html',
   styleUrls: ['./calling-details.component.css'],
-  encapsulation: ViewEncapsulation.None
 
 })
 export class CallingDetailsComponent implements OnInit, AfterViewInit {
