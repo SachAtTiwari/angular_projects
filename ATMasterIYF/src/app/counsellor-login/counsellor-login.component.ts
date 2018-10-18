@@ -64,6 +64,15 @@ export class CounsellorLoginComponent implements OnInit {
           this.router.navigateByUrl('/callingdetails/' + form.value.username);
           this.appComp.isLoggedIn = true;
           this.appComp.userName = form.value.username;
+      } else {
+          swal({
+
+            type: 'error',
+            title: 'Invalid Login Crdentials',
+            html: 'Hari Bol:(',
+            showConfirmButton: false,
+            timer: 1500
+        });
       }
     });
   }

@@ -6,6 +6,7 @@ var cLogin = require('./counsellorLogin');
 
 exports.addDevoteeGeneric = function(req, res, next) {
   try{
+
   let db = req.app.locals.db;
   db.collection("devotees").find(
    {contact:req.body.body.contact})
@@ -353,6 +354,11 @@ exports.updateDevotee = function(req, res, next) {
     if(req.body.body.isAlumni){
       valuesToUpdate["isAlumni"] = req.body.body.isAlumni;
     }
+
+    if(req.body.body.facilitator){
+      valuesToUpdate["facilitator"] = req.body.body.facilitator;
+    }
+
     console.log("value to update", valuesToUpdate);
     let db = req.app.locals.db;
     
@@ -461,10 +467,9 @@ exports.getSearchedDevotee = function(req, res, next) {
 
 exports.isTokenVerified = function(req, res, next) {
     try{
-      //  console.log("token is verified ", req.header('token'));
+        // console.log("token is verified ", req.header('Authorization').split(" "));
         let db = req.app.locals.db;
-        //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
-        jwt.verify(req.header('token'), 'khsandasinasfnasiu2194u19u41142i210',
+        jwt.verify(req.header('Authorization').split(" ")[1], 'khsandasinasfnasiu2194u19u41142i210',
         function(err, decoded){
           if(err){
             // respond to request with error
@@ -473,7 +478,6 @@ exports.isTokenVerified = function(req, res, next) {
             
           }else{
             // continue with the request
-            console.log("decoded ", decoded);
             if(decoded.user.length > 0){
                 res.send({result:"ok"})
             }else{

@@ -4,7 +4,6 @@ const assert = require('assert');
  
 exports.downloadToExcel =  function(req, res, next) {
   try{
-    console.debug("in downloads", req.query);
     let db = req.app.locals.db;
 
     db.listCollections().toArray(function(err, collections){
@@ -53,7 +52,7 @@ exports.downloadToExCounsellor =  function(req, res, next) {
              db.collection("devotees").find(
               { 
                 course:req.query.course, 
-                counsellor:req.query.counsellor,  
+                counsellor:req.query.counsellor, 
               }
               ).toArray(function(err, result) {
                 if (err) {
@@ -82,7 +81,6 @@ function getDate() {
 
 exports.downloadCallReportCounsellor =  function(req, res, next) {
   try{
-    console.log("i m here", req.query);
     let db = req.app.locals.db;
     date = getDate(req.query.date);
 
@@ -114,7 +112,6 @@ exports.downloadCallReportCounsellor =  function(req, res, next) {
 
 exports.downloadCourseExcel =  function(req, res, next) {
   try{
-    console.log("in course", req.query);
     let db = req.app.locals.db;
 
     db.listCollections().toArray(function(err, collections){
@@ -146,7 +143,6 @@ exports.downloadCourseExcel =  function(req, res, next) {
 
 exports.checkDevoteeStatusForGivenDate = function(req, res, next){
   try{
-    console.log("i m here", req.query);
     let db = req.app.locals.db;
     db.listCollections().toArray(function(err, collections){
       if (collections === undefined){

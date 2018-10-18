@@ -39,11 +39,24 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
 
   ELEMENT_DATA: Element[] = [];
+  DETAILS_DATA: Element[] = [];
+
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSourceDetails = new MatTableDataSource<any>(this.DETAILS_DATA);
+
+  @ViewChild(MatPaginator) paginatorDetails: MatPaginator;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
+
+  facilitators = [
+    {sgp: ['HG Madhav Caran Das']},
+    {kvp: ['HG Anant Nimai Das']},
+    {pvnp: ['']},
+    {jnp: ['HG Vraj Jana Ranjan Das']},
+    {vcp: ['HG Shastra chaksu Das', 'HG Kishan Kanhyia Prabhuji']},
+  ];
 
   ngOnInit() {
     /* this._dataService.currentMessage.subscribe(message => {
@@ -51,11 +64,11 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
        this.dataSource.data = message;
      });*/
      const getLoggedIn = localStorage.getItem('ctoken');
-    console.log('getLogged in ', getLoggedIn);
+   // console.log('getLogged in ', getLoggedIn);
     if (getLoggedIn) {
         this._userService.iscTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-           console.log('data is ', tokenRes);
+         //  console.log('data is ', tokenRes);
 
             if (tokenRes.result === 'ok') {
               this.route.params.subscribe(params => {
@@ -101,6 +114,45 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
         });
       }
   }*/
+
+  findKey = (username) => {
+    //  console.log('element ', this.facilitators[0]);
+      switch (username) {
+        case 'sgp':
+          return this.facilitators[0]['sgp'];
+        case 'kvp':
+          return this.facilitators[1]['kvp'];
+        case 'vcp':
+          return this.facilitators[4]['vcp'];
+        case 'pvnp':
+          return this.facilitators[2]['pvnp'];
+        case 'jnp':
+          return this.facilitators[3]['jnp'];
+        case 'admin':
+          return [];
+      }
+  }
+
+  showDetails(dv) {
+    this._userService.getDetails(dv['_id'])
+    .subscribe(userData => {
+           if (userData.result[0].attendance) {
+            this.dataSourceDetails.data = userData.result[0].attendance;
+            userData.result[0].dataSourceDetails = this.dataSourceDetails;
+            console.log('counsellor', this.findKey(this.appComp.userName));
+            userData.result[0].facilitators = this.findKey(this.appComp.userName);
+           }
+           console.log('data is ', userData.result[0]);
+           const dialogRef = this.dialog.open(ShowdetailsComponent, {
+            width: '100vh',
+            hasBackdrop: false,
+            data: {...userData.result[0]}
+          });
+          /*dialogRef.afterClosed().subscribe(result => {
+            console.log('result is', result);
+          });*/
+    });
+  }
 
   lockIt(element, event) {
   //  console.log('element ', element.calling);

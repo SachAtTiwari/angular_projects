@@ -114,8 +114,7 @@ exports.iscTokenVerified = function(req, res, next) {
   try{
       console.log("verify token ", req.query);
       let db = req.app.locals.db;
-      //var decoded = jwt.verify(req.query.token, 'khsandasinasfnasiu2194u19u41142i210');
-      jwt.verify(req.header('ctoken'), secret,
+      jwt.verify(req.header('Authorization').split(" ")[1], secret,
       function(err, decoded){
         if(err){
           // respond to request with error
@@ -124,7 +123,7 @@ exports.iscTokenVerified = function(req, res, next) {
           
         }else{
           // continue with the request
-          console.log("decoded ", decoded);
+         // console.log("decoded ", decoded);
           if(decoded.user.length > 0){
               res.send({result:"ok"})
           }else{

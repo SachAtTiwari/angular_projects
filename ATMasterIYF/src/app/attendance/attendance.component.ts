@@ -27,7 +27,7 @@ declare var $: any;
 })
 
 export class AttendanceComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
+  displayedColumns = ['name', 'contact', 'counsellor', 'course', 'facilitator', 'actions'];
   ELEMENT_DATA: Element[] = [];
   DETAILS_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -69,7 +69,15 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
     {value: 'DYS'},
   ];
 
+  facilitators = [
+    {sgp: ['HG Madhav Caran Das']},
+    {kvp: ['HG Anant Nimai Das']},
+    {pvnp: ['']},
+    {jnp: ['HG Vraj Jana Ranjan Das']},
+    {vcp: ['HG Shastra chaksu Das', 'HG Kishan Kanhyia Prabhuji']},
+  ];
 
+// (page)="pageEvent = getPageDetails($event)"
   /* getPageDetails(e) {
     console.log(e.pageSize);
     this._getDevotees({course:5});
@@ -159,13 +167,34 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
 
+  findKey = (username) => {
+    //  console.log('element ', this.facilitators[0]);
+      switch (username) {
+        case 'sgp':
+          return this.facilitators[0]['sgp'];
+        case 'kvp':
+          return this.facilitators[1]['kvp'];
+        case 'vcp':
+          return this.facilitators[4]['vcp'];
+        case 'pvnp':
+          return this.facilitators[2]['pvnp'];
+        case 'jnp':
+          return this.facilitators[3]['jnp'];
+        case 'admin':
+          return [];
+      }
+  }
+
   showDetails(dv) {
     this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
+            console.log('counsellor', this.findKey(this.appComp.userName));
+            userData.result[0].facilitators = this.findKey(this.appComp.userName);
            }
+           console.log('data is ', userData.result[0]);
            const dialogRef = this.dialog.open(ShowdetailsComponent, {
             width: '100vh',
             hasBackdrop: false,
@@ -658,7 +687,6 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
           this.dStatus['topic'] = this.topic;
           this.dStatus['speaker'] = this.getSpeakerOfThisTopic(dysClassData, this.topic);
           this.dStatus['contact'] =  contact;
-          console.log('d status is  ', this.dStatus);
           this._userService.markAttendance(this.dStatus)
           .subscribe(userDataNew => {
             if (userDataNew['result'] === 'ok') {
@@ -697,7 +725,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
 
     }
     markAttendance(course, contact, name) {
-       console.log('mark attendance', course, this.devoteeData);
+      // console.log('mark attendance', course, this.devoteeData);
        if (course === 'DYS') {
          this.handleDysAttendance(course, contact, name);
        } else {

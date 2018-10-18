@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
         if (ctokenRes.result === 'ok') {
           this.isLoggedIn = true;
           this.userName = localStorage.getItem('cname');
-          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
+         // console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
         }
       });
     }

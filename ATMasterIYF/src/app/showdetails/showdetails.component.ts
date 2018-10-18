@@ -63,7 +63,7 @@ export class ShowdetailsComponent implements OnInit {
 
     updateDevotee(form: NgForm): void {
       form.value._id = this.data['_id'];
-   //   console.log('update devotee ', form.value);
+     // console.log('update devotee ', form.value);
 
       this._userService.editDevotee(form.value)
       .subscribe(userData => {

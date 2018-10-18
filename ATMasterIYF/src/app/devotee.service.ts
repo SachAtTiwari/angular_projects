@@ -10,7 +10,7 @@ import 'rxjs/add/operator/mergeMap';
 
 export class UserService {
   private _url: string = 'http://localhost:3000/';
- //  private _url: string = '/';
+  //  private _url: string = '/';
 
   constructor(private _http: Http) {}
 
@@ -124,10 +124,8 @@ export class UserService {
 
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
-     // headers.append('token', 'token');
       const searchParams = new URLSearchParams();
       searchParams.append('course', courseName);
-      // searchParams.append('token', token);
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getDevotees', options)
         .map((response: Response) => {
@@ -220,8 +218,7 @@ export class UserService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
-   // searchParams.append('token', token);
-    headers.append('token', token);
+    headers.append('Authorization', 'Bearer ' + token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
     return this._http.get(this._url + 'isTokenVerified', options)
         .map((response: Response) => {
@@ -234,9 +231,8 @@ export class UserService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
-  //  searchParams.append('token', token);
-    headers.append('ctoken', token);
-
+//    headers.append('ctoken', token);
+    headers.append('Authorization', 'Bearer ' + token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
     return this._http.get(this._url + 'iscTokenVerified', options)
         .map((response: Response) => {
