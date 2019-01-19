@@ -415,7 +415,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
               data: {res: sdlresult.result}
             });
             dialogRef.afterClosed().subscribe(result => {
-              if (result.dystopic !== '') {
+              if (result.dystopic === undefined) {
                 this.topic = sdlresult.result[0].topic;
                 this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, sdlresult.result[0].topic);
               } else {
@@ -424,7 +424,25 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
               }
               this.devoteeData.course = 'DYS';
             });
-         }else {
+         } else if (sdlresult.result.length !== 0 && course === 'TSSV-B10') {
+          const dialogRef = this.dialog.open(DyshandlerComponent, {
+            width: '280px',
+            disableClose: true,
+            hasBackdrop: false,
+            data: {res: sdlresult.result}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result.dystopic ===  undefined) {
+              this.topic = sdlresult.result[0].topic;
+              this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, sdlresult.result[0].topic);
+            } else {
+              this.topic = result.dystopic;
+              this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, result.dystopic);
+            }
+            this.devoteeData.course = 'TSSV-B10';
+          });
+
+         } else {
            this.topic = sdlresult.result[0].topic;
            this.devoteeData.counsellor = sdlresult.result[0].speaker;
            this.devoteeData.course = sdlresult.result[0].course;
@@ -461,6 +479,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < sdlresult.result.length; i++) {
         if (sdlresult.result[i].topic === topic) {
           return sdlresult.result[i].speaker;
+         // return (sdlresult.result[i].speaker === 'NA' ? sdlresult.result[i].guest : sdlresult.result[i].speaker);
         }
       }
   }
@@ -726,7 +745,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
     markAttendance(course, contact, name) {
       // console.log('mark attendance', course, this.devoteeData);
-       if (course === 'DYS') {
+       if (course === 'DYS' || course === 'TSSV-B10') {
          this.handleDysAttendance(course, contact, name);
        } else {
        let specialCourse = false;

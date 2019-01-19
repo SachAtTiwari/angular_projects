@@ -52,7 +52,7 @@ export class DownloadsComponent implements OnInit {
           this.appComp.isLoggedIn = true;
           this.appComp.userName =  localStorage.getItem('cname');
          // this.userName = localStorage.getItem('cname');
-          console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
+         // console.log('c log in  ', cLogIn, localStorage.getItem('cname'));
         }
       });
     }
@@ -151,6 +151,12 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['contact'] = userData.result[i].contact;
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
+         if ( userData.result[i].dob ) {
+           objectToInsert['dob'] = this._userService.parseDate(userData.result[i].dob) ;
+         }
+         if ( userData.result[i].attendance !== undefined ) {
+            objectToInsert['classcount'] = userData.result[i].attendance.length;
+         }
          const iterLen = 0;
          // get list of last 8 eight classes
          // check if devotee present for that day
@@ -191,15 +197,17 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['contact'] = userData.result[i].contact;
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
+         objectToInsert['dob'] = this._userService.parseDate(userData.result[i].dob);
          if (userData.result[i].attendance !== undefined) {
-         for (let j = 0; j < userData.result[i].attendance.length; j++) {
-           if (userData.result[i].attendance[j].date.localeCompare(form.value.date) === 0) {
+          objectToInsert['classcount'] = userData.result[i].attendance.length;
+          for (let j = 0; j < userData.result[i].attendance.length; j++) {
+            if (userData.result[i].attendance[j].date.localeCompare(form.value.date) === 0) {
              objectToInsert['date'] = userData.result[i].attendance[j].date;
              objectToInsert['present'] = userData.result[i].attendance[j].present;
              objectToInsert['topic'] = userData.result[i].attendance[j].topic;
              objectToInsert['speaker'] = userData.result[i].attendance[j].speaker;
              break;
-           }
+            }
         }
       }
       result_json.push(objectToInsert);

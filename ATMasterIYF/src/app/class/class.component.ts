@@ -13,6 +13,7 @@ import {AppComponent} from '../app.component';
 declare var jquery: any;
 declare var $: any;
 import {ViewEncapsulation} from '@angular/core';
+import { element } from 'protractor';
 
 
 
@@ -24,7 +25,7 @@ import {ViewEncapsulation} from '@angular/core';
 })
 export class ClassComponent implements AfterViewInit, OnInit {
 
-  displayedColumns = ['Date', 'Speaker', 'Course', 'Topic'];
+  displayedColumns = ['Date', 'Speaker', 'Course', 'Topic', 'Actions'];
   ELEMENT_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -102,6 +103,21 @@ export class ClassComponent implements AfterViewInit, OnInit {
     }
   }
 
+  DeleteClass = (element) => {
+    this._userService.deleteClass(element._id)
+        .subscribe(delClass => {
+          if (delClass['result'] === 'ok') {
+            swal({
+              type: 'success',
+              title: 'Class Deleted ',
+              html: 'Hari Bol!!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+      });
+  }
+
 
   sdlClass(form: NgForm) {
    form.value.date = this._userService.parseDate(form.value.date);
@@ -116,7 +132,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
             timer: 1500
         });
     }else {
-      if (form.value.course === 'DYS') {
+      if (form.value.course === 'DYS' || form.value.course === 'TSSV-B10') {
         this._userService.SdlClass(form.value);
         form.reset();
         swal({

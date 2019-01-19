@@ -10,6 +10,8 @@ import { ShowdetailsComponent } from '../showdetails/showdetails.component';
 import { DataService } from '../data.service';
 import {AppComponent} from '../app.component';
 import swal from 'sweetalert2';
+import { element } from 'protractor';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -29,6 +31,8 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   selectedBox = false;
   copyDataSource = [];
   originalCopy = [];
+  dStatus = {};
+
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
@@ -133,6 +137,62 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
       }
   }
 
+  getTopic = (data, counsellor) => {
+      let topic = '';
+      data.forEach(element => {
+         if (element.speaker === counsellor) {
+            topic = element.topic;
+         }
+      });
+      return topic;
+  }
+
+  markAttendance = (element, event) => {
+    const month = this.todayDate.getMonth() + 1;
+    const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
+    this._userService.checkIfClassSdlForCourse(element.course, date)
+          .subscribe(userData => {
+          if (userData.result.length > 0) {
+            /// console.log('userdata is', userData, this.getTopic(userData.result, element.counsellor));
+            this.dStatus['date'] = date;
+            this.dStatus['present'] = 'YES';
+            this.dStatus['topic'] = this.getTopic(userData.result, element.counsellor);
+            this.dStatus['speaker'] = element.counsellor;
+            this.dStatus['contact'] =  element.contact;
+            this._userService.markAttendance(this.dStatus)
+            .subscribe(userDataNew => {
+              if (userDataNew['result'] === 'ok') {
+                swal({
+                    type: 'success',
+                    title: 'Attendance updated successfully',
+                    html: 'Hari Bol!!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+              } else {
+                swal({
+
+                  type: 'warning',
+                  title: 'Attendance already updated',
+                  html: 'Hari Bol!!',
+                  showConfirmButton: false,
+                  timer: 1500
+                 });
+              }
+          });
+        } else {
+          swal({
+            type: 'warning',
+            title: 'No Class scheduled for ' + element.course + ' on the name of ' + element.counsellor,
+            html: 'Hari Bol!!',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        }
+    });
+  }
+
   showDetails(dv) {
     this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
@@ -223,7 +283,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   }
 
   OnSelectCourse(e) {
-    console.log('event is ', e, this.selectedBox);
+    ///console.log('event is ', e, this.selectedBox);
     if (this.selectedBox) {
       this.dataSource.data = this.originalCopy;
       this.dataSource.filter = e;
