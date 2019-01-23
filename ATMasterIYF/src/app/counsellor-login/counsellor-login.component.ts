@@ -39,7 +39,7 @@ export class CounsellorLoginComponent implements OnInit {
     if (getLoggedIn) {
         this._userService.iscTokenVerified(getLoggedIn)
         .subscribe(tokenRes => {
-           console.log('data is 1', tokenRes);
+           // console.log('data is 1', tokenRes);
 
             if (tokenRes.result === 'ok') {
               this.appComp.isLoggedIn = true;
@@ -56,7 +56,7 @@ export class CounsellorLoginComponent implements OnInit {
     this._userService.counLogin(form.value)
     .subscribe(data => {
       if (data.result === 'ok') {
-         console.log('data is 2', data);
+         // console.log('data is 2', data);
 
          localStorage.setItem('ctoken', data.token);
          localStorage.setItem('cname', form.value.username);

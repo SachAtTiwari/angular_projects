@@ -44,9 +44,9 @@
              TSSV-B10
           </mat-checkbox>
           <mat-checkbox 
-            (change)="changeBox($event, 'ASHRAY')"
-             value="ASHRAY">
-             ASHRAY
+            (change)="changeBox($event, 'VL3')"
+             value="VL3">
+             VL3
           </mat-checkbox>
           <mat-checkbox 
             (change)="changeBox($event, 'BSS')"
@@ -69,11 +69,12 @@
                 placeholder="Course Filter">                                      
                   <mat-option value="OTP"> OTP </mat-option>
                   <mat-option value="TSSV-B10">TSSV-B10 </mat-option>
-                  <mat-option value="ASHRAY"> ASHRAY </mat-option> 
+                  <mat-option value="VL3"> VL3 </mat-option> 
                   <mat-option value="BSS"> BSS </mat-option>
+                  <mat-option value="ALL"> ALL </mat-option>
                </mat-select> 
              </mat-form-field> 
-             <mat-checkbox [(ngModel)]="selectedBox" [ngClass]="isCourseSelected ? '':'locked'"
+             <mat-checkbox style="margin-left:10px;" [(ngModel)]="selectedBox" [ngClass]="isCourseSelected ? '':'locked'"
              (change)="changeBox($event, 'Active')"
               value="Active">
               Active
@@ -81,9 +82,14 @@
 
           
           </div>
-        
+          <mat-form-field>                                                              
+              <input matInput name="dateOfClass" [(ngModel)]="dateOfClass" [matDatepicker]="picker" placeholder="Date Of Class" required>       
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>    
+              <mat-datepicker #picker></mat-datepicker>                                   
+          </mat-form-field>  
           
 					<mat-form-field>
+               
               <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
               </mat-form-field>
               <mat-table #table [dataSource]="dataSource">
@@ -119,7 +125,7 @@
                       <i class="fa fa-address-card"></i>
                      </button>
                      <div [ngClass]="element.locked ? 'locked':''" >
-                     <mat-form-field [ngClass]="element.lockedDate === getDate() ? 'locked':''"
+                     <!--mat-form-field [ngClass]="element.lockedDate === getDate() ? 'locked':''"
                         class="comment">                                                             
                         <mat-select name="comment" value={{element.selected}} 
                         [(ngModel)]="element.selected"
@@ -130,15 +136,15 @@
                            <mat-option value="Not Reachable"> Not Reachable </mat-option>
                            <mat-option value="Switch Off"> Switch Off </mat-option>          
                         </mat-select>                                                              
-                      </mat-form-field> 
+                      </mat-form-field--> 
 
-                      <i (click)="lockIt(element, $event)" style="cursor:pointer;font-size:24px;color:purple"
-                      matTooltip="Click to lock it for the day" class="fa fa-lock"></i>
+                      <!--i (click)="lockIt(element, $event)" style="cursor:pointer;font-size:24px;color:purple"
+                      matTooltip="Click to lock it for the day" class="fa fa-lock"></i-->
 
                      <i (click)="showDetails(element, $event)" style="cursor:pointer;font-size:24px;color:purple"
                       matTooltip="Show Details" class="fa fa fa-address-card"></i>
                      
-                     <i (click)="markAttendance(element, $event)" style="cursor:pointer;font-size:24px;color:purple"
+                     <i *ngIf="dateOfClass" (click)="markAttendance(element, $event)" style="cursor:pointer;font-size:24px;color:purple"
                       matTooltip="Mark Attendance" class="fa fa-fw fa-user"></i>
                      </div>
 
@@ -161,8 +167,10 @@
               
                 </mat-table>
                 <mat-paginator #paginator
-                 [pageSize]="10"
+                 [pageSize]="pageSize"
                  [pageSizeOptions]="[5, 10, 20, 50]" 
+                 [length]="length"
+                 (page)=pageEvent($event)
                  >
              </mat-paginator> 
             

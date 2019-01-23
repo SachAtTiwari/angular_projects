@@ -63,7 +63,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   courses = [
     {value: 'OTP'},
     {value: 'TSSV'},
-    {value: 'ASHRAY'},
+    {value: 'VL3'},
     {value: 'BSS'},
     {value: 'UMANG'},
     {value: 'DYS'},
@@ -191,10 +191,10 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
-            console.log('counsellor', this.findKey(this.appComp.userName));
+            // console.log('counsellor', this.findKey(this.appComp.userName));
             userData.result[0].facilitators = this.findKey(this.appComp.userName);
            }
-           console.log('data is ', userData.result[0]);
+           // console.log('data is ', userData.result[0]);
            const dialogRef = this.dialog.open(ShowdetailsComponent, {
             width: '100vh',
             hasBackdrop: false,
@@ -365,7 +365,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
         }else if (params['course'] === '2') {
             course = 'TSSV-B10';
         }else if (params['course'] === '3') {
-            course = 'ASHRAY';
+            course = 'VL3';
         }else if (params['course'] === '4') {
             course = 'UMANG';
         }else if (params['course'] === '6') {
@@ -745,7 +745,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
     markAttendance(course, contact, name) {
       // console.log('mark attendance', course, this.devoteeData);
-       if (course === 'DYS' || course === 'TSSV-B10') {
+       if (course === 'DYS' || course === 'TSSV-B10' || course === 'VL3') {
          this.handleDysAttendance(course, contact, name);
        } else {
        let specialCourse = false;
@@ -841,7 +841,7 @@ export class EditDevoteeComponent {
   courses = [
     {value: 'OTP'},
     {value: 'TSSV-B10'},
-    {value: 'ASHRAY'},
+    {value: 'VL3'},
     {value: 'BSS'},
     {value: 'UMANG'},
     {value: 'DYS'},
@@ -918,7 +918,7 @@ export class AddDevoteeComponent implements OnInit {
   courses = [
     {value: 'OTP'},
     {value: 'TSSV-B10'},
-    {value: 'ASHRAY'},
+    {value: 'VL3'},
     {value: 'BSS'},
     {value: 'UMANG'},
     {value: 'DYS'},

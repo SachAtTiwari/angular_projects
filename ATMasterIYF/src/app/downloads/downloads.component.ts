@@ -27,7 +27,7 @@ export class DownloadsComponent implements OnInit {
   courses = [
     {value: 'OTP'},
     {value: 'TSSV-B10'},
-    {value: 'ASHRAY'},
+    {value: 'VL3'},
     {value: 'BSS'},
     {value: 'UMANG'},
     {value: 'DYS'},

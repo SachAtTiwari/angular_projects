@@ -32,12 +32,16 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   copyDataSource = [];
   originalCopy = [];
   dStatus = {};
+  dateOfClass = '';
+  length = '';
+  pageSize = 50;
+  pageIndex = 0;
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
     private _dataService: DataService,
-    private router: Router, private appComp: AppComponent, 
+    private router: Router, private appComp: AppComponent,
     public snackBar: MatSnackBar) { }
 
   displayedColumns = ['name', 'contact', 'counsellor', 'course', 'actions'];
@@ -76,8 +80,10 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
             if (tokenRes.result === 'ok') {
               this.route.params.subscribe(params => {
-                this._userService.getCounsellorData(params['username'])
+                this._userService.getCounsellorData(params['username'], this.pageIndex, this.pageSize)
                 .subscribe(data => {
+                   console.log('data is ', data);
+                   this.length = data.total;
                    this.dataSource.data = data.resources;
                    this.originalCopy = this.dataSource.data;
                 });
@@ -104,6 +110,22 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     const month = date.getMonth() + 1;
     const datenew =  date.getDate() + '-' + month + '-' + date.getFullYear();
     return datenew;
+  }
+
+  pageEvent = (e) => {
+      console.log('event is ', e );
+      this.route.params.subscribe(params => {
+        this._userService.getCounsellorData(params['username'], e.pageIndex, e.pageSize)
+        .subscribe(data => {
+           console.log('data is 2 ', data);
+           // this.length = data.total;
+           this.pageIndex = e.pageIndex;
+           this.pageSize = e.pageSize;
+           this.dataSource.data = data.resources;
+           this.originalCopy = this.dataSource.data;
+        });
+      });
+
   }
 
   // [ngClass]="isLocked(element) ? '':'locked'"
@@ -148,8 +170,10 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   }
 
   markAttendance = (element, event) => {
-    const month = this.todayDate.getMonth() + 1;
-    const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
+  //  console.log('date of class', this._userService.parseDate(this.dateOfClass));
+    // const month = this.todayDate.getMonth() + 1;
+    // const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
+    const date = this._userService.parseDate(this.dateOfClass);
     this._userService.checkIfClassSdlForCourse(element.course, date)
           .subscribe(userData => {
           if (userData.result.length > 0) {
@@ -199,10 +223,10 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
-            console.log('counsellor', this.findKey(this.appComp.userName));
+            // console.log('counsellor', this.findKey(this.appComp.userName));
             userData.result[0].facilitators = this.findKey(this.appComp.userName);
            }
-           console.log('data is ', userData.result[0]);
+           // console.log('data is ', userData.result[0]);
            const dialogRef = this.dialog.open(ShowdetailsComponent, {
             width: '100vh',
             hasBackdrop: false,
@@ -219,7 +243,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     element['locked'] = true;
     this._userService.updateComment(element)
       .subscribe(result => {
-          console.log('result is ', result);
+        //  console.log('result is ', result);
           if (result.result === 'ok') {
             swal({
 
@@ -253,12 +277,12 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
   findActive () {
     const classList = [];
-    console.log('class list is ', this.selectedCourse);
+    // console.log('class list is ', this.selectedCourse);
     this.copyDataSource = this.dataSource.data;
 
     this._userService.getSdlClassesCourse(this.selectedCourse)
     .subscribe(sdlClass => {
-           console.log('in active ', this.dataSource.data, sdlClass);
+           // console.log('in active ', this.dataSource.data, sdlClass);
             this.dataSource.data.forEach(element => {
               if (element['attendance'] && element['attendance'].length > 0) {
                 for (let j = 0; j < 8; j++) {
@@ -283,12 +307,14 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   }
 
   OnSelectCourse(e) {
-    ///console.log('event is ', e, this.selectedBox);
+    // console.log('event is ', e, this.selectedBox);
     if (this.selectedBox) {
       this.dataSource.data = this.originalCopy;
       this.dataSource.filter = e;
       this.findActive();
-    } else {
+    } else if (e === 'ALL') {
+      this.dataSource.filter = '';
+    }  else {
       this.isCourseSelected = true;
       this.dataSource.filter = e;
 
@@ -297,7 +323,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   }
 
   changeBox(e, type) {
-    console.log(e.checked, this.selectedCourse, type === 'Active', this.dataSource.data);
+ //   console.log(e.checked, this.selectedCourse, type === 'Active', this.dataSource.data);
     if (e.checked === false) {
        if (this.selectedCourse) {
        // this.dataSource.filter = this.selectedCourse;
@@ -310,7 +336,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
       type = type.trim(); // Remove whitespace
       type = type.toLowerCase(); // MatTableDataSource defaults to lowercase matches
       if (type === 'active') {
-        console.log(type);
+      //  console.log(type);
         this.findActive();
       } else {
         this.isCourseSelected = true;
