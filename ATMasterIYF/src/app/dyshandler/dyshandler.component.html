@@ -1,0 +1,18 @@
+
+<div>
+          
+    <h6>Please select the topic for which attendance to be taken</h6>
+    <!--form #download3="ngForm" (ngSubmit)="downloadCourseExcel(download3)"-->
+    <form #dystopic="ngForm" (ngSubmit)="handleDysTopic(dystopic)" >
+         <mat-form-field>  
+
+           <mat-select [(ngModel)]="dysclass" name="dystopic" placeholder="Topic" required>
+             <mat-option  *ngFor="let co of data.res" [value]="co.topic">{{co.topic}}</mat-option>      
+           </mat-select >
+        </mat-form-field>                                                          
+              
+
+        <button mat-raised-button type="submit" class="btn btn-primary" matTooltip="Submit the topic name">
+          <i class="fa fa-fw fa-book"></i>Submit</button>
+      </form>
+</div>
