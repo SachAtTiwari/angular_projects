@@ -69,7 +69,8 @@ import { MainAttendanceComponent } from './attendance/attendance.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { CounsellorLoginComponent } from './counsellor-login/counsellor-login.component';
 import { CallingDetailsComponent } from './calling-details/calling-details.component';
-import { DyshandlerComponent } from './dyshandler/dyshandler.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
   { path: 'showDetails/:id', component: ShowdetailsComponent},
@@ -103,7 +104,6 @@ const appRoutes: Routes = [
     AdminLoginComponent,
     CounsellorLoginComponent,
     CallingDetailsComponent,
-    DyshandlerComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -112,7 +112,7 @@ const appRoutes: Routes = [
     EditDevoteeConfirm,
     MainAttendanceComponent,
     ShowdetailsComponent,
-    DyshandlerComponent
+    
   ],
   imports: [
     DataTablesModule,
@@ -156,7 +156,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false,  useHash: true },
-    )
+    ),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   exports: [
     // Material Modules
