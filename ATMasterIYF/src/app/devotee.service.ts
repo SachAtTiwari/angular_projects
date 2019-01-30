@@ -9,8 +9,8 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 
 export class UserService {
-   // private _url: string = 'http://localhost:3000/';
-   private _url: string = 'http://192.168.0.111:3000/';
+    private _url: string = 'http://localhost:3000/';
+   //private _url: string = 'http://192.168.0.111:3000/';
    // private _url: string = '/';
 
   constructor(private _http: Http) {}
@@ -84,13 +84,13 @@ export class UserService {
          );
     }
 
-  getCounsellorData(name, pageIndex, pageSize): Observable<any> {
+  getCounsellorData(name): Observable<any> {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
       searchParams.append('username', name);
-      searchParams.append('skip', pageIndex);
-      searchParams.append('limit', pageSize);
+      searchParams.append('skip', '10');
+      searchParams.append('limit', '10');
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getCounsellorData', options)
         .map((response: Response) => {
