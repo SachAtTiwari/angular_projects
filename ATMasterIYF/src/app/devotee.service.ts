@@ -9,8 +9,9 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 
 export class UserService {
-  private _url: string = 'http://localhost:3000/';
-  //  private _url: string = '/';
+   // private _url: string = 'http://localhost:3000/';
+   private _url: string = 'http://192.168.0.111:3000/';
+   // private _url: string = '/';
 
   constructor(private _http: Http) {}
 
@@ -83,11 +84,13 @@ export class UserService {
          );
     }
 
-  getCounsellorData(name): Observable<any> {
+  getCounsellorData(name, pageIndex, pageSize): Observable<any> {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
       searchParams.append('username', name);
+      searchParams.append('skip', pageIndex);
+      searchParams.append('limit', pageSize);
       const options = new RequestOptions({ headers: headers, params: searchParams });
       return this._http.get(this._url + 'getCounsellorData', options)
         .map((response: Response) => {
@@ -106,7 +109,7 @@ export class UserService {
           courseName = 'TSSV';
           break;
         case '3':
-          courseName = 'ASHRAY';
+          courseName = 'VL3';
           break;
         case '4':
           courseName = 'UMANG';
@@ -241,6 +244,24 @@ export class UserService {
      );
   }
 
+  deleteClass(id):  Observable<Response> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const delParams = new URLSearchParams();
+    delParams.append('id', id);
+    const options = new RequestOptions({ headers: headers, params: delParams });
+
+    return this._http.delete(this._url + 'delClass', options)
+      .map(
+        res => {
+          return res.json();
+        },
+        err => {
+          return err.json();
+        }
+      );
+  }
+
   delRecord(contact): Observable <Response> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -322,7 +343,7 @@ export class UserService {
   }
 
    markAttendance = (attendance): Observable<Response> => {
-    console.log('atten is ', attendance);
+  //  console.log('atten is ', attendance);
      return this._http.post(this._url + 'markAttendance' , {
             attendance: attendance
        })
@@ -338,7 +359,7 @@ export class UserService {
 
 
    downloadCallReportCounsellor = (dTe) => {
-    console.log('downlods call report', dTe);
+     // console.log('downlods call report', dTe);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const searchParams = new URLSearchParams();
@@ -356,7 +377,7 @@ export class UserService {
 
 
    downloadToExcel = (dTe) => {
-      console.log('downlods', dTe);
+     // console.log('downlods', dTe);
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
@@ -396,7 +417,7 @@ export class UserService {
     searchParams.append('course', dTe.course);
     searchParams.append('counsellor', dTe.counsellor);
     const options = new RequestOptions({ headers: headers, params: searchParams });
-    console.log('options ', options);
+   // console.log('options ', options);
     return this._http.get(this._url + 'downloadToExCounsellor', options)
         .map((response: Response) => {
           return response.json();
