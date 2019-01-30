@@ -103,7 +103,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
     }
   }
 
-  DeleteClass = (element) => {
+  /* DeleteClass = (element) => {
     this._userService.deleteClass(element._id)
         .subscribe(delClass => {
           if (delClass['result'] === 'ok') {
@@ -116,7 +116,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
             });
           }
       });
-  }
+  } */
 
 
   sdlClass(form: NgForm) {

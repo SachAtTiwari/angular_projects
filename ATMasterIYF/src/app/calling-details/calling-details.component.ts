@@ -80,7 +80,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
             if (tokenRes.result === 'ok') {
               this.route.params.subscribe(params => {
-                this._userService.getCounsellorData(params['username'], this.pageIndex, this.pageSize)
+                this._userService.getCounsellorData(params['username'])
                 .subscribe(data => {
                    console.log('data is ', data);
                    this.length = data.total;
@@ -115,7 +115,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   pageEvent = (e) => {
       console.log('event is ', e );
       this.route.params.subscribe(params => {
-        this._userService.getCounsellorData(params['username'], e.pageIndex, e.pageSize)
+        this._userService.getCounsellorData(params['username'])
         .subscribe(data => {
            console.log('data is 2 ', data);
            // this.length = data.total;
