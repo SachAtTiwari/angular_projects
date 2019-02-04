@@ -33,9 +33,6 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   originalCopy = [];
   dStatus = {};
   dateOfClass = '';
-  length = '';
-  pageSize = 50;
-  pageIndex = 0;
 
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -82,8 +79,8 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
               this.route.params.subscribe(params => {
                 this._userService.getCounsellorData(params['username'])
                 .subscribe(data => {
-                   console.log('data is ', data);
-                   this.length = data.total;
+                   // console.log('data is ', data);
+                   // this.length = data.total;
                    this.dataSource.data = data.resources;
                    this.originalCopy = this.dataSource.data;
                 });
@@ -112,7 +109,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     return datenew;
   }
 
-  pageEvent = (e) => {
+  /*pageEvent = (e) => {
       console.log('event is ', e );
       this.route.params.subscribe(params => {
         this._userService.getCounsellorData(params['username'])
@@ -126,7 +123,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
         });
       });
 
-  }
+  }*/
 
   // [ngClass]="isLocked(element) ? '':'locked'"
   /*isLocked(element) {
