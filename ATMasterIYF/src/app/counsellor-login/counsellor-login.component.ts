@@ -15,7 +15,7 @@ import {AppComponent} from '../app.component';
   templateUrl: './counsellor-login.component.html',
   styleUrls: ['./counsellor-login.component.css'],
   providers: [
-    UserService,
+    UserService
   ]
 })
 export class CounsellorLoginComponent implements OnInit {

@@ -153,11 +153,12 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatStepperModule,
     Ng2SmartTableModule,
+	HttpModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false,  useHash: true },
     ),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production })
   ],
   exports: [
     // Material Modules
