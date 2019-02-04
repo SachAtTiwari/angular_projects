@@ -20,9 +20,7 @@ declare var $: any;
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
-  providers: [
-    UserService,
-  ]
+  providers: [UserService]
 })
 
 export class AttendanceComponent implements OnInit, AfterViewInit {

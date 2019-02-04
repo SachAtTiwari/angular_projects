@@ -1,8 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/mergeMap';
+
+import { Observable } from 'rxjs';
+
 
 
 
@@ -19,47 +21,47 @@ export class UserService {
     return this._http.post(this._url + 'adminLogin', {
 
       body: form
-     }).map(
+     }).pipe(map(
         res => {
           return res.json();
         },
         err => {
           return err.json();
         }
-      );
+      ));
     }
 
   counLogin(form) {
     return this._http.post(this._url + 'counLogin', {
         body: form
-       }).map(
+       }).pipe(map(
           res => {
             return res.json();
           },
           err => {
             return err.json();
           }
-        );
+        ));
   }
 
   getOTPDevotees() {
-    return this._http.get(this._url + 'getOTPDevotees').map((response: Response) => {
+    return this._http.get(this._url + 'getOTPDevotees').pipe(map((response: Response) => {
           return response.json();
         }
-      );
+      ));
   }
 
   updateComment(element) {
     return this._http.post(this._url + 'updateComment', {
       body: element
-     }).map(
+     }).pipe(map(
         res => {
           return res.json();
         },
         err => {
           return err.json();
         }
-      );
+      ));
   }
 
   getSearchedDevotee(contact, course) {
@@ -77,11 +79,11 @@ export class UserService {
       }
       searchParams.append('course', course);
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'getSearchedDevotee', options)
-        .map((response: Response) => {
+      return this._http.get(this._url + 'getSearchedDevotee', options).pipe(
+        map((response: Response) => {
             return response.json();
            }
-         );
+         ));
     }
 
   getCounsellorData(name): Observable<any> {
@@ -92,11 +94,11 @@ export class UserService {
       searchParams.append('skip', '10');
       searchParams.append('limit', '10');
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'getCounsellorData', options)
-        .map((response: Response) => {
+      return this._http.get(this._url + 'getCounsellorData', options).pipe(
+        map((response: Response) => {
             return response.json();
         }
-      );
+      ));
   }
 
   getDevotees(course): Observable<any> {
@@ -130,11 +132,11 @@ export class UserService {
       const searchParams = new URLSearchParams();
       searchParams.append('course', courseName);
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'getDevotees', options)
-        .map((response: Response) => {
+      return this._http.get(this._url + 'getDevotees', options).pipe(
+        map((response: Response) => {
             return response.json();
            }
-         );
+         ));
        }
 
   getDetails(id): Observable<any> {
@@ -155,19 +157,19 @@ export class UserService {
       }
       searchParams.append('id', id);
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'getDetails', options)
-       .map((response: Response) => {
+      return this._http.get(this._url + 'getDetails', options).pipe(
+       map((response: Response) => {
            return response.json();
           }
-      );
+      ));
   }
 
   getSdlClasses() {
-      return this._http.get(this._url + 'getSdlClasses')
-        .map((response: Response) => {
+      return this._http.get(this._url + 'getSdlClasses').pipe(
+        map((response: Response) => {
             return response.json();
            }
-         );
+         ));
     }
 
   getSdlClassesCourse(course) {
@@ -177,11 +179,11 @@ export class UserService {
     searchParams.append('course', course);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + 'getSdlClassesCourse', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'getSdlClassesCourse', options).pipe(
+        map((response: Response) => {
             return response.json();
         }
-    );
+    ));
   }
 
   checkIfDevoteePresentForGivenDate(date, counsellor, course) {
@@ -193,11 +195,11 @@ export class UserService {
       searchParams.append('counsellor', counsellor);
 
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'checkDevoteeStatusForGivenDate')
-        .map((response: Response) => {
+      return this._http.get(this._url + 'checkDevoteeStatusForGivenDate').pipe(
+        map((response: Response) => {
             return response.json();
            }
-      );
+      ));
   }
 
   checkIfClassSdlForCourse(course, date): Observable<any> {
@@ -208,11 +210,11 @@ export class UserService {
       searchParams.append('course', course);
       searchParams.append('date', date);
       const options = new RequestOptions({ headers: headers, params: searchParams });
-      return this._http.get(this._url + 'checkClassSdl', options)
-          .map((response: Response) => {
+      return this._http.get(this._url + 'checkClassSdl', options).pipe(
+          map((response: Response) => {
             return response.json();
          }
-       );
+       ));
    }
 
 
@@ -223,11 +225,11 @@ export class UserService {
     const searchParams = new URLSearchParams();
     headers.append('Authorization', 'Bearer ' + token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
-    return this._http.get(this._url + 'isTokenVerified', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'isTokenVerified', options).pipe(
+        map((response: Response) => {
           return response.json();
        }
-     );
+     ));
   }
 
   iscTokenVerified(token) {
@@ -237,11 +239,11 @@ export class UserService {
 //    headers.append('ctoken', token);
     headers.append('Authorization', 'Bearer ' + token);
     const options = new RequestOptions({ headers: headers, params: searchParams });
-    return this._http.get(this._url + 'iscTokenVerified', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'iscTokenVerified', options).pipe(
+        map((response: Response) => {
           return response.json();
        }
-     );
+     ));
   }
 
   deleteClass(id):  Observable<Response> {
@@ -251,15 +253,15 @@ export class UserService {
     delParams.append('id', id);
     const options = new RequestOptions({ headers: headers, params: delParams });
 
-    return this._http.delete(this._url + 'delClass', options)
-      .map(
+    return this._http.delete(this._url + 'delClass', options).pipe(
+      map(
         res => {
           return res.json();
         },
         err => {
           return err.json();
         }
-      );
+      ));
   }
 
   delRecord(contact): Observable <Response> {
@@ -270,55 +272,55 @@ export class UserService {
     const options = new RequestOptions({ headers: headers, params: delParams });
 
 
-    return this._http.delete(this._url + 'delRecord', options)
-      .map(
+    return this._http.delete(this._url + 'delRecord', options).pipe(
+      map(
         res => {
           return res.json();
         },
         err => {
           return err.json();
         }
-      );
+      ));
    }
 
   addDevotee = (body): Observable<Response> => {
      return this._http.post(this._url + 'addDevotee', {
         body: body
-       }).map(
+       }).pipe(map(
           res => {
             return res.json();
           },
           err => {
             return err.json();
           }
-        );
+        ));
   }
 
    addDevoteeGeneric = (body): Observable<Response> => {
     return this._http.post(this._url + 'addDevoteeGeneric', {
        body: body
-      }).map(
+      }).pipe(map(
          res => {
            return res.json();
          },
          err => {
            return err.json();
          }
-       );
+       ));
     }
 
   editDevotee = (body): Observable<Response> => {
     return this._http.put(this._url + 'updateDevotee', {
        body: body
-      })
-       .map(
+      }).pipe(
+       map(
          res => {
            return res.json();
          },
          err => {
            return err.json();
          }
-       );
+       ));
   }
 
    parseDate(date): string {
@@ -346,15 +348,15 @@ export class UserService {
   //  console.log('atten is ', attendance);
      return this._http.post(this._url + 'markAttendance' , {
             attendance: attendance
-       })
-       .map(
+       }).pipe(
+       map(
           res => {
             return res.json();
           },
           err => {
             err.json();
           }
-        );
+        ));
    }
 
 
@@ -367,11 +369,11 @@ export class UserService {
     searchParams.append('counsellor', dTe.counsellor);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + 'downloadCallReportCounsellor', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'downloadCallReportCounsellor', options).pipe(
+        map((response: Response) => {
           return response.json();
        }
-     );
+     ));
  }
 
 
@@ -386,11 +388,11 @@ export class UserService {
       searchParams.append('counsellor', dTe.counsellor);
       const options = new RequestOptions({ headers: headers, params: searchParams });
 
-      return this._http.get(this._url + 'downloadToExcel', options)
-          .map((response: Response) => {
+      return this._http.get(this._url + 'downloadToExcel', options).pipe(
+          map((response: Response) => {
             return response.json();
          }
-       );
+       ));
    }
 
    downloadCourseExcel = (dTe) => {
@@ -402,10 +404,10 @@ export class UserService {
     searchParams.append('isAlumni', dTe.isAlumni);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + 'downloadCourseExcel', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'downloadCourseExcel', options).pipe(
+        map((response: Response) => {
           return response.json();
-       });
+       }));
   }
 
 
@@ -418,11 +420,11 @@ export class UserService {
     searchParams.append('counsellor', dTe.counsellor);
     const options = new RequestOptions({ headers: headers, params: searchParams });
    // console.log('options ', options);
-    return this._http.get(this._url + 'downloadToExCounsellor', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'downloadToExCounsellor', options).pipe(
+        map((response: Response) => {
           return response.json();
        }
-     );
+     ));
  }
 
    getTodayAttendance = (course) => {
@@ -432,10 +434,10 @@ export class UserService {
     searchParams.append('course', course);
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
-    return this._http.get(this._url + 'getTodayAttendance', options)
-        .map((response: Response) => {
+    return this._http.get(this._url + 'getTodayAttendance', options).pipe(
+        map((response: Response) => {
           return response.json();
        }
-     );
+     ));
  }
 }
