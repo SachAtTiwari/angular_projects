@@ -71,6 +71,19 @@ import { CounsellorLoginComponent } from './counsellor-login/counsellor-login.co
 import { CallingDetailsComponent } from './calling-details/calling-details.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+// Import angular-fusioncharts
+import { FusionChartsModule } from 'angular-fusioncharts';
+
+// Import FusionCharts library
+import * as FusionCharts from 'fusioncharts';
+
+// Load FusionCharts Individual Charts
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import { CallAttDashboardComponent } from './call-att-dashboard/call-att-dashboard.component';
+
+// Use fcRoot function to inject FusionCharts library, and the modules you want to use
+FusionChartsModule.fcRoot(FusionCharts, Charts)
+
 
 const appRoutes: Routes = [
   { path: 'showDetails/:id', component: ShowdetailsComponent},
@@ -86,6 +99,7 @@ const appRoutes: Routes = [
   { path: 'adminLogin', component: AdminLoginComponent},
   { path: 'counLogin', component: CounsellorLoginComponent},
   { path: 'callingdetails/:username', component: CallingDetailsComponent},
+  { path: 'callDashboard', component: CallAttDashboardComponent},
   { path: '', redirectTo: 'classSdl', pathMatch: 'full'}
 ];
 
@@ -104,6 +118,7 @@ const appRoutes: Routes = [
     AdminLoginComponent,
     CounsellorLoginComponent,
     CallingDetailsComponent,
+    CallAttDashboardComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -158,7 +173,8 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: false,  useHash: true },
     ),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+	FusionChartsModule 
   ],
   exports: [
     // Material Modules
