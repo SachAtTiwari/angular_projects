@@ -128,20 +128,8 @@ export class DownloadsComponent implements OnInit {
 
   }
 
-  downloadExCounsellor = (form: NgForm) => {
-    const classList = [];
-    this._userService.getSdlClassesCourse(this.course)
-    .subscribe(sdlClass => {
-       for (let j = 0; j < 8; j++) {
-         if (!sdlClass.result[j]) {
-           break;
-         } else {
-           classList.push(sdlClass.result[j].date);
-         }
-       }
-      // console.log('in class list', classList, classList.length);
-
-     if (classList.length > 0) {
+  downloadCounsellorEx(classList, form) {
+    if (classList.length > 0) {
       this._userService.downloadToExCounsellor(form.value)
       .subscribe(userData => {
        const result_json = [];
@@ -181,7 +169,39 @@ export class DownloadsComponent implements OnInit {
        this.excelGenerator(form.value.course, form.value.counsellor, result_json);
       });
      }
+  }
+
+  downloadExCounsellor = (form: NgForm) => {
+    const classList = [];
+    if (this.course === 'OTP') {
+    this._userService.getSdlClassesCourse(this.course)
+    .subscribe(sdlClass => {
+       for (let j = 0; j < 8; j++) {
+         if (!sdlClass.result[j]) {
+           break;
+         } else {
+           classList.push(sdlClass.result[j].date);
+         }
+       }
     });
+    } else {
+      this._userService.getSdlClassCourseCounselor(this.course, this.counsellor)
+      .subscribe(sdlClass => {
+        console.log('sdl class', sdlClass);
+       for (let j = 0; j < 8; j++) {
+         if (!sdlClass.result[j]) {
+           // console.log('break');
+           break;
+         } else {
+           // console.log('else', sdlClass.result[j]);
+           classList.push(sdlClass.result[j].date);
+         }
+       }
+       console.log('in class list inside', classList, classList.length);
+       this.downloadCounsellorEx(classList, form);
+
+      });
+    }
   }
 
 

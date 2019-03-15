@@ -55,7 +55,9 @@ export class ClassComponent implements AfterViewInit, OnInit {
   topic = '';
   date = '';
   isLoggedIn = false;
-  constructor(private _userService: UserService, private router: Router, private appComp: AppComponent) { }
+  constructor(private _userService: UserService,
+     private router: Router,
+     private appComp: AppComponent) { }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -103,7 +105,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
     }
   }
 
-  /* DeleteClass = (element) => {
+  DeleteClass = (element) => {
     this._userService.deleteClass(element._id)
         .subscribe(delClass => {
           if (delClass['result'] === 'ok') {
@@ -116,7 +118,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
             });
           }
       });
-  } */
+  }
 
 
   sdlClass(form: NgForm) {

@@ -87,13 +87,22 @@
                            <mat-option value="YES"> YES </mat-option>          
                            <mat-option value="NO"> NO </mat-option>          
                         </mat-select>                                                              
-                     </mat-form-field>  
-                  <mat-form-field>                                                             
+                     </mat-form-field> 
+
+                     <mat-form-field>                                                             
+                      <mat-select name="multiplecourse" [(ngModel)]="data.multiplecourse" 
+                         placeholder="Select if devotee enrolled in multiple courses" required>                                      
+                         <mat-option value="YES"> YES </mat-option>  
+                         <mat-option value="NO"> NO </mat-option>          
+                      </mat-select>                                                              
+                   </mat-form-field> 
+
+                  <!--mat-form-field>                                                             
                     <mat-select name="facilitator" [(ngModel)]="data.facilitator" 
                      placeholder="Assign facilitator" required>                                      
                         <mat-option *ngFor="let co of data.facilitators" [value]="co"> {{co}} </mat-option>          
                       </mat-select>                                                              
-                   </mat-form-field>  
+                   </mat-form-field-->  
 
                       <button mat-raised-button color="primary" style="margin-left:8px;"
                       (click)="updateDevotee(devoteeForm)">Update Devotee</button>

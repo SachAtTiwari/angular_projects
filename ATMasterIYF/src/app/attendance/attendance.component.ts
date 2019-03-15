@@ -183,13 +183,16 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
   showDetails(dv) {
+    console.log('user data ', dv);
+
     this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
+          console.log('user data ', userData);
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
             // console.log('counsellor', this.findKey(this.appComp.userName));
-            userData.result[0].facilitators = this.findKey(this.appComp.userName);
+            // userData.result[0].facilitators = this.findKey(this.appComp.userName);
            }
            // console.log('data is ', userData.result[0]);
            const dialogRef = this.dialog.open(ShowdetailsComponent, {
@@ -219,7 +222,7 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
        this._userService.addDevoteeGeneric(result)
        .subscribe(userData => {
          if (userData['result'] === 'ok') {
-          window.location.reload();
+          // window.location.reload();
           swal({
 
               type: 'success',
@@ -227,6 +230,12 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
               html: 'Hari Bol!!',
               showConfirmButton: false,
               timer: 1500
+          });
+          this.route.queryParams.subscribe(params => {
+            if (params['course'] === '5') {
+              this.showAddDevotee = true;
+              this._getDevotees(params);
+            }
           });
          }else {
             swal({
