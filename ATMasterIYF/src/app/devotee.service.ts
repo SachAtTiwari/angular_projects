@@ -11,9 +11,9 @@ import { Observable } from 'rxjs';
 @Injectable()
 
 export class UserService {
-    //private _url: string = 'http://localhost:3000/';
+    private _url: string = 'http://localhost:3000/';
    //private _url: string = 'http://192.168.0.111:3000/';
-    private _url: string = '/';
+   // private _url: string = '/';
 
   constructor(private _http: Http) {}
 
@@ -440,4 +440,21 @@ export class UserService {
        }
      ));
  }
+
+ reportCourseCouncellor = (rep) => {
+  // console.log('downlods', dTe);
+   const headers = new Headers();
+   headers.append('Content-Type', 'application/json');
+   const searchParams = new URLSearchParams();
+  // searchParams.append('date', dTe.date);
+   searchParams.append('course', rep.course);
+   searchParams.append('counsellor', rep.counsellor);
+   const options = new RequestOptions({ headers: headers, params: searchParams });
+
+   return this._http.get(this._url + 'downloadToExcel', options).pipe(
+       map((response: Response) => {
+         return response.json();
+      }
+    ));
+}
 }

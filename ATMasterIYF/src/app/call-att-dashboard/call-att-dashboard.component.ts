@@ -1,14 +1,35 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService} from '../devotee.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-call-att-dashboard',
   templateUrl: './call-att-dashboard.component.html',
-  styleUrls: ['./call-att-dashboard.component.css']
+  styleUrls: ['./call-att-dashboard.component.css'],
+  providers: [UserService],
 })
 export class CallAttDashboardComponent implements OnInit {
-	
+  
+  reportData: Object = {};
+  courses = [
+    {value: 'OTP'},
+    {value: 'TSSV-B10'},
+    {value: 'VL3'},
+    {value: 'BSS'},
+    {value: 'UMANG'},
+    {value: 'DYS'},
+  ];
+
+  counsellors = [
+    {value: 'HG Shyam Gopal Prabhuji'},
+    {value: 'HG Kalpvraksha Prabhuji'},
+    {value: 'HG Vaidant Chaitnya Prabhuji'},
+    {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
+    {value: 'HG Jagadanand Pandit Prabhuji'},
+    {value: 'NA'},
+  ];
    data: Object = {};
-  constructor() { }
+  constructor(private _userService: UserService) { }
 
   ngOnInit() {
 	  this.data =  {
@@ -51,6 +72,15 @@ export class CallAttDashboardComponent implements OnInit {
           }]
         }]
       };
+  }
+
+  getReport(form) {
+   if(form.valid) {
+    this._userService.reportCourseCouncellor(this.reportData)
+    .subscribe(userData => {
+      console.log(userData);
+    })
+   } 
   }
 
 }
