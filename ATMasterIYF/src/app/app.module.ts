@@ -68,7 +68,7 @@ import { EditDevoteeConfirm } from './attendance/attendance.component';
 import { MainAttendanceComponent } from './attendance/attendance.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { CounsellorLoginComponent } from './counsellor-login/counsellor-login.component';
-import { CallingDetailsComponent, MultipleCourseComponent } from './calling-details/calling-details.component';
+import { CallingDetailsComponent } from './calling-details/calling-details.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 // Import angular-fusioncharts
@@ -119,7 +119,7 @@ const appRoutes: Routes = [
     CounsellorLoginComponent,
     CallingDetailsComponent,
     CallAttDashboardComponent,
-    MultipleCourseComponent,
+  //  MultipleCourseComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -128,7 +128,7 @@ const appRoutes: Routes = [
     EditDevoteeConfirm,
     MainAttendanceComponent,
     ShowdetailsComponent,
-    MultipleCourseComponent,
+  //  MultipleCourseComponent,
     
   ],
   imports: [
