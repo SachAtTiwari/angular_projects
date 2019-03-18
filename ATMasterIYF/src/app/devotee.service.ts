@@ -11,9 +11,11 @@ import { Observable } from 'rxjs';
 @Injectable()
 
 export class UserService {
+
     private _url: string = 'http://localhost:3000/';
    //private _url: string = 'http://192.168.0.111:3000/';
    // private _url: string = '/';
+
 
   constructor(private _http: Http) {}
 
@@ -30,6 +32,20 @@ export class UserService {
         }
       ));
     }
+
+  getSdlClassesOfDate (date): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('date', date);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+    return this._http.get(this._url + 'getclassesofdate', options).pipe(
+        map((response: Response) => {
+          return response.json();
+       }
+     ));
+
+  }
 
   counLogin(form) {
     return this._http.post(this._url + 'counLogin', {
@@ -85,6 +101,21 @@ export class UserService {
            }
          ));
     }
+
+  getCounselorDataForDate(date, name): Observable<any> {
+    const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      searchParams.append('username', name);
+      searchParams.append('date', date);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'getCounselorDataForDate', options).pipe(
+        map((response: Response) => {
+            return response.json();
+        }
+      ));
+
+  }
 
   getCounsellorData(name): Observable<any> {
       const headers = new Headers();
@@ -180,6 +211,21 @@ export class UserService {
     const options = new RequestOptions({ headers: headers, params: searchParams });
 
     return this._http.get(this._url + 'getSdlClassesCourse', options).pipe(
+        map((response: Response) => {
+            return response.json();
+        }
+    ));
+  }
+
+  getSdlClassCourseCounselor(course, counsellor) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('course', course);
+    searchParams.append('counsellor', counsellor);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+
+    return this._http.get(this._url + 'getSdlClassCourseCounselor', options).pipe(
         map((response: Response) => {
             return response.json();
         }
@@ -324,10 +370,10 @@ export class UserService {
   }
 
    parseDate(date): string {
-
+   // console.log('date is', date);
     const temp_datetime_obj = new Date(date);
     const month = temp_datetime_obj.getMonth() + 1;
-    date =  temp_datetime_obj.getDate() + '-' + month + '-' + temp_datetime_obj.getFullYear();
+    date =  temp_datetime_obj.getDate() + '-' +  month + '-' + temp_datetime_obj.getFullYear();
     return date;
    }
 
@@ -379,13 +425,13 @@ export class UserService {
 
 
    downloadToExcel = (dTe) => {
-     // console.log('downlods', dTe);
+      // console.log('downlods', dTe);
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
       const searchParams = new URLSearchParams();
       searchParams.append('date', dTe.date);
       searchParams.append('course', dTe.course);
-      searchParams.append('counsellor', dTe.counsellor);
+      // searchParams.append('counsellor', dTe.counsellor);
       const options = new RequestOptions({ headers: headers, params: searchParams });
 
       return this._http.get(this._url + 'downloadToExcel', options).pipe(

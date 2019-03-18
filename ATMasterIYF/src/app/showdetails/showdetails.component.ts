@@ -9,9 +9,6 @@ import swal from 'sweetalert2';
 import {ViewEncapsulation} from '@angular/core';
 
 
-
-
-
 @Component({
   selector: 'app-showdetails',
   templateUrl: './showdetails.component.html',

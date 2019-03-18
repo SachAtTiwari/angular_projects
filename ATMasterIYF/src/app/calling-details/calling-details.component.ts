@@ -15,6 +15,31 @@ import { filter } from 'rxjs/operators';
 
 
 @Component({
+  selector: 'app-multiple-couse-component',
+  templateUrl: 'multiplecourse.html',
+  styleUrls: ['./multiplecourse.css'],
+})
+export class MultipleCourseComponent implements OnInit {
+
+  topic = '';
+
+  ngOnInit() {
+  }
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private router: Router,
+    public dialogRef: MatDialogRef<MultipleCourseComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  _multiplecourse(form: NgForm): void {
+    console.log('form value', form.value);
+    this.dialogRef.close(form.value);
+  }
+
+}
+
+@Component({
   selector: 'app-calling-details',
   templateUrl: './calling-details.component.html',
   styleUrls: ['./calling-details.component.css'],
@@ -55,6 +80,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
+
   facilitators = [
     {sgp: ['HG Madhav Caran Das']},
     {kvp: ['HG Anant Nimai Das']},
@@ -68,35 +94,36 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
        console.log('mesage ', message);
        this.dataSource.data = message;
      });*/
-     const getLoggedIn = localStorage.getItem('ctoken');
-   // console.log('getLogged in ', getLoggedIn);
-    if (getLoggedIn) {
-        this._userService.iscTokenVerified(getLoggedIn)
-        .subscribe(tokenRes => {
-         //  console.log('data is ', tokenRes);
-
-            if (tokenRes.result === 'ok') {
-              this.route.params.subscribe(params => {
-                this._userService.getCounsellorData(params['username'])
-                .subscribe(data => {
-                   // console.log('data is ', data);
-                   // this.length = data.total;
-                   this.dataSource.data = data.resources;
-                   this.originalCopy = this.dataSource.data;
-                });
-              });
-              this.appComp.isLoggedIn = true;
-              this.appComp.userName =  localStorage.getItem('cname');
-            } else {
-                this.router.navigateByUrl('/counLogin');
-            }
-        });
-    } else {
-      this.router.navigateByUrl('/counLogin');
-
-    }
+     this.refresh();
 
    }
+
+  refresh = () => {
+    const getLoggedIn = localStorage.getItem('ctoken');
+    // console.log('getLogged in ', getLoggedIn);
+     if (getLoggedIn) {
+         this._userService.iscTokenVerified(getLoggedIn)
+         .subscribe(tokenRes => {
+             if (tokenRes.result === 'ok') {
+               this.route.params.subscribe(params => {
+                 this._userService.getCounsellorData(params['username'])
+                 .subscribe(data => {
+                    // console.log('data is ', data);
+                    // this.length = data.total;
+                    this.dataSource.data = data.resources;
+                    this.originalCopy = this.dataSource.data;
+                 });
+               });
+               this.appComp.isLoggedIn = true;
+               this.appComp.userName =  localStorage.getItem('cname');
+             } else {
+                 this.router.navigateByUrl('/counLogin');
+             }
+         });
+     } else {
+       this.router.navigateByUrl('/counLogin');
+     }
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -166,11 +193,72 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
       return topic;
   }
 
+  getSpeaker = (data, topic) => {
+    let speaker = '';
+    data.forEach(element => {
+       if (element.topic === topic) {
+          speaker = element.speaker;
+       }
+    });
+    return speaker;
+  }
+
+
+  getCourse = (data, topic) => {
+    let course = '';
+    data.forEach(element => {
+       if (element.topic === topic) {
+          course = element.course;
+       }
+    });
+    return course;
+  }
+
   markAttendance = (element, event) => {
-  //  console.log('date of class', this._userService.parseDate(this.dateOfClass));
-    // const month = this.todayDate.getMonth() + 1;
-    // const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
     const date = this._userService.parseDate(this.dateOfClass);
+    if (element.multiplecourse === 'YES') {
+      this._userService.getSdlClassesOfDate(date)
+      .subscribe(clsData => {
+          const dialogRef = this.dialog.open(MultipleCourseComponent, {
+            width: '100vh',
+            data: {...clsData}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('result is', result);
+            if (result !== undefined) {
+              this.dStatus['date'] = date;
+              this.dStatus['present'] = 'YES';
+              this.dStatus['topic'] = result.topic;
+              this.dStatus['speaker'] = this.getSpeaker(clsData.result, result.topic);
+              this.dStatus['contact'] =  element.contact;
+              this.dStatus['course'] =  this.getCourse(clsData.result, result.topic);
+              this._userService.markAttendance(this.dStatus)
+              .subscribe(userDataNew => {
+                if (userDataNew['result'] === 'ok') {
+                  swal({
+                      type: 'success',
+                      title: 'Attendance updated successfully',
+                      html: 'Hari Bol!!',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+                } else {
+                  swal({
+
+                    type: 'warning',
+                    title: 'Attendance already updated',
+                    html: 'Hari Bol!!',
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                }
+               });
+            }
+            // this.refresh();
+          });
+      });
+
+    } else {
     this._userService.checkIfClassSdlForCourse(element.course, date)
           .subscribe(userData => {
           if (userData.result.length > 0) {
@@ -213,6 +301,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
         }
     });
   }
+  }
 
   showDetails(dv) {
     this._userService.getDetails(dv['_id'])
@@ -221,17 +310,16 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
             this.dataSourceDetails.data = userData.result[0].attendance;
             userData.result[0].dataSourceDetails = this.dataSourceDetails;
             // console.log('counsellor', this.findKey(this.appComp.userName));
-            userData.result[0].facilitators = this.findKey(this.appComp.userName);
+           // userData.result[0].facilitators = this.findKey(this.appComp.userName);
            }
-           // console.log('data is ', userData.result[0]);
            const dialogRef = this.dialog.open(ShowdetailsComponent, {
             width: '100vh',
-            hasBackdrop: false,
             data: {...userData.result[0]}
           });
-          /*dialogRef.afterClosed().subscribe(result => {
-            console.log('result is', result);
-          });*/
+          dialogRef.afterClosed().subscribe(result => {
+          //  console.log('result is', result);
+            this.refresh();
+          });
     });
   }
 
@@ -347,8 +435,5 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
-
-
-
 
 }

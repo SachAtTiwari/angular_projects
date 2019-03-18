@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService} from '../devotee.service';
-import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-call-att-dashboard',
@@ -28,47 +28,51 @@ export class CallAttDashboardComponent implements OnInit {
     {value: 'HG Jagadanand Pandit Prabhuji'},
     {value: 'NA'},
   ];
+
+
    data: Object = {};
   constructor(private _userService: UserService) { }
 
   ngOnInit() {
-	  this.data =  {
-        "chart": {
-          "caption": "IYF Calling Attendance Report",
-          
-          "xAxisname": "Course",
-          "yAxisName": "Count",
-          
-          "exportenabled": "1",
-          "theme": "fusion"
+    this._userService.getCounselorDataForDate('8-2-2019', 'sgp')
+    .subscribe(cdata => {
+        console.log('cdata is ', cdata);
+    });
+    this.data =  {
+        'chart': {
+          'caption': 'IYF Calling Attendance Report',
+          'xAxisname': 'Course',
+          'yAxisName': 'Count',
+          'exportenabled': '1',
+          'theme': 'fusion'
         },
-        "categories": [{
-          "category": [{
-            "label": "VL1"
+        'categories': [{
+          'category': [{
+            'label': 'VL1'
           }, {
-            "label": "VL2"
+            'label': 'VL2'
           }, {
-            "label": "BSS"
+            'label': 'BSS'
           }]
         }],
-        "dataset": [{
-          "seriesName": "Expected",
-          "data": [{
-            "value": "3"
+        'dataset': [{
+          'seriesName': 'Expected',
+          'data': [{
+            'value': '3'
           }, {
-            "value": "4"
+            'value': '4'
           }, {
-            "value": "5"
+            'value': '5'
           }]
         }, {
-          "seriesName": "Attended",
-          "renderAs": "line",
-          "data": [{
-            "value": "2"
+          'seriesName': 'Attended',
+          'renderAs': 'line',
+          'data': [{
+            'value': '2'
           }, {
-            "value": "1"
+            'value': '1'
           }, {
-            "value": "3"
+            'value': '3'
           }]
         }]
       };
@@ -76,9 +80,9 @@ export class CallAttDashboardComponent implements OnInit {
 
   getReport(form) {
    if(form.valid) {
-    this._userService.reportCourseCouncellor(this.reportData)
-    .subscribe(userData => {
-      console.log(userData);
+    this._userService.getSdlClassCourseCounselor(this.reportData['course'], this.reportData['counsellor'])
+    .subscribe(sdlClass => {
+      console.log(sdlClass);
     })
    } 
   }
