@@ -37,7 +37,7 @@ export class DownloadsComponent implements OnInit {
   counsellors = [
     {value: 'HG Shyam Gopal Prabhuji'},
     {value: 'HG Kalpvraksha Prabhuji'},
-    {value: 'HG Vaidant Chaitnya Prabhuji'},
+    {value: 'HG Vedanta Chaitanya Prabhuji'},
     {value: 'HG Pundarika Vidyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
     {value: 'NA'},
