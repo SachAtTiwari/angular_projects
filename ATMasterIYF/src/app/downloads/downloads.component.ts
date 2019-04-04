@@ -38,7 +38,7 @@ export class DownloadsComponent implements OnInit {
     {value: 'HG Shyam Gopal Prabhuji'},
     {value: 'HG Kalpvraksha Prabhuji'},
     {value: 'HG Vaidant Chaitnya Prabhuji'},
-    {value: 'HG Pundrik Vidhyanidhi Prabhuji'},
+    {value: 'HG Pundarika Vidyanidhi Prabhuji'},
     {value: 'HG Jagadanand Pandit Prabhuji'},
     {value: 'NA'},
   ];
@@ -189,10 +189,18 @@ export class DownloadsComponent implements OnInit {
 
   }
 
+  // getTopicDateCounsellor = (date, counsellor) => {
+  //   let topic = '';
+  //   return this._userService.getTopicForDateCouns(date, counsellor)
+  //   .subscribe(data);
+  // }
+
+
   downloadCounsellorEx(classList, form) {
     if (classList.length > 0) {
       this._userService.downloadToExCounsellor(form.value)
       .subscribe(userData => {
+        // console.log('user date is', userData.result);
        const result_json = [];
        const absenteeData = [];
        const reportData = [];
@@ -203,7 +211,7 @@ export class DownloadsComponent implements OnInit {
          count = this.generateReport(classList[k], userData);
         // console.log('count is ', count, classList[k]);
          finalReport['Date'] = classList[k];
-         finalReport['Topic'] = 'NA';
+         finalReport['Topic'] = "NA"//this.getTopicDateCounsellor(classList[k], form.value.counsellor);
          finalReport['Speaker'] = form.value.counsellor;
          finalReport['Presence'] = count;
          finalReport['Absence'] = userData.result.length - count;
@@ -212,6 +220,7 @@ export class DownloadsComponent implements OnInit {
        }
       // console.log('report data', reportData);
        for (let i = 0; i < userData.result.length; i++) {
+        // console.log('user data is ', userData.result[i]);
          const objectToInsert = {};
          const absenteeObject = {};
          objectToInsert['name'] = userData.result[i].name;

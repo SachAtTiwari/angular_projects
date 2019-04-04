@@ -18,7 +18,7 @@ keys = [v.value for v in worksheet.row(0)]
 date_col_nos = [col_dt for col_dt,dt in enumerate(keys) if re.match(r'.*([1-3][0-9]{3})', str(dt))]
 
 counslr_map = {"KVP" : "HG Kalpvraksha Prabhuji", "SGP" : "HG Shyam Gopal Prabhuji", "VCP" : "HG Vaidant Chaitnya Prabhuji",\
-               "JNP" : "HG Jagadanand Pandit Prabhuji","PVNP" : "HG Pundrik Vidhyanidhi Prabhuji"}
+               "JNP" : "HG Jagadanand Pandit Prabhuji","PVNP" : "HG Pundarika Vidyanidhi Prabhuji"}
 for row_number in range(worksheet.nrows):
     for_date_col = []
     if row_number == 0:

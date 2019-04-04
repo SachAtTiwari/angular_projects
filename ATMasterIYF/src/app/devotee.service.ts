@@ -11,9 +11,9 @@ import { Observable } from 'rxjs';
 @Injectable()
 
 export class UserService {
-     // private _url: string = 'http://localhost:3000/';
+     private _url: string = 'http://localhost:3000/';
   //  private _url: string = 'http://192.168.0.111:3000/';
-   private _url: string = '/';
+   // private _url: string = '/';
 
   constructor(private _http: Http) {}
 
@@ -30,6 +30,21 @@ export class UserService {
         }
       ));
     }
+
+  getTopicForDateCouns(date, counsellor): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const searchParams = new URLSearchParams();
+    searchParams.append('date', date);
+    searchParams.append('counsellor', counsellor);
+    const options = new RequestOptions({ headers: headers, params: searchParams });
+    return this._http.get(this._url + 'getTopicForDateCouns', options).pipe(
+        map((response: Response) => {
+          return response.json();
+       }
+     ));
+
+  }
 
   getSdlClassesOfDate (date): Observable<any> {
     const headers = new Headers();

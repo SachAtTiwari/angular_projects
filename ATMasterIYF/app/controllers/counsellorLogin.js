@@ -151,7 +151,7 @@ function findCounsellor(username) {
           cslr = 'HG Vaidant Chaitnya Prabhuji';
           break;
         case 'pvnp':
-          cslr = 'HG Pundrik Vidhyanidhi Prabhuji';
+          cslr = 'HG Pundarika Vidyanidhi Prabhuji';
           break;
         case 'jnp':
           cslr = 'HG Jagadanand Pandit Prabhuji';
