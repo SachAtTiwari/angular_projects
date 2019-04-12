@@ -16,8 +16,8 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-multiple-couse-component',
-  templateUrl: 'multiplecourse.html',
-  styleUrls: ['./multiplecourse.css'],
+  template: '',
+  styleUrls: [],
 })
 export class MultipleCourseComponent implements OnInit {
 
@@ -304,7 +304,7 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
   }
 
   showDetails(dv) {
-    this._userService.getDetails(dv['_id'])
+    /* this._userService.getDetails(dv['_id'])
     .subscribe(userData => {
            if (userData.result[0].attendance) {
             this.dataSourceDetails.data = userData.result[0].attendance;
@@ -320,7 +320,9 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
           //  console.log('result is', result);
             this.refresh();
           });
-    });
+    }); */
+
+    this.router.navigate(['showDetails', dv['_id']]);
   }
 
   lockIt(element, event) {

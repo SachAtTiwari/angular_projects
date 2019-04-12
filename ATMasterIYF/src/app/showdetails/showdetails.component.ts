@@ -20,15 +20,14 @@ import {ViewEncapsulation} from '@angular/core';
 export class ShowdetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
-    public dialog: MatDialog,
     private _userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router) { }
 
   id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
-//  dataSource = new MatTableDataSource([]);
-//  data = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
+ dataSource = new MatTableDataSource([]);
+  data = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
+  facilitatorList = ['Mohit Joshi Pr', 'Vallabh Pr', 'Abhishek Pr', 'Vaishnav Pran Pr', 'Vishal Pr'];
 //  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   isLoggedIn = false;
@@ -44,7 +43,8 @@ export class ShowdetailsComponent implements OnInit {
             }
         });
 
-    this.route.params.subscribe(params => {
+     }*/
+     this.route.params.subscribe(params => {
       this.id =  params['id'];
       this._userService.getDetails(this.id)
       .subscribe(userData => {
@@ -52,10 +52,9 @@ export class ShowdetailsComponent implements OnInit {
            if (userData.result[0].attendance) {
             this.dataSource.data = userData.result[0].attendance;
            }
-           this.devoteeData = userData.result[0];
+           this.data = userData.result[0];
          });
        });
-     }*/
     }
 
     updateDevotee(form: NgForm): void {
@@ -77,4 +76,12 @@ export class ShowdetailsComponent implements OnInit {
        });
     }
 
+    getDevoteeImage(e) {
+      const reader  = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      const self = this;
+      reader.onload = function() {
+        self.data['image'] = reader.result;
+      };
+    }
 }

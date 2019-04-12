@@ -14,7 +14,7 @@
                   </div>
                   <div class="formClass">
                       <form #devoteeForm="ngForm">
-                          
+                        <input type='file'  name="image" (change)="getDevoteeImage($event)" style="padding:10px; background: #d4d4cc;"/>
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
                           mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
@@ -96,6 +96,18 @@
                          <mat-option value="NO"> NO </mat-option>          
                       </mat-select>                                                              
                    </mat-form-field> 
+
+                   <mat-form-field>                                                             
+                    <mat-select name="facilitator" [(ngModel)]="data.facilitator" 
+                       placeholder="Select to update Facilitator" required>                                      
+                       <mat-option *ngFor="let f of facilitatorList" [value]="f">{{f}}  </mat-option>  
+                                 
+                    </mat-select>                                                              
+                 </mat-form-field> 
+
+                                                                           
+                                                                               
+                 
 
                   <!--mat-form-field>                                                             
                     <mat-select name="facilitator" [(ngModel)]="data.facilitator" 
