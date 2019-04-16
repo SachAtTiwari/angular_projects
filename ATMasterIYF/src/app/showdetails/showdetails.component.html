@@ -14,7 +14,10 @@
                   </div>
                   <div class="formClass">
                       <form #devoteeForm="ngForm">
-                        <input type='file'  name="image" (change)="getDevoteeImage($event)" style="padding:10px; background: #d4d4cc;"/>
+                        <img [src]="data.image" width="50px" height="50px;" style="margin-left:8px;">  
+                        <label for="files" class="btn"  style="margin-left:8px;background: #ccc">Select Image</label>
+                          
+                        <input type='file'  name="image" (change)="getDevoteeImage($event)" id="files" style="visibility:hidden;"/>
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
                           mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         

@@ -26,6 +26,7 @@ export class ShowdetailsComponent implements OnInit {
   id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
  dataSource = new MatTableDataSource([]);
+  // tslint:disable-next-line:max-line-length
   data = {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
   facilitatorList = ['Mohit Joshi Pr', 'Vallabh Pr', 'Abhishek Pr', 'Vaishnav Pran Pr', 'Vishal Pr'];
 //  @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -55,6 +56,8 @@ export class ShowdetailsComponent implements OnInit {
            this.data = userData.result[0];
          });
        });
+       // default image need to be bind from result
+       this.data['image'] = 'https://secure.gravatar.com/avatar/15dd76be3d8d0014f6898fa4fb0377e8?s=50&d=mm&r=g';
     }
 
     updateDevotee(form: NgForm): void {
