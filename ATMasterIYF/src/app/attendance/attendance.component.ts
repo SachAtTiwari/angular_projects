@@ -183,27 +183,29 @@ export class AttendanceComponent implements OnInit, AfterViewInit {
   }
 
   showDetails(dv) {
-    console.log('user data ', dv);
+    // console.log('user data ', dv);
+    const link = `/#/showDetails/${dv['_id']}`;
+    this.router.navigate([]).then(result => {  window.open(link, '_blank'); });
 
-    this._userService.getDetails(dv['_id'])
-    .subscribe(userData => {
-          console.log('user data ', userData);
-           if (userData.result[0].attendance) {
-            this.dataSourceDetails.data = userData.result[0].attendance;
-            userData.result[0].dataSourceDetails = this.dataSourceDetails;
-            // console.log('counsellor', this.findKey(this.appComp.userName));
-            // userData.result[0].facilitators = this.findKey(this.appComp.userName);
-           }
-           // console.log('data is ', userData.result[0]);
-           const dialogRef = this.dialog.open(ShowdetailsComponent, {
-            width: '100vh',
-            hasBackdrop: false,
-            data: {...userData.result[0]}
-          });
-          /*dialogRef.afterClosed().subscribe(result => {
-            console.log('result is', result);
-          });*/
-    });
+    // this._userService.getDetails(dv['_id'])
+    // .subscribe(userData => {
+    //       console.log('user data ', userData);
+    //        if (userData.result[0].attendance) {
+    //         this.dataSourceDetails.data = userData.result[0].attendance;
+    //         userData.result[0].dataSourceDetails = this.dataSourceDetails;
+    //         // console.log('counsellor', this.findKey(this.appComp.userName));
+    //         // userData.result[0].facilitators = this.findKey(this.appComp.userName);
+    //        }
+    //        // console.log('data is ', userData.result[0]);
+    //        const dialogRef = this.dialog.open(ShowdetailsComponent, {
+    //         width: '100vh',
+    //         hasBackdrop: false,
+    //         data: {...userData.result[0]}
+    //       });
+    //       /*dialogRef.afterClosed().subscribe(result => {
+    //         console.log('result is', result);
+    //       });*/
+    // });
   }
 
 

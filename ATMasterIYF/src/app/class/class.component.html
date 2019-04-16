@@ -51,10 +51,18 @@
                     
           </mat-form-field> 
           
-          <mat-form-field>                                  
+          <!-- <mat-form-field>                                  
             <input matInput name="guest" [(ngModel)]="guest"  placeholder="Guest Speaker" value="">
                    
-         </mat-form-field>  
+         </mat-form-field>   -->
+         <mat-form-field>                                                             
+          <mat-select [(ngModel)]="facilitator" name="facilitator" placeholder="Facilitator">                                         
+            <mat-option *ngFor="let fa of facilitators" [value]="fa.value">
+              {{fa.value}}  
+            </mat-option>                              
+                                        
+          </mat-select>                                                              
+        </mat-form-field> 
 
           <mat-form-field>                                  
               <input matInput type="time" name="time" [(ngModel)]="time"  placeholder="Time">

@@ -44,6 +44,17 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'NA'},
   ];
 
+  facilitators = [
+    {value: 'Vaishnav Pran Prabhu'},
+    {value: 'Vallabh Prabhu'},
+    {value: 'Abhishek Jaiswal Prabhu'},
+    {value: 'Krishna Kanhayia Prabhu'},
+    {value: 'Vishal Patial Prabhu'},
+    {value: 'Mohit Joshi Prabhu'},
+    {value: 'Amit Kumar Prabhu'},
+    {value: 'NA'},
+  ];
+
   courses = [
     {value: 'OTP'},
     {value: 'TSSV-B10'},
@@ -124,7 +135,7 @@ export class ClassComponent implements AfterViewInit, OnInit {
   sdlClass(form: NgForm) {
    form.value.date = this._userService.parseDate(form.value.date);
     if (!form.value.date || !form.value.speaker || !form.value.course
-      || !form.value.time || !form.value.topic) {
+      || !form.value.time || !form.value.topic || !form.value.facilitator) {
         swal({
 
             type: 'warning',

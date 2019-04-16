@@ -322,7 +322,9 @@ export class CallingDetailsComponent implements OnInit, AfterViewInit {
           });
     }); */
 
-    this.router.navigate(['showDetails', dv['_id']]);
+   // this.router.navigate(['showDetails', dv['_id']]);
+    const link = `/#/showDetails/${dv['_id']}`;
+    this.router.navigate([]).then(result => {  window.open(link, '_blank'); });
   }
 
   lockIt(element, event) {

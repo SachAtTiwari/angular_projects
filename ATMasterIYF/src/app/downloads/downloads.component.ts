@@ -324,6 +324,7 @@ export class DownloadsComponent implements OnInit {
          objectToInsert['contact'] = userData.result[i].contact;
          objectToInsert['course'] = userData.result[i].course;
          objectToInsert['counsellor'] = userData.result[i].counsellor;
+         objectToInsert['facilitator'] = userData.result[i].facilitator;
          objectToInsert['dob'] = this._userService.parseDate(userData.result[i].dob);
          if (userData.result[i].attendance !== undefined) {
           objectToInsert['classcount'] = userData.result[i].attendance.length;

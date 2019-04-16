@@ -1,5 +1,5 @@
-<div class="">
-    <div class="">  
+<div class="content-wrapper">
+    <div class="container-fluid">  
              <!-- Breadcrumbs-->
              <!--ol class="breadcrumb" style="margin-top:20px;">
                 <li class="breadcrumb-item">
@@ -8,16 +8,21 @@
                 <li class="breadcrumb-item active">Attendance</li>
               </ol-->  
 
-              <div class="" style="margin-top:15px;">
+              <div class="card mb-2 col-md-offset-2" style="margin-top:15px;">
                   <div class="card-header" style="background-color:yellow;">
                     <i class="fa fa-table"></i> Devotee Details
                   </div>
-                  <div class="formClass">
+                  <div class="formClass card-body">
                       <form #devoteeForm="ngForm">
-                        <img [src]="data.image" width="50px" height="50px;" style="margin-left:8px;">  
-                        <label for="files" class="btn"  style="margin-left:8px;background: #ccc">Select Image</label>
-                          
-                        <input type='file'  name="image" (change)="getDevoteeImage($event)" id="files" style="visibility:hidden;"/>
+                        <div style="float:left;">
+                        <img [src]="data.image" width="150px" height="150px;" style="margin-left:4px;">  
+                        <label for="files" class="btn" 
+                         style="margin-left:8px;background: #ccc">Select Image</label>
+                          <br/>
+                        <input type='file' style="width:0px"  name="image" (change)="getDevoteeImage($event)"
+                           id="files" style="visibility:hidden;"/>
+                         </div>
+
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
                           mode="indeterminate" *ngIf="loading"></mat-progress-spinner>
                         
@@ -103,10 +108,11 @@
                    <mat-form-field>                                                             
                     <mat-select name="facilitator" [(ngModel)]="data.facilitator" 
                        placeholder="Select to update Facilitator" required>                                      
-                       <mat-option *ngFor="let f of facilitatorList" [value]="f">{{f}}  </mat-option>  
+                       <mat-option *ngFor="let f of facilitators" [value]="f">{{f}}  </mat-option>  
                                  
                     </mat-select>                                                              
                  </mat-form-field> 
+                 
 
                                                                            
                                                                                
@@ -121,7 +127,23 @@
 
                       <button mat-raised-button color="primary" style="margin-left:8px;"
                       (click)="updateDevotee(devoteeForm)">Update Devotee</button>
+
                 </form>
+          <!-- Roles list-->
+          <div class="card mb-3 col-md-offset-2" style="margin-top:25px;">
+              <div class="card-header" style="background-color:yellow;">
+                <i class="fa fa-table"></i> Sewa Involvement
+              </div>
+              <mat-chip-list style="margin:25px;">
+                  <mat-chip color="primary" selected>Universal facilitator</mat-chip>
+                  <mat-chip>Class Cordinator</mat-chip>
+                  <mat-chip>Setup Incharge</mat-chip>
+                  <mat-chip>Preaching</mat-chip>
+                  <mat-chip>IT</mat-chip>
+                  <mat-chip>Calling Cordinator</mat-chip>
+                  <mat-chip>Stall</mat-chip>
+              </mat-chip-list>
+          </div>
           <div class="card mb-3 col-md-offset-2" style="margin-top:25px;">
               <div class="card-header" style="background-color:yellow;">
                   <i class="fa fa-table"></i> Programs attended till date
