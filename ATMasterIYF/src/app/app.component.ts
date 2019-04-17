@@ -72,6 +72,7 @@ export class AppComponent implements OnInit {
         .subscribe(tokenRes => {
             if (tokenRes.result === 'ok') {
               this.isLoggedIn = true;
+              this.userName =  'admin';
             }
         });
     }

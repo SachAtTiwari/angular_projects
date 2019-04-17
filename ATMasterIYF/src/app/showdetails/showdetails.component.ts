@@ -25,6 +25,7 @@ export class ShowdetailsComponent implements OnInit {
 
   id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
+  uniFacl = false;
  dataSource = new MatTableDataSource([]);
   // tslint:disable-next-line:max-line-length
   data =
@@ -67,7 +68,8 @@ export class ShowdetailsComponent implements OnInit {
          });
        });
        // default image need to be bind from result
-       this.data['image'] = 'https://secure.gravatar.com/avatar/15dd76be3d8d0014f6898fa4fb0377e8?s=50&d=mm&r=g';
+       // this.data['image'] = 'https://secure.gravatar.com/avatar/15dd76be3d8d0014f6898fa4fb0377e8?s=50&d=mm&r=g';
+       // this.data['image'] =  'https://drive.google.com/file/d/17-DRixHB1eqVGZa7tFuJ-PiZcxFzn78S/view';
     }
 
     updateDevotee(form: NgForm): void {
@@ -87,6 +89,15 @@ export class ShowdetailsComponent implements OnInit {
          });
         }
        });
+    }
+
+    manageRoles = (e) => {
+      console.log('e is ', e.target.innerText, this.uniFacl);
+      if ( !this.uniFacl ) {
+        this.uniFacl = true;
+        console.log(this.uniFacl);
+      }
+
     }
 
     getDevoteeImage(e) {

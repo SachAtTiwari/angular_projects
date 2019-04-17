@@ -135,13 +135,13 @@
                 <i class="fa fa-table"></i> Sewa Involvement
               </div>
               <mat-chip-list style="margin:25px;">
-                  <mat-chip color="primary" selected>Universal facilitator</mat-chip>
-                  <mat-chip>Class Cordinator</mat-chip>
-                  <mat-chip>Setup Incharge</mat-chip>
-                  <mat-chip>Preaching</mat-chip>
-                  <mat-chip>IT</mat-chip>
-                  <mat-chip>Calling Cordinator</mat-chip>
-                  <mat-chip>Stall</mat-chip>
+                  <mat-chip [(ngModel)]="unifacl" (click)="manageRoles($event)">Universal facilitator</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">Class Cordinator</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">Setup Incharge</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">Preaching</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">IT</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">Calling Cordinator</mat-chip>
+                  <mat-chip (click)="manageRoles($event)">Stall</mat-chip>
               </mat-chip-list>
           </div>
           <div class="card mb-3 col-md-offset-2" style="margin-top:25px;">
