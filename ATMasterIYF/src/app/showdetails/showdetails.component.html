@@ -149,7 +149,7 @@
                   <i class="fa fa-table"></i> Programs attended till date
                 </div>
 
-                        <mat-table #table *ngIf="data.attendance" [dataSource]="data.dataSourceDetails">
+                        <mat-table #table *ngIf="data.attendance.length>0" [dataSource]="dataSource">
                             <!-- Position Column -->
                             <ng-container matColumnDef="Date">
                               <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
