@@ -95,6 +95,12 @@
                 <mat-header-cell *matHeaderCellDef> Speaker </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.speaker}} </mat-cell>
               </ng-container>
+
+               <!-- Name Facilitator -->
+               <ng-container matColumnDef="Facilitator">
+                <mat-header-cell *matHeaderCellDef> Facilitator </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.facilitator}} </mat-cell>
+              </ng-container>
           
               <!-- Weight Column -->
               <ng-container matColumnDef="Course">

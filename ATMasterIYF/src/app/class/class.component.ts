@@ -25,7 +25,7 @@ import { element } from 'protractor';
 })
 export class ClassComponent implements AfterViewInit, OnInit {
 
-  displayedColumns = ['Date', 'Speaker', 'Course', 'Topic', 'Actions'];
+  displayedColumns = ['Date', 'Speaker', 'Facilitator', 'Course', 'Topic', 'Actions'];
   ELEMENT_DATA: Element[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,10 +48,15 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'Vaishnav Pran Prabhu'},
     {value: 'Vallabh Prabhu'},
     {value: 'Abhishek Jaiswal Prabhu'},
-    {value: 'Krishna Kanhayia Prabhu'},
+    {value: 'Ashutosh Prabhu'},
     {value: 'Vishal Patial Prabhu'},
     {value: 'Mohit Joshi Prabhu'},
     {value: 'Amit Kumar Prabhu'},
+    {value: 'Hemant Kumar Prabhu'},
+    {value: 'Pawan Pandey Prabhu'},
+    {value: 'Chetan Kumar Prabhu'},
+    {value: 'Aman Sharma Prabhu'},
+    {value: 'Shyamanand Prabhu'},
     {value: 'NA'},
   ];
 

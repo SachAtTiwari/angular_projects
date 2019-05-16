@@ -13,6 +13,28 @@
  <a class="fa fa-close CloseIcon" style="display:none;"></a>
  </div>
  <ul>
+
+    <li>
+        <a class="collpased" data-toggle="collapse" href="#collapse1" class="collapsed">
+          
+         <i class="fa fa-fw fa-user"></i>
+                   <span   class="nav-link-text">COUNSELLOR</span>
+          <i class="fas fa fa-angle-right"></i>
+        </a>
+        <div class="collapse" id="collapse1">
+             <ul class="nav" style="background: #f8f9fa">
+               <li>
+                 <a style="color:#000;"  routerLink="/sgpcounsellee" [queryParams]="{ coun: 1 }"
+                     routerActive="/sgpcounsellee"><i class="fas fa fa-book"></i><span>SGP</span> </a>
+               </li>
+               <li >
+                   <a style="color:#000" routerLink="/kvpcounsellee" [queryParams]="{ coun: 2 }" 
+                   routerActive="/kvpcounsellee"><i class="fas fa fa-book"></i>KVP</a>
+               </li>
+             </ul>
+        </div>
+      </li> 
+      <!--counsellor end-->
    
    <li>
      <a class="collpased" data-toggle="collapse" href="#collapse1" class="collapsed">
@@ -27,26 +49,26 @@
               <a style="color:#000;"  routerLink="/otpattendance" [queryParams]="{ course: 1 }"
                   routerActive="/otpattendance"><i class="fas fa fa-book"></i><span>OTP</span> </a>
             </li>
-            <li >
+            <!-- <li >
               <a style="color:#000;" routerLink="/tssvattendance" [queryParams]="{ course: 2 }" 
               routerActive="/tssvattendance"><i class="fas fa fa-book"></i>TSSV-B10</a>
-            </li>
-            <li >
+            </li> -->
+            <!-- <li >
               <a style="color:#000;" routerLink="/ashrayattendance" [queryParams]="{ course: 3 }" 
               routerActive="/ashrayattendance"><i class="fas fa fa-book"></i>VL3</a>
-            </li>
+            </li> -->
             <!--li >
               <a style="color:#000;" routerLink="/umangattendance" [queryParams]="{ course: 4 }" 
               routerActive="/umangattendance"><i class="fas fa fa-book"></i>UMANG</a>
             </li-->
-            <li >
+            <!-- <li >
               <a style="color:#000;" routerLink="/bssattendance" [queryParams]="{ course: 6 }" 
               routerActive="/bssattendance"><i class="fas fa fa-book"></i>BSS</a>
-            </li>
-            <li >
+            </li> -->
+            <!-- <li >
                 <a style="color:#000;" routerLink="/dysattendance" [queryParams]="{ course: 7 }" 
                 routerActive="/dysattendance"><i class="fas fa fa-book"></i>DYS</a>
-              </li>
+              </li> -->
 
             <li >
                 <a style="color:#000" routerLink="/attendance" [queryParams]="{ course: 5 }" 
@@ -61,21 +83,21 @@
       <i class="fa fa-fw fa-download"></i>
       <span class="nav-link-text">Downloads</span>
     </a>
-</li>
-
-<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-<a  class="nav-link" routerLink="/classSdl" routerActive="/classSdl">
-  <i class="fa fa-calendar"></i>
-  <span class="nav-link-text"> Scheduled Classes</span>
-</a>
-</li> 
+  </li>
 
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+    <a  class="nav-link" routerLink="/classSdl" routerActive="/classSdl">
+      <i class="fa fa-calendar"></i>
+      <span class="nav-link-text"> Scheduled Classes</span>
+    </a>
+  </li> 
+
+  <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
    <a  class="nav-link" routerLink="/callDashboard" routerActive="/classSdl">
      <i class="fa fa-bar-chart"></i>
     <span class="nav-link-text"> Reports Demo</span>
    </a>
-  </li> 
+  </li>  -->
 
  </ul>
   </div>

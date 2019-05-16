@@ -26,7 +26,9 @@ export class ShowdetailsComponent implements OnInit {
   id: string;
   displayedColumns = ['Date', 'Speaker', 'Topic', 'Attendance'];
   uniFacl = false;
- dataSource = new MatTableDataSource([]);
+  dataSource = new MatTableDataSource([]);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   // tslint:disable-next-line:max-line-length
   data =
    {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
@@ -40,11 +42,10 @@ export class ShowdetailsComponent implements OnInit {
      'Amit Kumar Prabhu',
      'NA',
   ];
-//  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   isLoggedIn = false;
   ngOnInit() {
-    // this.dataSource.paginator = this.paginator;
+     this.dataSource.paginator = this.paginator;
     // const getLoggedIn = localStorage.getItem('token');
     // console.log('token is in atte init', getLoggedIn);
     // if (getLoggedIn) {

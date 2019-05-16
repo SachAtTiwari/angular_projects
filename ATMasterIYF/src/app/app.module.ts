@@ -80,9 +80,10 @@ import * as FusionCharts from 'fusioncharts';
 // Load FusionCharts Individual Charts
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import { CallAttDashboardComponent } from './call-att-dashboard/call-att-dashboard.component';
+import { CounselorDetailsComponent } from './counselor-details/counselor-details.component';
 
 // Use fcRoot function to inject FusionCharts library, and the modules you want to use
-FusionChartsModule.fcRoot(FusionCharts, Charts)
+FusionChartsModule.fcRoot(FusionCharts, Charts);
 
 
 const appRoutes: Routes = [
@@ -98,6 +99,7 @@ const appRoutes: Routes = [
   { path: 'downloads', component: DownloadsComponent},
   { path: 'adminLogin', component: AdminLoginComponent},
   { path: 'counLogin', component: CounsellorLoginComponent},
+  { path: 'sgpcounsellee', component: CounselorDetailsComponent},
   { path: 'callingdetails/:username', component: CallingDetailsComponent},
   { path: 'callDashboard', component: CallAttDashboardComponent},
   { path: '', redirectTo: 'classSdl', pathMatch: 'full'}
@@ -120,6 +122,7 @@ const appRoutes: Routes = [
     CallingDetailsComponent,
     CallAttDashboardComponent,
     MultipleCourseComponent,
+    CounselorDetailsComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
