@@ -23,11 +23,29 @@
         </div>
 
         <div class="card-body" >
-            <mat-tab-group>
-                <mat-tab label="Junior Batch"> Content 1 </mat-tab>
-                <mat-tab label="Senior Batch"> Content 2 </mat-tab>
-                <mat-tab label="BSS"> Content 3 </mat-tab>
-              </mat-tab-group>
+            <mat-tab-group (selectedTabChange)="tabChange($event)">
+                <mat-tab label="{{tab}}" *ngFor="let tab of matTabLabel"> 
+                    <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">S.No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Dob</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor='let data of filterData;let i = index;'>
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{data.name}}</td>
+                            <td>{{data.contact}}</td>
+                            <td>{{data.dob | date:'dd-MM-yyyy'}}</td>
+                          </tr>
+                          </tbody>
+                      </table>
+                  
+                   </mat-tab>
+            </mat-tab-group>
           
         </div>
         <div class="card-footer small text-muted">
