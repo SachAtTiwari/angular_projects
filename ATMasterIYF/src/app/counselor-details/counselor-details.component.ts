@@ -18,19 +18,24 @@ import { MatTabGroup } from '@angular/material';
   providers: [UserService]
 
 })
-export class CounselorDetailsComponent implements OnInit {
+export class CounselorDetailsComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginatorDetails: MatPaginator;
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+  dataSource = new MatTableDataSource([]);
   filterData = [];
   matTabLabel = ['Junior Batch', 'Senior Batch', 'BSS'];
   selectedIndex = 0;
+  displayedColumns = ['S.No.', 'Name', 'Contact', 'Dob', 'Show Details'];
   constructor(private route: ActivatedRoute,
     public dialog: MatDialog,
     private _userService: UserService,
     private router: Router,
     public snackBar: MatSnackBar, private appComp: AppComponent) { }
 
+    ngAfterViewInit() {
+      this.dataSource.paginator = this.paginator;
+    }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['coun'] === '1') {
@@ -56,6 +61,7 @@ export class CounselorDetailsComponent implements OnInit {
            this.filterData = this['completeData'].filter((dataSet) => {
             return dataSet.course === 'TSSV-B10';
           });
+          this.dataSource.data = this.filterData;
         });
   }
 
@@ -78,5 +84,11 @@ export class CounselorDetailsComponent implements OnInit {
     //     return dataSet.course === 'OTP';
     //   });
     // }
+    this.dataSource.data = this.filterData;
+  }
+
+  showDetails(dv) {
+    const link = `/#/showDetails/${dv['_id']}`;
+    this.router.navigate([]).then(result => {  window.open(link, '_blank'); });
   }
 }

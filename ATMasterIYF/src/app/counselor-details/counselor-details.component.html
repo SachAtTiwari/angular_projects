@@ -25,7 +25,7 @@
         <div class="card-body" >
             <mat-tab-group (selectedTabChange)="tabChange($event)">
                 <mat-tab label="{{tab}}" *ngFor="let tab of matTabLabel"> 
-                    <table class="table">
+                    <!-- <table class="table">
                         <thead class="thead-dark">
                           <tr>
                             <th scope="col">S.No.</th>
@@ -42,7 +42,51 @@
                             <td>{{data.dob | date:'dd-MM-yyyy'}}</td>
                           </tr>
                           </tbody>
-                      </table>
+                      </table> -->
+
+                      <mat-table #table [dataSource]="dataSource">
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="S.No.">
+                          <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+                          <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+                        </ng-container>
+                    
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+          
+                         <!-- Name Facilitator -->
+                         <ng-container matColumnDef="Contact">
+                          <mat-header-cell *matHeaderCellDef> Contact </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.contact}} </mat-cell>
+                        </ng-container>
+                    
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="Dob">
+                          <mat-header-cell *matHeaderCellDef> Dob </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.dob | date:'dd-MM-yyyy'}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Show Details">
+                          <mat-header-cell *matHeaderCellDef> Show Details </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> <i (click)="showDetails(element)" style="cursor:pointer;font-size:24px;color:purple"
+                            matTooltip="Show Details" class="fa fa fa-address-card"></i> </mat-cell>
+                        </ng-container>
+                    
+                        <!-- Symbol Column -->
+                                        
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    
+                      </mat-table>
+                      <mat-paginator #paginator
+                       [pageSize]="10"
+                       [pageSizeOptions]="[5, 10, 20]"
+                       >
+                   </mat-paginator>
                   
                    </mat-tab>
             </mat-tab-group>
