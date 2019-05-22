@@ -15,12 +15,13 @@
                   <div class="formClass card-body">
                       <form #devoteeForm="ngForm">
                         <div style="float:left;">
-                        <img [src]="data.image" width="150px" height="150px;" style="margin-left:4px;">  
-                        <label for="files" class="btn" 
+                        <img [src]="data.imageurl" 
+                         width="150px" height="150px;" style="margin-left:4px;">  
+                        <!-- <label for="files" class="btn" 
                          style="margin-left:8px;background: #ccc">Select Image</label>
                           <br/>
                         <input type='file' style="width:0px"  name="image" (change)="getDevoteeImage($event)"
-                           id="files" style="visibility:hidden;"/>
+                           id="files" style="visibility:hidden;"/> -->
                          </div>
 
                           <mat-progress-spinner [diameter]="40" [strokeWidth]="10"
