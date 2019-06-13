@@ -130,6 +130,19 @@ export class UserService {
 
   }
 
+  downloadToFacilitator (value): Observable<any> {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      const searchParams = new URLSearchParams();
+      searchParams.append('facilitator', value);
+      const options = new RequestOptions({ headers: headers, params: searchParams });
+      return this._http.get(this._url + 'downloadFacilitatorExcel', options).pipe(
+        map((response: Response) => {
+            return response.json();
+        }
+      ));
+  }
+
   getCounsellorData(name): Observable<any> {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');

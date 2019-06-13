@@ -49,14 +49,13 @@ export class ClassComponent implements AfterViewInit, OnInit {
     {value: 'Vallabh Prabhu'},
     {value: 'Abhishek Jaiswal Prabhu'},
     {value: 'Ashutosh Prabhu'},
-    {value: 'Vishal Patial Prabhu'},
     {value: 'Mohit Joshi Prabhu'},
-    {value: 'Amit Kumar Prabhu'},
     {value: 'Hemant Kumar Prabhu'},
     {value: 'Pawan Pandey Prabhu'},
     {value: 'Chetan Kumar Prabhu'},
     {value: 'Aman Sharma Prabhu'},
     {value: 'Shyamanand Prabhu'},
+    {value: 'Raman Krishna Prabhu'},
     {value: 'NA'},
   ];
 

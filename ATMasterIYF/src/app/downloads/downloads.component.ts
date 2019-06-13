@@ -42,6 +42,22 @@ export class DownloadsComponent implements OnInit {
     {value: 'HG Jagadanand Pandit Prabhuji'},
     {value: 'NA'},
   ];
+
+  facilitators = [
+    {value: 'Vaishnav Pran Prabhu'},
+    {value: 'Vallabh Prabhu'},
+    {value: 'Abhishek Jaiswal Prabhu'},
+    {value: 'Ashutosh Prabhu'},
+    {value: 'Mohit Joshi Prabhu'},
+    {value: 'Hemant Kumar Prabhu'},
+    {value: 'Pawan Pandey Prabhu'},
+    {value: 'Chetan Kumar Prabhu'},
+    {value: 'Aman Sharma Prabhu'},
+    {value: 'Shyamanand Prabhu'},
+    {value: 'Raman Krishna Prabhu'},
+    {value: 'NA'},
+  ];
+
   ngOnInit() {
     // Check if counsellor logged in
     const cLogIn = localStorage.getItem('ctoken');
@@ -342,6 +358,30 @@ export class DownloadsComponent implements OnInit {
       }
       this.excelGenerator(form.value.date,  form.value.course, result_json);
    });
+  }
+
+  downloadFacilitatorSheet = (form: NgForm) => {
+    console.log('form value is ', form.value.facilitator);
+    this._userService.downloadToFacilitator(form.value.facilitator)
+    .subscribe(userData => {
+        // console.log('user data ', userData);
+        const result_json = [];
+       for (let  i = 0; i < userData.result.length; i++) {
+         const objectToInsert = {};
+         objectToInsert['name'] = userData.result[i].name;
+         objectToInsert['contact'] = userData.result[i].contact;
+         objectToInsert['course'] = userData.result[i].course;
+         objectToInsert['counsellor'] = userData.result[i].counsellor;
+         objectToInsert['facilitator'] = userData.result[i].facilitator;
+         if (userData.result[i].attendance !== undefined) {
+          objectToInsert['classcount'] = userData.result[i].attendance.length;
+         }
+         result_json.push(objectToInsert);
+      }
+      this.excelGenerator(form.value.facilitator, '', result_json);
+
+    });
+
   }
 
   downloadCourseExcel = (form: NgForm) => {
