@@ -33,14 +33,21 @@ export class ShowdetailsComponent implements OnInit {
   data =
    {contact: '', counsellor: '', course: '', email: '', dob: '', name: '', bace: '', isAlumni: ''};
    facilitators = [
-     'Vaishnav Pran Prabhu',
-     'Vallabh Prabhu',
-     'Abhishek Jaiswal Prabhu',
-     'Krishna Kanhayia Prabhu',
-     'Vishal Patial Prabhu',
-     'Mohit Joshi Prabhu',
-     'Amit Kumar Prabhu',
-     'NA',
+    {value: 'Vaishnav Pran Prabhu'},
+    {value: 'Vallabh Prabhu'},
+    {value: 'Abhishek Jaiswal Prabhu'},
+    {value: 'Ashutosh Prabhu'},
+    {value: 'Mohit Joshi Prabhu'},
+    {value: 'Hemant Kumar Prabhu'},
+    {value: 'Pawan Pandey Prabhu'},
+    {value: 'Chetan Kumar Prabhu'},
+    {value: 'Aman Sharma Prabhu'},
+    {value: 'Shyamanand Prabhu'},
+    {value: 'Raman Krishna Prabhu'},
+    {value: 'Anant Nimai Prabhu'},
+    {value: 'Rasraj Gaur Prabhu'},
+    {value: 'Vraj Jana Ranjan Prabhu'},
+    {value: 'NA'},
   ];
 
   isLoggedIn = false;

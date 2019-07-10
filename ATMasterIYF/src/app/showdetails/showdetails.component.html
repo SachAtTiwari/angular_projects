@@ -107,11 +107,13 @@
                    </mat-form-field> 
 
                    <mat-form-field>                                                             
-                    <mat-select name="facilitator" [(ngModel)]="data.facilitator" 
-                       placeholder="Select to update Facilitator" required>                                      
-                       <mat-option *ngFor="let f of facilitators" [value]="f">{{f}}  </mat-option>  
-                                 
-                    </mat-select>                                                              
+                    <mat-select [(ngModel)]="data.facilitator" name="facilitator" placeholder="Facilitator">                                         
+                      <mat-option *ngFor="let fa of facilitators" [value]="fa.value">
+                        {{fa.value}}  
+                      </mat-option>                              
+                                                  
+                    </mat-select> 
+                                                                                 
                  </mat-form-field> 
                  
 
