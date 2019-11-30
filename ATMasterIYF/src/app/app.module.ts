@@ -81,6 +81,7 @@ import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import { CallAttDashboardComponent } from './call-att-dashboard/call-att-dashboard.component';
 import { CounselorDetailsComponent } from './counselor-details/counselor-details.component';
+import { DyshandlerComponent } from './dyshandler/dyshandler.component';
 
 // Use fcRoot function to inject FusionCharts library, and the modules you want to use
 FusionChartsModule.fcRoot(FusionCharts, Charts);
@@ -123,6 +124,7 @@ const appRoutes: Routes = [
     CallAttDashboardComponent,
     MultipleCourseComponent,
     CounselorDetailsComponent,
+    DyshandlerComponent,
   ],
   entryComponents: [
     MarkpresentComponent,
@@ -132,7 +134,8 @@ const appRoutes: Routes = [
     MainAttendanceComponent,
     ShowdetailsComponent,
     MultipleCourseComponent,
-    
+    DyshandlerComponent,
+
   ],
   imports: [
     DataTablesModule,
@@ -173,7 +176,7 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatStepperModule,
     Ng2SmartTableModule,
-	HttpModule,
+  	HttpModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false,  useHash: true },

@@ -232,7 +232,7 @@ export class DownloadsComponent implements OnInit {
          count = this.generateReport(classList[k], userData);
         // console.log('count is ', count, classList[k]);
          finalReport['Date'] = classList[k];
-         finalReport['Topic'] = "NA"//this.getTopicDateCounsellor(classList[k], form.value.counsellor);
+         finalReport['Topic'] = 'NA'; // this.getTopicDateCounsellor(classList[k], form.value.counsellor);
          finalReport['Speaker'] = form.value.counsellor;
          finalReport['Presence'] = count;
          finalReport['Absence'] = userData.result.length - count;

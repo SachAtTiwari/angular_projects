@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class UserService {
     private _url: string = 'http://localhost:3000/';
   // private _url: string = 'http://192.168.0.111:3000/';
-  //  private _url: string = '/';
+  //private _url: string = '/';
 
   constructor(private _http: Http) {}
 

@@ -10,6 +10,8 @@ import {ViewEncapsulation} from '@angular/core';
 import { ShowdetailsComponent } from '../showdetails/showdetails.component';
 import {AppComponent} from '../app.component';
 import { createAotUrlResolver } from '@angular/compiler';
+import { DyshandlerComponent } from '../dyshandler/dyshandler.component';
+
 
 
 
@@ -415,23 +417,26 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
          if (sdlresult.result.length === 0) {
             this.router.navigateByUrl('/classSdl');
 
-         }else if (sdlresult.result.length !== 0 && course === 'DYS') {
-            /* const dialogRef = this.dialog.open(DyshandlerComponent, {
+         }else if (sdlresult.result.length !== 0 && course === 'OTP') {
+            const dialogRef = this.dialog.open(DyshandlerComponent, {
               width: '280px',
               disableClose: true,
               hasBackdrop: false,
               data: {res: sdlresult.result}
-            }); */
-            /* dialogRef.afterClosed().subscribe(result => {
-              if (result.dystopic === undefined) {
-                this.topic = sdlresult.result[0].topic;
-                this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, sdlresult.result[0].topic);
-              } else {
-                this.topic = result.dystopic;
-                this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, result.dystopic);
-              }
-              this.devoteeData.course = 'DYS';
-            }); */
+            });
+             dialogRef.afterClosed().subscribe(result => {
+               console.log('result is ', result);
+              // if (result.dystopic === undefined) {
+              //   this.topic = sdlresult.result[0].topic;
+              //   this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, sdlresult.result[0].topic);
+              // } else {
+              //   this.topic = result.dystopic;
+              //   this.devoteeData.counsellor = this.getSpeakerOfThisTopic(sdlresult, result.dystopic);
+              // }
+               this.devoteeData.counsellor = 'NA';
+               this.devoteeData.course = 'OTP';
+               this.topic = result.dystopic;
+            });
          } else if (sdlresult.result.length !== 0 && course === 'TSSV-B10') {
           /* const dialogRef = this.dialog.open(DyshandlerComponent, {
             width: '280px',
@@ -708,11 +713,11 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
       const date = this.todayDate.getDate() + '-' + month + '-' + this.todayDate.getFullYear();
       this._userService.checkIfClassSdlForCourse(course, date)
       .subscribe(dysClassData => {
-      //    console.log('dys data is ', dysClassData);
+          // console.log('dys data is ', dysClassData.result);
           this.dStatus['date'] = date;
           this.dStatus['present'] = 'YES';
           this.dStatus['topic'] = this.topic;
-          this.dStatus['speaker'] = this.getSpeakerOfThisTopic(dysClassData, this.topic);
+          this.dStatus['speaker'] = dysClassData.result[0].facilitator;
           this.dStatus['contact'] =  contact;
           this._userService.markAttendance(this.dStatus)
           .subscribe(userDataNew => {
@@ -753,7 +758,7 @@ export class MainAttendanceComponent implements OnInit, AfterViewInit {
     }
     markAttendance(course, contact, name) {
       // console.log('mark attendance', course, this.devoteeData);
-       if (course === 'DYS' || course === 'TSSV-B10' || course === 'VL3') {
+       if (course === 'OTP' || course === 'TSSV-B10' || course === 'VL3') {
          this.handleDysAttendance(course, contact, name);
        } else {
        let specialCourse = false;
